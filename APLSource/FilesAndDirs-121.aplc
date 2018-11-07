@@ -51,7 +51,7 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'1.8.2' '2018-04-16'
+      r←(Last⍕⎕THIS)'1.8.2.1' '2018-04-16'
     ∇
 
     ∇ History
