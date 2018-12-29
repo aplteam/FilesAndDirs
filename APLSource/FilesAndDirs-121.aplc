@@ -51,7 +51,7 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'1.9.0.3' '2018-12-29'
+      r←(Last⍕⎕THIS)'1.9.0.2' '2018-12-29'
     ∇
 
     ∇ History
@@ -70,7 +70,7 @@
       ⍝      that do not have read access for any user.
       ⍝
       ⍝      This worked well in previous versions but due to a bug in Dyalog which got fixes in 17.0.
-      ⍝      Version 1.8.3 of `FilesAndDirs` now simulates the old, buggy but useful behaviour.
+      ⍝      Version 1.9.0 of `FilesAndDirs` now simulates the old, buggy but useful behaviour.
     ∇
 
     ∇ r←{parms_}Dir path;buff;list;more;parms;rc;extension;filename;folder;subFolders;pattern;isSelfCall
