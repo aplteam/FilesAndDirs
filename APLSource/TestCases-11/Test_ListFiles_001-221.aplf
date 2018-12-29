@@ -1,4 +1,4 @@
- R←Test_Misc_014(stopFlag batchFlag);⎕TRAP;list
+ R←Test_ListFiles_001(stopFlag batchFlag);⎕TRAP;list
 ⍝ Test the `ListFiles` method
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←∆Failed

@@ -21,5 +21,5 @@
 ⍝ Create a link
  link←##.FilesAndDirs.NormalizePath parent,'/Second/Sub_a/deep/Also_First'
  source←##.FilesAndDirs.NormalizePath parent,'/First'
- source CreateLinkTo link
- {⎕NEXISTS ⍵: ⋄ _←⎕DL 0.1 ⋄ ∇ ⍵}link ⍝ Make sure the link exists!
+ source CreateLinkTo link               ⍝ Requires admin rights!
+ {⎕NEXISTS ⍵: ⋄ _←⎕DL 0.1 ⋄ ∇ ⍵}link    ⍝ ⍝ Make sure the link exists!

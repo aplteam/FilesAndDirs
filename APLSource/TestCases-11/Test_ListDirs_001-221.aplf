@@ -1,4 +1,4 @@
- R←Test_Misc_013(stopFlag batchFlag);⎕TRAP;list
+ R←Test_ListDirs_001(stopFlag batchFlag);⎕TRAP;list
 ⍝ Test the `ListDirs` method
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←∆Failed
