@@ -51,26 +51,28 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'1.9.0.4' '2018-12-29'
+      r←(Last⍕⎕THIS)'1.9.1.5' '2018-12-31'
     ∇
 
     ∇ History
       :Access Public shared
+      ⍝ * 1.9.1
+      ⍝   * Version 1.9.0 introduced a bug to `ListDir, `ListFiles`, `IsDir` and `Dir`: "./" and "./*" 
+      ⍝     were not dealt with correctly.
       ⍝ * 1.9.0
       ⍝   *  The methods `Dir`, `ListDir` and `ListFiles` now provide a new parameter `depth` which is
       ⍝      ignored in case `recursive` is not specified or 0. If it is 1 than `depth` specifies the
       ⍝      depth of the recursion. For example, if you are only interested in the contents of a
       ⍝      particular folder and its sub-folders then specify `('depth' 2)`.
-      ⍝
-      ⍝   *  Recursive directory searches and lack of access rights.
-      ⍝
+      ⍝   *  Recursive directory searches and lack of access rights.\\
       ⍝      In 17.0 `⎕NINFO` signals an error 19 or 22 ("Cannot read|scan directory") in case a path is
       ⍝      specified that does not allow "Read" access by the current user. That will hit you when you
       ⍝      ask for, say, the contents of C:\Windows recursively because there are always some folders
-      ⍝      that do not have read access for any user.
-      ⍝
+      ⍝      that do not have read access for any user.\\
       ⍝      This worked well in previous versions but due to a bug in Dyalog which got fixes in 17.0.
       ⍝      Version 1.9.0 of `FilesAndDirs` now simulates the old, buggy but useful behaviour.
+      ⍝ \\
+      ⍝ For information regarding older version see <https://github.com/aplteam/APLGUI/releases>
     ∇
 
     ∇ r←{parms_}Dir path;buff;list;more;parms;rc;extension;filename;folder;subFolders;pattern;isSelfCall
@@ -138,10 +140,18 @@
       :If CurrentSep=¯1↑{⍵↓⍨-'*'=¯1↑⍵}path
           'Directory does not exist'⎕SIGNAL 6/⍨0=⎕NEXISTS path
           :Trap 19 22
+              :If 0<1594
               ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access
               ⍝ See bug report <01594>
               ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
-              'Not a directory'⎕SIGNAL 11/⍨1≠↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑path)↓path
+                  :If ('.',CurrentSep)≡2↑path
+                      'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+                  :Else
+                      'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
+                  :EndIf
+              :Else
+                  'Not a directory'⎕SIGNAL 11/⍨1≠1 ⎕NINFO⊣path
+              :EndIf
           :Else
               :If 1 5 'Access is denied.'≢⎕DMX.OSError
                   ⎕DMX.DM ⎕SIGNAL ⎕EN
@@ -694,10 +704,18 @@
           :Trap 11
               :If r←⎕NEXISTS path
                   :Trap 22
+                      :If 0<1594
                       ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access
                       ⍝ See bug report <01594>
                       ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
-                      r←↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑path)↓path
+                          :If ('.',CurrentSep)≡2↑path
+                              r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+                          :Else
+                              r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
+                          :EndIf
+                      :Else
+                          r←1=1 ⎕NINFO path
+                      :EndIf
                   :Else
                       r←0
                   :EndTrap
@@ -875,7 +893,7 @@
           buff←(0 1)⎕NINFO⍠('Wildcard' 1)⊣path,'*'
       :Else
           r←''  ⍝ Apparently we do not have the rights to read the folder, therefore we ignore it
-          :return
+          :Return
       :EndTrap
       r←(1=1⊃buff)/0⊃buff
       :If ~0∊⍴r←NormalizePath r
