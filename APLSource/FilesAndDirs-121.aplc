@@ -45,34 +45,23 @@
 ⍝ Kai Jaeger ⋄ APL Team Ltd\\
 ⍝ Homepage: <http://github.com/aplteam/FilesAndDirs>
 
-    :Include ##.APLTreeUtils
+    :Include APLTreeUtils
 
     ⎕IO←0 ⋄ ⎕ML←3
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'1.9.1.7' '2018-12-31'
+      r←(Last⍕⎕THIS)'1.9.2.7' '2019-02-17'
     ∇
 
     ∇ History
       :Access Public shared
-      ⍝ * 1.9.1
-      ⍝   * Version 1.9.0 introduced a bug to `ListDir, `ListFiles`, `IsDir` and `Dir`: "./" and "./*" 
-      ⍝     were not dealt with correctly.
-      ⍝ * 1.9.0
-      ⍝   *  The methods `Dir`, `ListDir` and `ListFiles` now provide a new parameter `depth` which is
-      ⍝      ignored in case `recursive` is not specified or 0. If it is 1 than `depth` specifies the
-      ⍝      depth of the recursion. For example, if you are only interested in the contents of a
-      ⍝      particular folder and its sub-folders then specify `('depth' 2)`.
-      ⍝   *  Recursive directory searches and lack of access rights.\\
-      ⍝      In 17.0 `⎕NINFO` signals an error 19 or 22 ("Cannot read|scan directory") in case a path is
-      ⍝      specified that does not allow "Read" access by the current user. That will hit you when you
-      ⍝      ask for, say, the contents of C:\Windows recursively because there are always some folders
-      ⍝      that do not have read access for any user.\\
-      ⍝      This worked well in previous versions but due to a bug in Dyalog which got fixes in 17.0.
-      ⍝      Version 1.9.0 of `FilesAndDirs` now simulates the old, buggy but useful behaviour.
-      ⍝ \\
-      ⍝ For information regarding older version see <https://github.com/aplteam/APLGUI/releases>
+      ⍝ * 1.9.2
+      ⍝   * `:Include APLTreeUtils` fixed
+      ⍝   * `acre.config` changed
+      ⍝   * `Make` polished
+      ⍝   * Link to previous releases fixed
+      ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
 
     ∇ r←{parms_}Dir path;buff;list;more;parms;rc;extension;filename;folder;subFolders;pattern;isSelfCall
