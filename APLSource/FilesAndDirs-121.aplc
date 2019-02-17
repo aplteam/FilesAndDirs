@@ -51,13 +51,16 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'1.9.2.8' '2019-02-17'
+      r←(Last⍕⎕THIS)'1.9.2.7' '2019-02-17'
     ∇
 
     ∇ History
       :Access Public shared
       ⍝ * 1.9.2
-      ⍝   * `:Include APLTreeUtils` fixed
+      ⍝   * Bug fixes:
+      ⍝     * `:Include APLTreeUtils` fixed
+      ⍝     * `NormalizePath` returned an empty vector when the argument was empty. Should be the current
+      ⍝       directory instead.
       ⍝   * `acre.config` changed
       ⍝   * `Make` polished
       ⍝   * Link to previous releases fixed
@@ -569,30 +572,31 @@
       ⍝ * Any pair of `//` or `\\` is reduced to a single one except the first two.
       ⍝ * Environment variables are expanded.
       isScalar←⍬≡⍴path
-      :If ~0∊⍴path
-          :If '%'∊path
-          :AndIf 'Win'≡GetOperatingSystem ⍬
-              'ExpandEnvironmentStrings'⎕NA'I4 KERNEL32.C32|ExpandEnvironmentStrings* <0T >0T I4'
-              path←1⊃ExpandEnvironmentStrings path 2048 2048
+      :If 0=≢path
+          path←'./'
+      :EndIf
+      :If '%'∊path
+      :AndIf 'Win'≡GetOperatingSystem ⍬
+          'ExpandEnvironmentStrings'⎕NA'I4 KERNEL32.C32|ExpandEnvironmentStrings* <0T >0T I4'
+          path←1⊃ExpandEnvironmentStrings path 2048 2048
+      :EndIf
+      expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡Lowercase ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
+      :If 1<≡path
+          path←expandFlag NormalizePath¨path
+      :Else
+          UNCflag←(⊂2⍴path)∊'\\' '//'
+          :If expandFlag
+              path←↑,/1 ⎕NPARTS path
           :EndIf
-          expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡Lowercase ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
-          :If 1<≡path
-              path←expandFlag NormalizePath¨path
-          :Else
-              UNCflag←(⊂2⍴path)∊'\\' '//'
-              :If expandFlag
-                  path←↑,/1 ⎕NPARTS path
-              :EndIf
-              sep←('Win'≡GetOperatingSystem ⍬)⌽'\/'
-              ((path=0⊃sep)/path)←1⊃sep
-              path←(~(2⍴1⊃sep)⍷path)/path
-              :If UNCflag
-                  path←'\\',1↓path
-              :EndIf
-              :If isScalar
-              :AndIf 1=⍴path
-                  path←↑path
-              :EndIf
+          sep←('Win'≡GetOperatingSystem ⍬)⌽'\/'
+          ((path=0⊃sep)/path)←1⊃sep
+          path←(~(2⍴1⊃sep)⍷path)/path
+          :If UNCflag
+              path←'\\',1↓path
+          :EndIf
+          :If isScalar
+          :AndIf 1=⍴path
+              path←↑path
           :EndIf
       :EndIf
     ∇
