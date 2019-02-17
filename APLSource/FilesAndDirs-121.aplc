@@ -57,9 +57,7 @@
     ∇ History
       :Access Public shared
       ⍝ * 1.9.3
-      ⍝   * Bug fixes:
-      ⍝     * `:Include APLTreeUtils` fixed
-      ⍝       directory instead.
+      ⍝   * `:Include APLTreeUtils` fixed
       ⍝   * `acre.config` changed
       ⍝   * `Make` polished
       ⍝   * Link to previous releases fixed
