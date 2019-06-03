@@ -10,10 +10,10 @@
  list←parms ##.FilesAndDirs.Dir ∆Home,'/'
  buff←⍉⊃list
 
- →PassesIf 19=↑⍴buff
+ →PassesIf 20=↑⍴buff
  →PassesIf(,⊂,' ')≡∪1↑¨0⍴¨buff[;0]           ⍝ 0 is filename
  →PassesIf∧/buff[;1]∊⍳8                      ⍝ 1 is type: integer between 0 and 7
- →PassesIf 1=buff[;1]+.=4                    ⍝      We have one symbolic link, and it should show (follow←1)
+ →PassesIf 2=buff[;1]+.=4                    ⍝      We have two symbolic links, and they should show (follow←1)
  →PassesIf 0∧.<(2=buff[;1])⌿buff[;2]         ⍝ 2 is size in bytes: all files are larger than zero bytes
  →PassesIf 7=∪↑¨⍴¨buff[;3]                   ⍝ 3 is timestamp
  :Select #.APLTreeUtils.GetOperatingSystem ⍬
@@ -26,6 +26,6 @@
  :EndSelect
  →PassesIf(,⊂,' ')≡∪1↑¨0⍴¨buff[;5]           ⍝ 5 is owner name; character vector
  →PassesIf 0∧.=buff[;6]                      ⍝ 6 is "hidden" flag; we don't have any hidden files
- →PassesIf 1=0+.≠↑¨⍴¨buff[;7]                ⍝ 7 is target of symbolic link but we have follow←0 here
+ →PassesIf 2=0+.≠≢¨buff[;7]                  ⍝ 7 is target of symbolic link but we have follow←0 here
 
  R←∆OK

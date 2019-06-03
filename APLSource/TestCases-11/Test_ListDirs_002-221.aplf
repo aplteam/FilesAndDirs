@@ -12,7 +12,7 @@
     ⍝ We should verify the result as well.
     ⍝ However, ('Recurse' 2) is only available from 17.0 onwards!
 
-     :If 17≤+/1 0.1×2↑⊃(//)'.'⎕VFI 1⊃# ⎕WG'APLVersion'
+     :If 17.1≤+/1 0.1×2↑⊃(//)'.'⎕VFI 1⊃# ⎕WG'APLVersion'
          list←##.APLTreeUtils.Lowercase list
          list←list[⍋list]
 

@@ -9,7 +9,7 @@
  list←parms ##.FilesAndDirs.Dir ∆Home,'/'
  buff←⍉⊃list
 
- →PassesIf 22=↑⍴buff
+ →PassesIf 23=≢buff
  →PassesIf 7=∪↑¨⍴¨buff[;0]                  ⍝ 3 is timestamp
  :Select #.APLTreeUtils.GetOperatingSystem ⍬
  :Case 'Win'

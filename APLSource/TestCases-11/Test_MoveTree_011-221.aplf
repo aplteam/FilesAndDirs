@@ -12,7 +12,7 @@
  (success more list)←tempPathSource ##.FilesAndDirs.MoveTree tempPathTarget
  →GoToTidyUp 1≠success
  →GoToTidyUp~0∊⍴more
- →GoToTidyUp 0≠+/,list[;1 2]
+ →GoToTidyUp∨/list[;1 2]∨.≠0 1
 
  R←∆OK
 

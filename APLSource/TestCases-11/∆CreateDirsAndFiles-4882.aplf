@@ -1,4 +1,6 @@
- ∆CreateDirsAndFiles parent;link;source;cmd
+ {r}←{noLinks}∆CreateDirsAndFiles parent;link;source;cmd
+ r←⍬
+ noLinks←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'noLinks'
  ⎕MKDIR parent
  ⎕MKDIR parent,'/First'
  (⊂'first_test1' '')⎕NPUT parent,'/First/file_a'
@@ -18,8 +20,14 @@
  ⎕MKDIR parent,'/Second/Sub_a/deep'
  (⊂'second_sub_a_deep_test1' '')⎕NPUT parent,'/Second/Sub_a/deep/file_deep1'
  ⎕MKDIR parent,'/Second/Sub_a/deep/empty'
-⍝ Create a link
- link←##.FilesAndDirs.NormalizePath parent,'/Second/Sub_a/deep/Also_First'
- source←##.FilesAndDirs.NormalizePath parent,'/First'
- source CreateLinkTo link               ⍝ Requires admin rights!
- {⎕NEXISTS ⍵: ⋄ _←⎕DL 0.1 ⋄ ∇ ⍵}link    ⍝ ⍝ Make sure the link exists!
+ :If 0=noLinks
+⍝ Create a link to a file
+     link←##.FilesAndDirs.NormalizePath parent,'/Second/also_file_third'
+     source←##.FilesAndDirs.NormalizePath parent,'/Second/Sub_a/file_third'
+     source CreateLinkTo link               ⍝ Requires admin rights!
+⍝ Create a link to a directory
+     link←##.FilesAndDirs.NormalizePath parent,'/Second/Sub_a/deep/Also_First'
+     source←##.FilesAndDirs.NormalizePath parent,'/First'
+     source CreateLinkTo link               ⍝ Requires admin rights!
+ :EndIf
+⍝Done

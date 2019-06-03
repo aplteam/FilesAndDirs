@@ -10,7 +10,6 @@
 
  ##.FilesAndDirs.MkDir source
  source CreateLinkTo link
- {⎕NEXISTS ⍵: ⋄ _←⎕DL 0.1 ⋄ ∇ ⍵}link ⍝ Make sure the link exists!
 
  success←##.FilesAndDirs.DeleteFile link
  →GoToTidyUp 1≠success

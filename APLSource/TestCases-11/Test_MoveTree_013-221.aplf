@@ -1,13 +1,11 @@
- R←Test_MoveTree_012(stopFlag batchFlag);⎕TRAP;rc;more;list;successFlag;success;tempPathSource;tempPathTarget;filename;tno;record;en;fqn;row;noOf2;sourceList;targetList;F;noOf_1a;noOf_1b
-⍝ Exercise `MoveTree`: move a tree of dirs and files with one file tied exclusively
+ R←Test_MoveTree_013(stopFlag batchFlag);⎕TRAP;rc;more;list;successFlag;success;tempPathSource;tempPathTarget;filename;tno;record;en;fqn;row;noOf2;sourceList;targetList;F;noOf_1a;noOf_1b
+⍝ Exercise `MoveTree`: move a tree of dirs and files with one file tied so that is can be copied but not deleted.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←∆Failed
-
  :If 'Win'≢#.APLTreeUtils.GetOperatingSystem ⍬
      R←∆WindowsOnly
      :Return
  :Else
-
      F←##.FilesAndDirs
      tempPathSource←F.GetTempPath,'source_',↑⎕SI
      tempPathTarget←F.GetTempPath,'target_',↑⎕SI
@@ -16,29 +14,27 @@
      (rc en more)←F.RmDir tempPathTarget
      Assert 0=rc
      ∆CreateDirsAndFiles tempPathSource
-     filename←F.NormalizePath'Second/Sub_a/file_third.dcf'
+     filename←F.NormalizePath'Second/Sub_a/nativefile.txt'
      fqn←F.NormalizePath tempPathSource,'/',filename   ⍝ fully qualified name
-     F.DeleteFile fqn
-     tno←fqn ⎕FCREATE 0     ⍝ Implies exclusive tie: this one can be neither copied nor deleted
+     tno←fqn ⎕NCREATE 0
+     'Hello world'⎕NAPPEND tno
+     ⎕NUNTIE tno
+     tno←fqn ⎕NTIE 0 32    ⍝ Grant read access to subsequent users; thats allows a copy operation but prevents the file from bing deleted
      noOf_1a←≢sourceList←↑('recursive' 1)F.Dir tempPathSource,'\'
-
      (success more list)←tempPathSource F.MoveTree tempPathTarget
      →GoToTidyUp 0≠success
      →GoToTidyUp 0≠≢more
-     →GoToTidyUp 1≠list[;1]+.≠0         ⍝ Because one failed!
      noOf2←≢targetList←↑('recursive' 1)F.Dir tempPathTarget,'\'
      noOf_1b←≢sourceList←↑('recursive' 1)F.Dir tempPathSource,'\'
-     →GoToTidyUp noOf_1a≠1+noOf2        ⍝ The one missing is "fqn"!
-     →GoToTidyUp noOf_1b≠3              ⍝ The file and its directories
+     →GoToTidyUp noOf_1a≠noOf2          ⍝ Copy worked!
+     →GoToTidyUp noOf_1b≠3              ⍝ But deleting one file and its parent directories failed!
      row←filename(#.APLTreeUtils.Lowercase{↑#.APLTreeUtils.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
      →GoToTidyUp 0=≢2⊃list[row;]
 
      R←∆OK
-
  :EndIf
-
 ∆TidyUp:
- :Trap 0 ⋄ ⎕FUNTIE tno ⋄ :EndTrap
+ :Trap 0 ⋄ ⎕NUNTIE tno ⋄ :EndTrap
  :Trap 0
      {}F.RmDir tempPathSource
      {}F.RmDir tempPathTarget

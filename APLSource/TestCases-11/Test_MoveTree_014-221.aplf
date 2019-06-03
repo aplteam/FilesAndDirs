@@ -1,0 +1,47 @@
+ R←Test_MoveTree_014(stopFlag batchFlag);⎕TRAP;rc;more;list;successFlag;success;tempPathSource;tempPathTarget;filename;tno;record;en;fqn;row;noOf2;sourceList;targetList;F;noOf_1a;noOf_1b;tno2
+⍝ Exercise `MoveTree`: move a tree of dirs and files with 1 file tied (can be copied but not deleted) and 1 file tied exclusively (no copy and therefore no delete)
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←∆Failed
+ :If 'Win'≢#.APLTreeUtils.GetOperatingSystem ⍬
+     R←∆WindowsOnly
+     :Return
+ :Else
+     F←##.FilesAndDirs
+     tempPathSource←F.GetTempPath,'source_',↑⎕SI
+     tempPathTarget←F.GetTempPath,'target_',↑⎕SI
+     (rc en more)←F.RmDir tempPathSource
+     Assert 0=rc
+     (rc en more)←F.RmDir tempPathTarget
+     Assert 0=rc
+     ∆CreateDirsAndFiles tempPathSource
+     filename←F.NormalizePath'Second/Sub_a/nativefile.txt'
+     fqn←F.NormalizePath tempPathSource,'/',filename   ⍝ fully qualified name
+     tno←fqn ⎕NCREATE 0
+     'Hello world'⎕NAPPEND tno
+     ⎕NUNTIE tno
+     tno←fqn ⎕NTIE 0 32    ⍝ Grant read access to subsequent users; thats allows a copy operation but prevents the file from bing deleted
+     filename←F.NormalizePath'Second/Sub_a/file_fourth.dcf'
+     fqn←F.NormalizePath tempPathSource,'/',filename   ⍝ fully qualified name
+     F.DeleteFile fqn
+     tno2←fqn ⎕FCREATE 0     ⍝ Implies exclusive tie: this one can be neither copied nor deleted
+     noOf_1a←≢sourceList←↑('recursive' 1)F.Dir tempPathSource,'\'
+     (success more list)←tempPathSource F.MoveTree tempPathTarget
+     →GoToTidyUp 0≠success
+     →GoToTidyUp 0≠≢more
+     noOf2←≢targetList←↑('recursive' 1)F.Dir tempPathTarget,'\'
+     noOf_1b←≢sourceList←↑('recursive' 1)F.Dir tempPathSource,'\'
+     →GoToTidyUp noOf_1a≠1+noOf2                    ⍝ One copy operation failed due to the exclusive tie
+     →GoToTidyUp noOf_1b≠4                          ⍝ Deleting  failed on two files and their parent directories!
+     →GoToTidyUp(noOf_1b+1)≠≢(~list[;2])⌿list[;0]   ⍝ We must add 1 for the top-most directory
+     row←filename(#.APLTreeUtils.Lowercase{↑#.APLTreeUtils.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
+     →GoToTidyUp 0=≢2⊃list[row;]
+
+     R←∆OK
+ :EndIf
+∆TidyUp:
+ :Trap 0 ⋄ ⎕NUNTIE tno ⋄ :EndTrap
+ :Trap 0 ⋄ ⎕NUNTIE tno2 ⋄ :EndTrap
+ :Trap 0
+     {}F.RmDir tempPathSource
+     {}F.RmDir tempPathTarget
+ :EndTrap

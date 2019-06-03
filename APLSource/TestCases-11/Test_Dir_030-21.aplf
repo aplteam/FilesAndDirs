@@ -5,8 +5,8 @@
 
  path←∆Home
  list1←0⊃('recursive' 1)('follow' 0)##.FilesAndDirs.Dir path,'\'
- →PassesIf 19=⍴list1     ⍝ Without following the symbolic link
+ →PassesIf 20=≢list1     ⍝ Without following the symbolic link
  list2←0⊃('recursive' 1)##.FilesAndDirs.Dir path,'\'
- →PassesIf 22=⍴list2
+ →PassesIf 23=≢list2
 
  R←∆OK

@@ -1,9 +1,15 @@
  {r}←source CreateLinkTo link;cmd
  r←⍬
- :If 'Win'≡#.APLTreeUtils.GetOperatingSystem ⍬
-     cmd←'"cmd.exe" /C MKLINK /D "',link,'" "',source,'"'
+ :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
+     :If ##.FilesAndDirs.IsDir source
+         cmd←'"cmd.exe" /C MKLINK /D "',link,'" "',source,'"'
+     :Else
+         cmd←'"cmd.exe" /C MKLINK "',link,'" "',source,'"'
+     :EndIf
      1 #.WinSys.ShellExecute cmd
  :Else
      cmd←'ln -s "',source,'" "',link,'"'
      ⎕SH cmd
  :EndIf
+ 'Link does not exist?!'Assert 1=CheckForExistence link
+ ⍝Done

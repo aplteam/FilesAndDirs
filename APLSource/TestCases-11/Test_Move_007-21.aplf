@@ -16,8 +16,9 @@
  :Else
 
      :If 0=⎕NEXISTS ∆GetComputerName,'.ini'
-         ⎕←'No INI file found for "',(∆GetComputerName),'"'
-         .
+         ⎕←'No INI file found for "',(∆GetComputerName),'", therefore ',(↑⎕SI),' not executed!'
+         R←∆Inactive
+         :Return
      :EndIf
      ini←⎕NEW #.IniFiles(,⊂##.FilesAndDirs.PWD,'/',∆GetComputerName,'.ini')
      parms←''
