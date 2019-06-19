@@ -51,26 +51,14 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'2.0.0.22' '2019-06-03'
+      r←(Last⍕⎕THIS)'2.0.1.23' '2019-06-19'
     ∇
 
     ∇ History
       :Access Public shared
-      ⍝ * 2.0.0
-      ⍝   * `CopyTree` failed to return a `0` in case not the creation of any directory failed but
-      ⍝     at least one of the actual copy operations. It should return a `1` only if **everything**
-      ⍝     works out fine, including the delete operations. (Potentially breaking change)
-      ⍝   * `MoveTree` did not provide useful information on the "delete" column. It now reports 1
-      ⍝     for successful delete operations and 0 otherwise.  (Potentially breaking change)
-      ⍝   * In case any of the copy operation failed `MoveTree` did not delete anything at all. It
-      ⍝     should delete all files that were copied succesfully, and all empty directories underneath
-      ⍝     the source directory as well.
-      ⍝   * In case of an attempted access on a file/directory the current user is lacking access to
-      ⍝     since version 17.0 a NONCE ERROR (10) is thrown rather than 19 or 22. This was not handled
-      ⍝     accordingly by `FilesAndDirs`.
-      ⍝   * The test cases assumed (wrongly) that `'Recurse' 2` is a valid option in 17.0. It's only
-      ⍝     available from 17.1 onwards.
-      ⍝   * Test cases improved.\\
+      ⍝ * 2.0.1
+      ⍝   * The methods `IsDir, `Dir` and `ListDirs` did not work as expected when something like
+      ⍝     `C:\` was passed as argument.
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
 
@@ -138,26 +126,29 @@
       path↓⍨←-(CurrentSep,'*')≡¯2↑path
       :If CurrentSep=¯1↑{⍵↓⍨-'*'=¯1↑⍵}path
           'Directory does not exist'⎕SIGNAL 6/⍨0=⎕NEXISTS path
-          :Trap 19 22
-              :If 0<1594
-              ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access
-              ⍝ See bug report <01594>
-              ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
-                  :If ('.',CurrentSep)≡2↑path
-                      'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+          :If 'Win'≢GetOperatingSystem ⍬
+          :OrIf ~{(':'=0⊃⍵)∧CurrentSep=1⊃⍵}¯2↑path
+              :Trap 19 22
+                  :If 0<1594
+                  ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access
+                  ⍝ See bug report <01594>
+                  ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
+                      :If ('.',CurrentSep)≡2↑path
+                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+                      :Else
+                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
+                      :EndIf
                   :Else
-                      'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
+                      'Not a directory'⎕SIGNAL 11/⍨1≠1 ⎕NINFO⊣path
                   :EndIf
               :Else
-                  'Not a directory'⎕SIGNAL 11/⍨1≠1 ⎕NINFO⊣path
-              :EndIf
-          :Else
-              :If 1 5 'Access is denied.'≢⎕DMX.OSError
-                  ⎕DMX.DM ⎕SIGNAL ⎕EN
-              :Else
-                  :Return
-              :EndIf
-          :EndTrap
+                  :If 1 5 'Access is denied.'≢⎕DMX.OSError
+                      ({1↓↑,/(⎕UCS 13),¨⍵}⎕DMX.DM)⎕SIGNAL ⎕EN
+                  :Else
+                      :Return
+                  :EndIf
+              :EndTrap
+          :EndIf
           :Trap 10 19 22
               r←(0 1,parms.type~0 1)⎕NINFO⍠('Follow'parms.follow)('Wildcard' 1)⊣path,'*'
           :Else
@@ -476,7 +467,7 @@
       ⍝ `path` is not empty.\\
       ⍝ Note that this method may fail for reasons as trivial as somebody looking into `path`
       ⍝ with a file explorer at the moment of execution.
-      ⍝ However, the method may still be partly successful because it might have deleted files 
+      ⍝ However, the method may still be partly successful because it might have deleted files
       ⍝ in `path` before it actually fails to remove the directory `path` itself.\\
       ⍝ The result is a three-element vector:
       ⍝ 1. `rc`: return code with 0 for "okay" (=deleted) and 1 otherwise.
@@ -487,7 +478,7 @@
       ⍝ * If `path` does not exist `(0 0 'Directory does not exist')` is returned.
       ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`.
       ⍝   If such characters are specified anyway then an error is signalled.\\
-      ⍝   This is true even under Linux and Mac OS despite the fact that these characters are \ 
+      ⍝   This is true even under Linux and Mac OS despite the fact that these characters are \
       rc←1 ⋄ en←0 ⋄ more←''
       mustBeEmpty←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'mustBeEmpty'
       'Invalid left argument.'⎕SIGNAL 11/⍨~mustBeEmpty∊0 1
@@ -704,29 +695,34 @@
     ∇ r←IsDir path
       :Access Public Shared
     ⍝ Returns 1 if `path` is a directory and 0 otherwise, even if `path` does exist as a file.\\
-    ⍝ Note: if `path` is a directory the current user has no "read" access to then it returns 0!
+    ⍝ Notes:
+    ⍝ * If `path` is a directory the current user has no "read" access to then it returns 0!
+    ⍝ * `C:\` is considered a directory, though strictly speaking it is not.
       :If 2=≡path
           r←IsDir¨path
       :Else
           path←NormalizePath path
           :Trap 11
               :If r←⎕NEXISTS path
-                  :Trap 22
-                      :If 0<1594
+                  :If 'Win'≢GetOperatingSystem ⍬
+                  :OrIf ~{(':'=0⊃⍵)∧CurrentSep=1⊃⍵}¯2↑path
+                      :Trap 22
+                          :If 0<1594
                       ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access
                       ⍝ See bug report <01594>
                       ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
-                          :If ('.',CurrentSep)≡2↑path
-                              r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+                              :If ('.',CurrentSep)≡2↑path
+                                  r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+                              :Else
+                                  r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
+                              :EndIf
                           :Else
-                              r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
+                              r←1=1 ⎕NINFO path
                           :EndIf
                       :Else
-                          r←1=1 ⎕NINFO path
-                      :EndIf
-                  :Else
-                      r←0
-                  :EndTrap
+                          r←0
+                      :EndTrap
+                  :EndIf
               :EndIf
           :Else
               r←0
@@ -891,7 +887,10 @@
       path←NormalizePath path
       (part1 part2)←SplitPath path
       'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1
-      'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir{(a b)←SplitPath ⍵ ⋄ ~∨/'*?'∊b:⍵ ⋄ a}path
+      :If 'Win'≢GetOperatingSystem ⍬
+      :OrIf {(':'=0⊃⍵)∧(1⊃⍵)∊'\/'}¯2↑{⍵↓⍨-(¯1↑⍵)∊'/\'}path
+          'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir{(a b)←SplitPath ⍵ ⋄ ~∨/'*?'∊b:⍵ ⋄ a}path
+      :EndIf
       path↓⍨←-CurrentSep=¯1↑path
       recursiveFlag←{0=⎕NC ⍵:0 ⋄ w←⍎⍵ ⋄ 0=1↑0⍴w:w ⋄ 'recursive'≡Lowercase w}'recursive'
       :If recursiveFlag

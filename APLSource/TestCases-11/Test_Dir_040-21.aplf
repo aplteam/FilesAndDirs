@@ -1,0 +1,8 @@
+ R←Test_Dir_040(stopFlag batchFlag);⎕TRAP
+⍝ Test the `Dir` method on `C:\`; was once a bug
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←∆Failed
+
+ →PassesIf 2<≢⊃2↓¨↑##.FilesAndDirs.Dir'C:\'
+
+ R←∆OK
