@@ -51,14 +51,14 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'2.0.1.23' '2019-06-19'
+      r←(Last⍕⎕THIS)'2.0.2.24' '2019-06-27'
     ∇
 
     ∇ History
       :Access Public shared
-      ⍝ * 2.0.1
-      ⍝   * The methods `IsDir, `Dir` and `ListDirs` did not work as expected when something like
-      ⍝     `C:\` was passed as argument.
+      ⍝ * 2.0.2
+      ⍝   * `GetTempFilename2` should not carry a trailing `.` when an empty string was provided as left
+      ⍝     argument but did.
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
 
@@ -854,7 +854,7 @@
       start←no←⍎{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
       ⍝ no←100⊥3↓⎕TS ⍝ Not reliable: can take a large number of tries before successful
       :Repeat
-          filename←path,(prefixString,'_',⍕no),'.',extension
+          filename←path,(prefixString,'_',⍕no),{0=≢⍵:⍵ ⋄ '.',⍵}extension
           :Trap 22
               fno←filename ⎕NCREATE 0
               ⎕NUNTIE fno
@@ -1008,7 +1008,11 @@
     ⍝ Note that if `y` is a symbolic link that exists then a 1 will be returned, no matter
     ⍝ whether the target the link is pointing to actually does exist or not.
       y←NormalizePath y
-      bool←⎕NEXISTS y
+      :If 1<|≡y
+          bool←⎕NEXISTS¨ y     
+      :Else
+          bool←⎕NEXISTS y
+      :EndIf
     ∇
 
     ∇ tno←{tno}CreateFile filename

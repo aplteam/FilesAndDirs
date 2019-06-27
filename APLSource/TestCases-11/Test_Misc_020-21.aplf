@@ -1,4 +1,4 @@
- R←Test_Misc_020(stopFlag batchFlag);⎕TRAP;extension;filename;path;tempFilename1;tempFilename2;tempFilename4;tempFilename3
+ R←Test_Misc_020(stopFlag batchFlag);⎕TRAP;extension;filename;path;tempFilename1;tempFilename2;tempFilename4;tempFilename3;tempFilename5
 ⍝ Test the `GetTempFilename2` method
 ⍝ See also the test for the `GetTempFilename` method.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
@@ -31,6 +31,13 @@
  →GoToTidyUp'.dyalog'≢extension
  →GoToTidyUp'FOO'≢↑'_'##.APLTreeUtils.Split filename
  →GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename4
+
+ tempFilename5←''##.FilesAndDirs.GetTempFilename2'FOO'
+ (path filename extension)←⎕NPARTS tempFilename5
+ →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →GoToTidyUp''≢extension
+ →GoToTidyUp'FOO'≢↑'_'##.APLTreeUtils.Split filename
+ →GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename5
 
  R←∆OK
 
