@@ -1,45 +1,35 @@
 :Class FilesAndDirs
 ⍝ ## Overview
 ⍝ This class offers methods useful for dealing with files and directories. The class aims
-⍝ to be platform-independent and works under Windows, Linux and Mac OS.
-⍝
+⍝ to be platform-independent and works under Windows, Linux and Mac OS.\\
 ⍝ With the release of 15.0 Dyalog introduced some new `⎕n`-system functions that are helpful
 ⍝ for making an application platform-independent when handling files and directories.\\
 ⍝ However, those new functions do not fully cover the common needs of applications. Examples
 ⍝ are "Move" and "Copy" as well as recursive listings of directories.
-⍝ `FilesAndDirs` attempts to fill this gap.
-⍝
+⍝ `FilesAndDirs` attempts to fill this gap.\\
 ⍝ Note that error codes as well as messages may differ between operating systems for the same
-⍝ kind of problem.
-⍝
+⍝ kind of problem.\\
 ⍝ ## Characters to avoid in file names and paths
 ⍝ Windows filenames cannot include any of these characters: `\/:*?"<>|`.
 ⍝ If you want platform-independent code now or in the future,
-⍝ avoid using them even in Mac OS or Linux file names.
-⍝
+⍝ avoid using them even in Mac OS or Linux file names.\\
 ⍝ ## Separators in filepaths
 ⍝ Dyalog tried to ease the pain by converting any `\` character under Windows to a `/`.
 ⍝ The notion of sticking always with the `/` as separator because it works anyway is
 ⍝ attractive but creates new poblems: when you call third-party software such as a .NET
 ⍝ assembly or an EXE such as 7zip.exe under Windows, then you **must** use `\` as a separator.
-⍝ Even setting the `Directory` property of a `FileBox` object fails with `/` as a separator!
-⍝
+⍝ Even setting the `Directory` property of a `FileBox` object fails with `/` as a separator!\\
 ⍝ For platform independence it is essential that filenames and directory names are _normalized_.
 ⍝ That means using the correct separator for the current operating system.
 ⍝ Otherwise you might create a directory or file with a backslash in its name, something that
-⍝ turns easily catastrophic under Linux or Mac OS.
-⍝
+⍝ turns easily catastrophic under Linux or Mac OS.\\
 ⍝ The methods of `FilesAndDirs` protect you from this problem by normalizing their filepaths.
 ⍝ Use cover functions such as `MkDir`, `NNAMES` and `NCREATE` in preference to the
-⍝ corresponding built-in system functions to overcome the problem.
-⍝
-⍝ The `CurrentSep` method returns the correct separator for the current operating system.
-⍝
-⍝ The `NormalizePath` method normalizes a filepath for the current operating system.
-⍝
+⍝ corresponding built-in system functions to overcome the problem.\\
+⍝ The `CurrentSep` method returns the correct separator for the current operating system.\\
+⍝ The `NormalizePath` method normalizes a filepath for the current operating system.\\
 ⍝ If you have a particular reason for using `/` under Windows or `\` under Linux
-⍝ or Mac OS then you can use the methods `EnforceBackslash` or `EnforceSlash`.
-⍝
+⍝ or Mac OS then you can use the methods `EnforceBackslash` or `EnforceSlash`.\\
 ⍝ ## Misc
 ⍝ This class supports Windows, Mac OS and Linux but neither the Raspberry Pi nor AIX.\\
 ⍝ Kai Jaeger ⋄ APL Team Ltd\\
@@ -51,14 +41,17 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'2.0.2.24' '2019-06-27'
+      r←(Last⍕⎕THIS)'2.1.0.25' '2019-06-28'
     ∇
 
     ∇ History
       :Access Public shared
-      ⍝ * 2.0.2
-      ⍝   * `GetTempFilename2` should not carry a trailing `.` when an empty string was provided as left
+      ⍝ * 2.1.0
+      ⍝   * Method `GetTempSubDir` added. 
+      ⍝   * Bug fix: `GetTempFilename2` should not carry a trailing `.` when an empty string was provided as left
       ⍝     argument but did.
+      ⍝             
+      ⍝
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
 
@@ -221,8 +214,7 @@
     ⍝ Copies `source` to `target`.\\
     ⍝ The left argument must be one of:
     ⍝ * A filename (simple string).
-    ⍝ * A vector of text strings, each representing a filename.
-    ⍝
+    ⍝ * A vector of text strings, each representing a filename.\\
     ⍝ In case it is a single filename then the right argument must be either a
     ⍝ directory (in which case the filename itself persists) or a filename.\\
     ⍝ In case the left argument is a vector of filenames the right argument
@@ -241,8 +233,7 @@
     ⍝ The method always returns a (shy) two-item vector as result:
     ⍝ 1. `rc` is either 0 for "okay" or an error code.
     ⍝ 2. `more` is an empty text vector in case `rc` is 0. It might hold
-    ⍝    additional information in case `rc` is not 0.
-    ⍝
+    ⍝    additional information in case `rc` is not 0.\\
     ⍝ Note that in case `source` is a nested vector of text vectors than both `rc` and
     ⍝ `more` are nested as well, and the length will match the length of `source`.
       rc←0 ⋄ more←''
@@ -291,13 +282,11 @@
     ⍝ * Wildcard characters are not supported.
     ⍝ * If you try to move a non-existing file you get a `¯1` as return code and
     ⍝   an appropriate message on `more`.
-    ⍝ * If there is a name clash in `target` the already existing file will be overwritten.
-    ⍝
+    ⍝ * If there is a name clash in `target` the already existing file will be overwritten.\\
     ⍝ The function returns a two-item vector. The first item is one of:
     ⍝ * `¯1` for internal errors (invalid argument(s) etc).
     ⍝ * `0` for success.
-    ⍝ * OS error codes otherwise
-    ⍝
+    ⍝ * OS error codes otherwise\\
     ⍝ The second item is an empty vector in case of success but may be a text vector with
     ⍝ additional information otherwise.\\
     ⍝ Both items will be vectors themselves in case `source` is a nested vector.\\
@@ -306,7 +295,6 @@
     ⍝ fails the copied file will be deleted. This is consistent with the behaviour of the
     ⍝ Windows `MoveFileEx` function. Note that `MoveTree` behaves **differently**.\\
     ⍝ Examples:
-    ⍝
     ⍝ ~~~
     ⍝ 'C:\readme.txt' FilesAndDirs.MoveTo 'D:\buffer\'
     ⍝ 'C:\readme.txt' FilesAndDirs.MoveTo 'D:\buffer\newname.txt'
@@ -353,8 +341,7 @@
     ⍝   * `[;0]` is a list of names of all files and directories that were copied/created.
     ⍝   * `[;1]` is the return code: either 0 for okay or an error number.
     ⍝   * `[;2]` is either an empty vector (in case of success) or additional information as
-    ⍝     a text vector.
-    ⍝
+    ⍝     a text vector.\\
     ⍝ ## Notes
     ⍝ * `CopyTree` does not rollback in case something goes wrong; instead it keeps trying.
     ⍝ * `target` might already contain stuff; in case of name conflicts any already
@@ -425,8 +412,7 @@
     ⍝ * `[;1]` is the copy-related return code: 0 if okay or and an error number otherwise.
     ⍝ * `[;2]` is a Boolean indicating success (1) or fail;ure (0) regarding the delete operation.
     ⍝ * `[;3]` is either an empty vector (in case of success) or possibly additional information as
-    ⍝   a text vector.
-    ⍝
+    ⍝   a text vector.\\
     ⍝ ## Misc
     ⍝ `MoveTree` does not rollback in case something goes wrong;
     ⍝ instead it keeps trying. That means that both the copy and the delete operation may have failed
@@ -460,7 +446,7 @@
 
     ∇ {(rc en more)}←{mustBeEmpty}RmDir path;list;bool
       :Access Public Shared
-      ⍝ Tries to removes `path`.\\
+      ⍝ Tries to remove `path`.\\
       ⍝ The method attempts to remove `path` and, by default, **all its contents**.\\
       ⍝ If for some reason you want to make sure that `path` is only removed when empty you can
       ⍝ specify a 1 as left argument. In that case the method will not do anything if the folder
@@ -472,8 +458,7 @@
       ⍝ The result is a three-element vector:
       ⍝ 1. `rc`: return code with 0 for "okay" (=deleted) and 1 otherwise.
       ⍝ 1. `en`: event number (`⎕EN`) in case of an error.
-      ⍝ 1. `more`: empty text vector in case `rc` is 0 and possible additional information otherwise.
-      ⍝
+      ⍝ 1. `more`: empty text vector in case `rc` is 0 and possible additional information otherwise.\\
       ⍝ Notes:
       ⍝ * If `path` does not exist `(0 0 'Directory does not exist')` is returned.
       ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`.
@@ -837,9 +822,9 @@
     ∇
 
     ∇ filename←{extension}GetTempFilename2 prefixString;rc;start;no;fno;path
-    ⍝ Returns the name of an unused temporary filename. `prefixString`, when empty, defaults
-    ⍝ to `⎕AN`. The name of the file will match `prefixString` followed by an `_` and a
-    ⍝ randomly generated number.\\
+    ⍝ Returns the name of a previously unused temporary filename. The file will be created.\\
+    ⍝ `prefixString`, when empty, defaults to `⎕AN`. The name of
+    ⍝ the file will match `prefixString` followed by an `_` and a randomly generated number.\\
     ⍝ `extension`, if defined, defines the extension of the temp file without the dot.
     ⍝ This defaults to `tmp`.\\
     ⍝ This function does **not** use the Windows built-in function since
@@ -865,6 +850,33 @@
       :Until (fno≠0)∨no>start+1000×10  ⍝ max 1000 tries
       'Unable to create temporay file'⎕SIGNAL 11/⍨fno=0
       filename←NormalizePath filename
+    ∇
+
+    ∇ dirname←GetTempSubDir prefixString;path;start;no;flag;success
+    ⍝ Returns name of previously unused sub directory in the `TEMP` directory.\\
+    ⍝ The directory will be created.
+    ⍝ `prefixString`, when empty, defaults to `⎕AN`. The name of the directory will
+    ⍝ match `prefixString` followed by an `_` and a randomly generated number.\\
+      :Access Public Shared
+      :If 0=≢prefixString
+          prefixString←⎕AN
+      :EndIf
+      path←GetTempPath
+      start←no←⍎{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
+      ⍝ no←100⊥3↓⎕TS ⍝ Not reliable: can take a large number of tries before successful
+      success←flag←0
+      :Repeat
+          dirname←path,(prefixString,'_',⍕no)
+          :Trap 22
+              ⎕MKDIR dirname
+              flag←success←1
+          :Else
+              flag←1
+          :EndTrap
+          no+←10
+      :Until flag∨no>start+1000×10  ⍝ max 1000 tries
+      dirname←NormalizePath dirname
+      ('Unable to create "',dirname,'"')⎕SIGNAL 11/⍨~success
     ∇
 
     ∇ r←{x}ListDirs path;buff;recursiveFlag;part1;part2;recursive;depth
@@ -956,8 +968,7 @@
       ⍝ `success` will be 0 for any non-existing file.\\
       ⍝ `filenames` can be one of:
       ⍝ * Text vector representing a single filename.
-      ⍝ * Vector of text vectors each representing a single file.
-      ⍝
+      ⍝ * Vector of text vectors each representing a single file.\\
       ⍝ In case `filenames` is empty a 0 is returned.
       :If 0∊⍴filenames
           success←0
@@ -976,8 +987,7 @@
       ⍝ * This method normalizes `path`.
       ⍝ * Errors 19 & 22 are trapped.
       ⍝ * The function overcomes a strange problem: on some systems `⎕MKDIR` refuses to create
-      ⍝   the directory repeatedly unless the code is traced.
-      ⍝
+      ⍝   the directory repeatedly unless the code is traced.\\
       ⍝ `success` is 1 in case the directory was created successfully or already existed, otherwise 0.
       path←NormalizePath path
       success←0
@@ -1009,7 +1019,7 @@
     ⍝ whether the target the link is pointing to actually does exist or not.
       y←NormalizePath y
       :If 1<|≡y
-          bool←⎕NEXISTS¨ y     
+          bool←⎕NEXISTS¨y
       :Else
           bool←⎕NEXISTS y
       :EndIf
