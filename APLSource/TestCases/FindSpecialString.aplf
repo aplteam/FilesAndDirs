@@ -1,0 +1,8 @@
+ r←{startIn}FindSpecialString what
+⍝ Use this to search for stuff like "CHECK" or "TODO" enclosed between `⍝` (⍵).
+⍝ Without left argument the search starts in #.
+ startIn←{0<⎕NC ⍵:⍎⍵ ⋄ '#'}'startIn'
+ r←⍉1↓[1+⎕IO]⎕SE.UCMD'locate "',what,'" -return=count -objects=',⍕startIn
+ :If 0<≢r←(0<r[;⎕IO+1])⌿r                                    ⍝ Drop those with no hits
+     r[;⎕IO]←{2>'#'+.=⍵:⍵ ⋄ {⎕IO←0 ⋄ ⌽⍵↑⍨1+⍵⍳'#'}⌽⍵}¨r[;⎕IO]
+ :EndIf
