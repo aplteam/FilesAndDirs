@@ -41,11 +41,13 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'2.1.1.34' '2019-10-15'
+      r←(Last⍕⎕THIS)'2.1.2.35' '2019-10-15'
     ∇
 
     ∇ History
       :Access Public shared
+      ⍝ * 2.1.2
+      ⍝   * `MoveTree` had a problem when none of `/\` was traling the target.
       ⍝ * 2.1.1
       ⍝   * Tally (`≢`) introduced in the script and the test cases.
       ⍝   * Bug fix in `MoveTree`: in case the contents of a folder `foo\` was copied into a sub-folder of `foo\`
@@ -432,6 +434,7 @@
       'Left argument is not a directory'⎕SIGNAL 11/⍨0=IsDir source
       'Right argument is a file'⎕SIGNAL 11/⍨IsFile target
       (source target)←NormalizePath source target
+      (source target)←{⍵↓⍨-'/\'∊⍨¯1↑⍵}¨source target
       (success more list)←source CopyTree target
       list←list[;0 1 1 2]
       list[;0]←source∘,¨(≢target)↓¨list[;0]
