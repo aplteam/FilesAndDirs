@@ -41,17 +41,21 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'2.1.1.31' '2019-10-15'
+      r←(Last⍕⎕THIS)'2.1.1.33' '2019-10-15'
     ∇
 
     ∇ History
       :Access Public shared
       ⍝ * 2.1.1
-      ⍝   * Bug fix in `MoveTree`: in case the contents of a folder `foo\` was copied into a sub-folder of 
-      ⍝     `foo\` the folder `foo\` cannot be deleted of course. However, that must not count as a failure.
-      ⍝   * The project now has a "project.dws" that contains the full project.
       ⍝   * Tally (`≢`) introduced in the script and the test cases.
-      ⍝\\
+      ⍝   * Bug fix in `MoveTree`: in case the contents of a folder `foo\` was copied into a sub-folder of `foo\`
+      ⍝     the folder `foo\` cannot be deleted of course. However, that must not count as a failure.
+      ⍝ * 2.1.0
+      ⍝   * Method `GetTempSubDir` added.
+      ⍝   * Bug fix: `GetTempFilename2` should not carry a trailing `.` when an empty string was provided as left
+      ⍝     argument but did.
+      ⍝
+      ⍝
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
 
