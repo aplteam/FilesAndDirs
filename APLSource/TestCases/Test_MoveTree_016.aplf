@@ -1,8 +1,8 @@
  R←Test_MoveTree_016(stopFlag batchFlag);⎕TRAP;F;tempPathSource;tempPathTarget;rc;en;more;success;list;dirFlags
 ⍝ Exercise `MoveTree` with `source` having a trailing '/' but `target` does not. Was once a bug.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
- :If 'Win'≢#.APLTreeUtils.GetOperatingSystem ⍬
+ R←T._Failed
+ :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
      R←∆WindowsOnly
      :Return
  :Else
@@ -15,13 +15,13 @@
      Assert 0=rc
      1 ∆CreateDirsAndFiles tempPathSource
      (success more list)←tempPathSource F.MoveTree tempPathTarget
-     →GoToTidyUp 1≠success
-     →GoToTidyUp 0≠≢more
+     →T.GoToTidyUp 1≠success
+     →T.GoToTidyUp 0≠≢more
      dirFlags←F.IsDir list[;0]
-     →GoToTidyUp 2≠+/dirFlags
-     →GoToTidyUp 1 1≢2↑¯1⌽dirFlags
+     →T.GoToTidyUp 2≠+/dirFlags
+     →T.GoToTidyUp 1 1≢2↑¯1⌽dirFlags
 
-     R←∆OK
+     R←T._OK
  :EndIf
 ∆TidyUp:
  :Trap 0 ⋄ {}F.RmDir tempPathSource ⋄ :EndTrap

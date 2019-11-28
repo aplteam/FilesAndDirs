@@ -1,13 +1,13 @@
  R←Test_MoveTree_004(stopFlag batchFlag);⎕TRAP
 ⍝ Exercise `MoveTree` with an invalid right argument
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  :Trap 11
      ∆Home ##.FilesAndDirs.MoveTree 123
-     →FailsIf 1
+     →T.FailsIf 1
  :Else
-     →PassesIf'Invalid right argument'≡↑⎕DM
+     →T.PassesIf'Invalid right argument'≡↑⎕DM
  :EndTrap
 
- R←∆OK
+ R←T._OK

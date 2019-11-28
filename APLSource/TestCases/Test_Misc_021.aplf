@@ -2,23 +2,23 @@
 ⍝ Test the `GetTempSubFolder` method
 ⍝ See also the test for the `GetTempFilename` method.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  tempSubDir←##.FilesAndDirs.GetTempSubDir''
  (path folder)←2↑⎕NPARTS tempSubDir
- →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split folder
- →GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
+ →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →T.GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split folder
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 
  tempSubDir←##.FilesAndDirs.GetTempSubDir'Foo'
  (path folder)←2↑⎕NPARTS tempSubDir
- →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →GoToTidyUp'Foo'≢↑'_'##.APLTreeUtils.Split folder
- →GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
+ →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →T.GoToTidyUp'Foo'≢↑'_'##.APLTreeUtils.Split folder
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 
- R←∆OK
+ R←T._OK
 
 ∆TidyUp:
  :Trap 0 ⋄ {}##.FilesAndDirs.RmDir tempSubDir ⋄ :EndTrap

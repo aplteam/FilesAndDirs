@@ -1,11 +1,11 @@
  R←Test_Misc_018(stopFlag batchFlag);⎕TRAP;path
 ⍝ Test `EnforceSlash`
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  path←'C:\path1\path2/path3/file.txt'
- →PassesIf({w←⍵ ⋄ (('\'=w)/w)←'/' ⋄ w}path)≡##.FilesAndDirs.EnforceSlash path
+ →T.PassesIf({w←⍵ ⋄ (('\'=w)/w)←'/' ⋄ w}path)≡##.FilesAndDirs.EnforceSlash path
  path←'\\server\path1\path2/path3/file.txt'
- →PassesIf({w←⍵ ⋄ (('\'=w)/w)←'/' ⋄ w}path)≡##.FilesAndDirs.EnforceSlash path
+ →T.PassesIf({w←⍵ ⋄ (('\'=w)/w)←'/' ⋄ w}path)≡##.FilesAndDirs.EnforceSlash path
 
- R←∆OK
+ R←T._OK

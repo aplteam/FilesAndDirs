@@ -1,7 +1,7 @@
  R←Test_Misc_019(stopFlag batchFlag);⎕TRAP;tempPath;rc;list;opened
 ⍝ Test `NNAMES` and `NCREATE`
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  tempPath←##.FilesAndDirs.GetTempPath,'\Test_NNAMES\'
  :If ##.FilesAndDirs.Exists tempPath
@@ -17,9 +17,9 @@
  {}(tempPath,'Foo.txt')##.FilesAndDirs.NCREATE 0  ⍝ !
 
  list←↑##.FilesAndDirs.Dir tempPath
- →GoToTidyUp~list{(∧/⍵∊⍺)∧∧/⍺∊⍵}##.FilesAndDirs.NNAMES
+ →T.GoToTidyUp~list{(∧/⍵∊⍺)∧∧/⍺∊⍵}##.FilesAndDirs.NNAMES
 
- R←∆OK
+ R←T._OK
 
 ∆TidyUp:
  ⎕NUNTIE ⎕NNUMS~opened

@@ -1,7 +1,6 @@
  Initial
  ⎕IO←0 ⋄ ⎕ML←3
  ##.FilesAndDirs.PolishCurrentDir
- #.Tester.EstablishHelpersIn ⍬
  Cleanup
  ∆CreateDirsAndFiles ∆Home
 ⍝Done

@@ -1,26 +1,26 @@
  R←Test_Misc_015(stopFlag batchFlag);⎕TRAP
 ⍝ Test `GetNewLineCharsFor'
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
- →PassesIf(⎕UCS 13 10)≡##.FilesAndDirs.GetNewLineCharsFor'Win'
- →PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Lin'
- →PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Mac'
+ →T.PassesIf(⎕UCS 13 10)≡##.FilesAndDirs.GetNewLineCharsFor'Win'
+ →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Lin'
+ →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Mac'
 
- :Select #.APLTreeUtils.GetOperatingSystem ⍬
+ :Select ##.APLTreeUtils.GetOperatingSystem ⍬
  :Case 'Win'
-     →PassesIf(⎕UCS 13 10)≡##.FilesAndDirs.GetNewLineCharsFor''
+     →T.PassesIf(⎕UCS 13 10)≡##.FilesAndDirs.GetNewLineCharsFor''
  :Case 'Lin'
-     →PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor''
+     →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor''
  :Case 'Mac'
-     →PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor''
+     →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor''
  :EndSelect
 
  :Trap 11
      {}##.FilesAndDirs.GetNewLineCharsFor'Foo'
-     →FailsIf 1
+     →T.FailsIf 1
  :Else
-     →PassesIf'⍵ is not a supported Operating System'≡↑⎕DM
+     →T.PassesIf'⍵ is not a supported Operating System'≡↑⎕DM
  :EndTrap
 
- R←∆OK
+ R←T._OK

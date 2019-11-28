@@ -3,9 +3,9 @@
 ⍝ This test makes sense under Windows only
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
 
- R←∆Failed
+ R←T._Failed
 
- :If 'Win'≡#.APLTreeUtils.GetOperatingSystem ⍬  ⍝ This makes sense under Windows only
+ :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬  ⍝ This makes sense under Windows only
 
      filename←(↑⎕SI),'.txt'
      parms←('filename'filename)('RIDE_INIT' '')
@@ -16,16 +16,16 @@
      :Else
          ⎕DL 5
          filename←↑,/1 ⎕NPARTS'Tests/',filename
-         →GoToTidyUp 0=⎕NEXISTS filename
-         myTempDir←##.FilesAndDirs.GetTempPath,(⍕#.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
+         →T.GoToTidyUp 0=⎕NEXISTS filename
+         myTempDir←##.FilesAndDirs.GetTempPath,(⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
          ##.FilesAndDirs.MkDir myTempDir
          (rc more)←filename ##.FilesAndDirs.CopyTo myTempDir
-         →GoToTidyUp~rc∊1 32
-         →GoToTidyUp'The process cannot access the file because it is being used by another process.'≢more
+         →T.GoToTidyUp~rc∊1 32
+         →T.GoToTidyUp'The process cannot access the file because it is being used by another process.'≢more
          ⎕DL 8   ⍝ The started task waits for 10 seconds, so we must wait a bit longer
          ##.FilesAndDirs.DeleteFile filename
 
-         R←∆OK
+         R←T._OK
      :EndIf
 
 ∆TidyUp:

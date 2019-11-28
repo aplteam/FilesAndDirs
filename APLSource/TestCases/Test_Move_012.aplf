@@ -1,0 +1,17 @@
+ R←Test_Move_012(stopFlag batchFlag);⎕TRAP;myTempDir;rc;more
+⍝ Exercise `MoveTo`: move a directory to a place that is already taken
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ myTempDir←##.FilesAndDirs.GetTempPath,(↑⎕SI),'/'
+ ##.FilesAndDirs.MkDir myTempDir
+ ##.FilesAndDirs.MkDir myTempDir,'From\'
+ ##.FilesAndDirs.MkDir myTempDir,'To\'
+ (rc more)←(myTempDir,'From\')##.FilesAndDirs.MoveTo myTempDir,'To\'
+ →T.GoToTidyUp ¯1≠rc
+ →T.GoToTidyUp'Target already exists'≢more
+
+ R←T._OK
+
+∆TidyUp:
+ {}##.FilesAndDirs.RmDir myTempDir

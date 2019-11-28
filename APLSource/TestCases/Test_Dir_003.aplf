@@ -1,7 +1,7 @@
  R←Test_Dir_003(stopFlag batchFlag);⎕TRAP;list
 ⍝ Test the `Dir` method with invalid key/value pair as parameter
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  :Trap 0
      list←('this' 1)##.FilesAndDirs.Dir ∆Home

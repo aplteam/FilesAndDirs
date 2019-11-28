@@ -2,10 +2,10 @@
 ⍝ Test the `GetTempFilename` method
 ⍝ See also the test for the `GetTempFilename2` method.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  tempFilename←##.FilesAndDirs.GetTempFilename''
- →PassesIf 1=##.FilesAndDirs.IsFile tempFilename
+ →T.PassesIf 1=##.FilesAndDirs.IsFile tempFilename
  ##.FilesAndDirs.DeleteFile tempFilename
 
- R←∆OK
+ R←T._OK

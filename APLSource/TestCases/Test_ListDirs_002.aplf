@@ -1,7 +1,7 @@
  R←Test_ListDirs_002(stopFlag batchFlag);⎕TRAP;list;path;list2
 ⍝ Test the `ListDirs` method on a folder that has read restrictions somewhere down the line.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
      R←∆WindowsOnly
@@ -22,8 +22,8 @@
          list2←##.FilesAndDirs.NormalizePath list2
          list2←list2[⍋list2]
 
-         →PassesIf list≡list2
+         →T.PassesIf list≡list2
      :EndIf
 
-     R←∆OK
+     R←T._OK
  :EndIf

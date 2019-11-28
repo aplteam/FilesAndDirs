@@ -5,33 +5,33 @@
 ⍝ [Config]:FolderOnSecondDrive points to a different drive,
 ⍝ otherwise the test is pointless.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
- :If 'Win'≢#.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
      R←∆WindowsOnly
  :ElseIf 0=⎕NEXISTS ∆GetComputerName,'.ini'
      ⎕←'No INI file found for "',(∆GetComputerName),'"'
-     R←∆OK
+     R←T._OK
  :Else
-     ini←⎕NEW #.IniFiles(,⊂∆GetComputerName,'.ini')
-     sourceDir←##.FilesAndDirs.GetTempPath,('/',⍕#.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
+     ini←⎕NEW ##.IniFiles(,⊂∆GetComputerName,'.ini')
+     sourceDir←##.FilesAndDirs.GetTempPath,('/',⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir sourceDir
      filename←sourceDir,↑⎕SI
-     #.APLTreeUtils.WriteUtf8File filename(↑⎕SI)
-     targetDir←##.FilesAndDirs.NormalizePath(↑ini.Get'Config:FolderOnSecondDrive'),('/',⍕#.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
+     ##.APLTreeUtils.WriteUtf8File filename(↑⎕SI)
+     targetDir←##.FilesAndDirs.NormalizePath(↑ini.Get'Config:FolderOnSecondDrive'),('/',⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir targetDir
      (rc more)←filename ##.FilesAndDirs.MoveTo targetDir
-     →GoToTidyUp 0≠rc
-     →GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,↑⎕SI
-     →GoToTidyUp 0≠##.FilesAndDirs.IsFile filename
-     #.APLTreeUtils.WriteUtf8File filename'Overwritten'
+     →T.GoToTidyUp 0≠rc
+     →T.GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,↑⎕SI
+     →T.GoToTidyUp 0≠##.FilesAndDirs.IsFile filename
+     ##.APLTreeUtils.WriteUtf8File filename'Overwritten'
      (rc more)←filename ##.FilesAndDirs.MoveTo targetDir
-     →GoToTidyUp 0≠rc
-     →GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,↑⎕SI
-     →GoToTidyUp 0≠##.FilesAndDirs.IsFile filename
-     →GoToTidyUp'Overwritten'≢#.APLTreeUtils.ReadUtf8File targetDir,↑⎕SI
+     →T.GoToTidyUp 0≠rc
+     →T.GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,↑⎕SI
+     →T.GoToTidyUp 0≠##.FilesAndDirs.IsFile filename
+     →T.GoToTidyUp'Overwritten'≢##.APLTreeUtils.ReadUtf8File targetDir,↑⎕SI
 
-     R←∆OK
+     R←T._OK
 
 ∆TidyUp:
      {}##.FilesAndDirs.RmDir targetDir

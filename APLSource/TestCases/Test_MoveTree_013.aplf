@@ -1,8 +1,8 @@
  R←Test_MoveTree_013(stopFlag batchFlag);⎕TRAP;rc;more;list;successFlag;success;tempPathSource;tempPathTarget;filename;tno;record;en;fqn;row;noOf2;sourceList;targetList;F;noOf_1a;noOf_1b
 ⍝ Exercise `MoveTree`: move a tree of dirs and files with one file tied so that is can be copied but not deleted.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
- :If 'Win'≢#.APLTreeUtils.GetOperatingSystem ⍬
+ R←T._Failed
+ :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
      R←∆WindowsOnly
      :Return
  :Else
@@ -22,16 +22,16 @@
      tno←fqn ⎕NTIE 0 32    ⍝ Grant read access to subsequent users; thats allows a copy operation but prevents the file from bing deleted
      noOf_1a←≢sourceList←↑('recursive' 1)F.Dir tempPathSource,'\'
      (success more list)←tempPathSource F.MoveTree tempPathTarget
-     →GoToTidyUp 0≠success
-     →GoToTidyUp 0≠≢more
+     →T.GoToTidyUp 0≠success
+     →T.GoToTidyUp 0≠≢more
      noOf2←≢targetList←↑('recursive' 1)F.Dir tempPathTarget,'\'
      noOf_1b←≢sourceList←↑('recursive' 1)F.Dir tempPathSource,'\'
-     →GoToTidyUp noOf_1a≠noOf2          ⍝ Copy worked!
-     →GoToTidyUp noOf_1b≠3              ⍝ But deleting one file and its parent directories failed!
-     row←filename(#.APLTreeUtils.Lowercase{↑#.APLTreeUtils.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
-     →GoToTidyUp 0=≢2⊃list[row;]
+     →T.GoToTidyUp noOf_1a≠noOf2          ⍝ Copy worked!
+     →T.GoToTidyUp noOf_1b≠3              ⍝ But deleting one file and its parent directories failed!
+     row←filename(##.APLTreeUtils.Lowercase{↑##.APLTreeUtils.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
+     →T.GoToTidyUp 0=≢2⊃list[row;]
 
-     R←∆OK
+     R←T._OK
  :EndIf
 ∆TidyUp:
  :Trap 0 ⋄ ⎕NUNTIE tno ⋄ :EndTrap

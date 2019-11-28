@@ -2,7 +2,7 @@
 ⍝ Test the `DeleteFile` method on a symbolic link.
 ⍝ The link shall be deleted but the target must survive.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  source←##.FilesAndDirs.GetTempPath,(↑⎕SI),'_source'
  link←##.FilesAndDirs.GetTempPath,(↑⎕SI),'_link'
@@ -12,11 +12,11 @@
  source CreateLinkTo link
 
  success←##.FilesAndDirs.DeleteFile link
- →GoToTidyUp 1≠success
- →GoToTidyUp 0≠##.FilesAndDirs.Exists link
- →GoToTidyUp 1≠##.FilesAndDirs.Exists source
+ →T.GoToTidyUp 1≠success
+ →T.GoToTidyUp 0≠##.FilesAndDirs.Exists link
+ →T.GoToTidyUp 1≠##.FilesAndDirs.Exists source
 
- R←∆OK
+ R←T._OK
 
 ∆TidyUp:
  {}##.FilesAndDirs.RmDir source

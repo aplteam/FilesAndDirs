@@ -23,11 +23,11 @@
 ⍝ parms,←⊂'-x' 1
 ⍝ ~~~
 
- parms←{0∊⍴⍵:⍵ ⋄ #.APLTreeUtils.Nest ⍵}{0<⎕NC ⍵:⍎⍵ ⋄ ''}'parms'
+ parms←{0∊⍴⍵:⍵ ⋄ ##.APLTreeUtils.Nest ⍵}{0<⎕NC ⍵:⍎⍵ ⋄ ''}'parms'
  parms,←('session_file' 'DoesNotExist')('maxws' '32MB')('-rt' 1)('-x' 0)
  options←'-'=↑¨↑¨parms
  ⎕SIGNAL/{0∊⍴⍵:''⍬ ⋄ ∧/(↑¨1↓¨⍵)∊0 1:''⍬ ⋄ 'Invalid value for option' 11}options/parms
- :Select #.APLTreeUtils.GetOperatingSystem ⍬
+ :Select ##.APLTreeUtils.GetOperatingSystem ⍬
  :Case 'Win'
      wsname←'expand'##.FilesAndDirs.NormalizePath wsname
      cmd←⊂'"',(↑2 ⎕NQ'#' 'GetCommandLineArgs'),'"'
@@ -38,11 +38,11 @@
      parms2←options/parms
      parms2←({(⍵⍳⍵)=⍳⍴⍵}↑¨parms2)/parms2
      cmd,←{' ',(1⊃⍵)/0⊃⍵}¨parms2
-     (successFlag more)←2↑#.OS.WinExecute∊cmd
+     (successFlag more)←2↑##.OS.WinExecute∊cmd
  :CaseList 'Lin' 'Mac'
      wsname←↑,/1 ⎕NPARTS wsname
      wsname←' '⎕R'\\ '⊣wsname   ⍝ Encode blanks
-     wsname,←('.dws'≢#.APLTreeUtils.Lowercase ¯4↑wsname)/'.dws'
+     wsname,←('.dws'≢##.APLTreeUtils.Lowercase ¯4↑wsname)/'.dws'
      cmd←2 ⎕NQ'.' 'GetEnvironment' 'DYALOG'
      cmd,←'/dyalog ',wsname
      parms2←options/parms

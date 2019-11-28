@@ -2,44 +2,44 @@
 ⍝ Test the `GetTempFilename2` method
 ⍝ See also the test for the `GetTempFilename` method.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  tempFilename1←##.FilesAndDirs.GetTempFilename2''
  (path filename extension)←⎕NPARTS tempFilename1
- →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →GoToTidyUp'.tmp'≢extension
- →GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split filename
- →GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename1
+ →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →T.GoToTidyUp'.tmp'≢extension
+ →T.GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split filename
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename1
 
  tempFilename2←'html'##.FilesAndDirs.GetTempFilename2''
  (path filename extension)←⎕NPARTS tempFilename2
- →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →GoToTidyUp'.html'≢extension
- →GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split filename
- →GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename2
+ →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →T.GoToTidyUp'.html'≢extension
+ →T.GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split filename
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename2
 
  tempFilename3←'.html'##.FilesAndDirs.GetTempFilename2''
  (path filename extension)←⎕NPARTS tempFilename3
- →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →GoToTidyUp'.html'≢extension
- →GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split filename
- →GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename3
+ →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →T.GoToTidyUp'.html'≢extension
+ →T.GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split filename
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename3
 
  tempFilename4←'dyalog'##.FilesAndDirs.GetTempFilename2'FOO'
  (path filename extension)←⎕NPARTS tempFilename4
- →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →GoToTidyUp'.dyalog'≢extension
- →GoToTidyUp'FOO'≢↑'_'##.APLTreeUtils.Split filename
- →GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename4
+ →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →T.GoToTidyUp'.dyalog'≢extension
+ →T.GoToTidyUp'FOO'≢↑'_'##.APLTreeUtils.Split filename
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename4
 
  tempFilename5←''##.FilesAndDirs.GetTempFilename2'FOO'
  (path filename extension)←⎕NPARTS tempFilename5
- →GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →GoToTidyUp''≢extension
- →GoToTidyUp'FOO'≢↑'_'##.APLTreeUtils.Split filename
- →GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename5
+ →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
+ →T.GoToTidyUp''≢extension
+ →T.GoToTidyUp'FOO'≢↑'_'##.APLTreeUtils.Split filename
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsFile tempFilename5
 
- R←∆OK
+ R←T._OK
 
 ∆TidyUp:
  {0::r←⍬ ⋄ ##.FilesAndDirs.DeleteFile ⍵}¨tempFilename1 tempFilename2 tempFilename3 tempFilename4

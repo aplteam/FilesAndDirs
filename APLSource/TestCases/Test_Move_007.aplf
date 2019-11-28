@@ -9,9 +9,9 @@
 ⍝ otherwise the test is pointless.\\
 ⍝ Requires an INI file and appropriate settings.\\
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
- :If 'Win'≢#.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
      R←∆WindowsOnly
  :Else
 
@@ -20,7 +20,7 @@
          R←∆Inactive
          :Return
      :EndIf
-     ini←⎕NEW #.IniFiles(,⊂##.FilesAndDirs.PWD,'/',∆GetComputerName,'.ini')
+     ini←⎕NEW ##.IniFiles(,⊂##.FilesAndDirs.PWD,'/',∆GetComputerName,'.ini')
      parms←''
     ⍝parms,←⊂'-x' 1
      parms,←⊂'filename'((↑⎕SI),'.txt"')
@@ -29,15 +29,15 @@
      Assert successFlag
      ⎕DL 3
      filename←↑,/1 ⎕NPARTS'Tests/',(↑⎕SI),'.txt'
-     targetDir←##.FilesAndDirs.NormalizePath(↑ini.Get'Config:FolderOnSecondDrive'),('/',⍕#.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
+     targetDir←##.FilesAndDirs.NormalizePath(↑ini.Get'Config:FolderOnSecondDrive'),('/',⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir targetDir
      (rc more)←filename ##.FilesAndDirs.MoveTo targetDir
-     →GoToTidyUp 32≠rc
-     →GoToTidyUp'The process cannot access the file because it is being used by another process.'≢more
-     →GoToTidyUp 0≠##.FilesAndDirs.IsFile targetDir,↑,/1↓⎕NPARTS filename
-     →GoToTidyUp 1≠##.FilesAndDirs.IsFile filename
+     →T.GoToTidyUp 32≠rc
+     →T.GoToTidyUp'The process cannot access the file because it is being used by another process.'≢more
+     →T.GoToTidyUp 0≠##.FilesAndDirs.IsFile targetDir,↑,/1↓⎕NPARTS filename
+     →T.GoToTidyUp 1≠##.FilesAndDirs.IsFile filename
 
-     R←∆OK
+     R←T._OK
 
 ∆TidyUp:
      {}##.FilesAndDirs.RmDir targetDir

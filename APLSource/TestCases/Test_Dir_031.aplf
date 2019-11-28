@@ -1,9 +1,9 @@
  R←Test_Dir_031(stopFlag batchFlag);⎕TRAP;list
 ⍝ Test the `Dir` method recursively with a single wildcard at the end.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  list←0⊃('recursive' 1)##.FilesAndDirs.Dir ∆Home,'/*'
- →PassesIf 23=≢list
+ →T.PassesIf 23=≢list
 
- R←∆OK
+ R←T._OK

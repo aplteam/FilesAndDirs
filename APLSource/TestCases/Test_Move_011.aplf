@@ -1,0 +1,20 @@
+ R←Test_Move_011(stopFlag batchFlag);⎕TRAP;myTempDir;filenames;rc;more
+⍝ Exercise `MoveTo`: move a directory elsewhere
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ myTempDir←##.FilesAndDirs.GetTempPath,(↑⎕SI),'/'
+ ##.FilesAndDirs.MkDir myTempDir
+ ##.FilesAndDirs.MkDir myTempDir,'From\'
+ filenames←{'foo_',(⍕⍵),'.txt'}¨1+⍳3
+ ##.APLTreeUtils.WriteUtf8File{⍺⍺ ⍵ ⍵}¨(myTempDir,'From/')∘,¨filenames
+ (rc more)←(myTempDir,'From\')##.FilesAndDirs.MoveTo myTempDir,'To\'
+ →T.GoToTidyUp 0≠rc
+ →T.GoToTidyUp 0≠##.FilesAndDirs.IsDir myTempDir,'From\'
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir myTempDir,'To\'
+ →T.GoToTidyUp 3≠≢##.FilesAndDirs.ListFiles myTempDir,'To\'
+
+ R←T._OK
+
+∆TidyUp:
+ {}##.FilesAndDirs.RmDir myTempDir

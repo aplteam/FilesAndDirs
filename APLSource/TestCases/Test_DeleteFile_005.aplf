@@ -1,11 +1,11 @@
  R←Test_DeleteFile_005(stopFlag batchFlag);⎕TRAP;target
 ⍝ Test the `DeleteFile` on a filenames that starts with a "-"
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  target←'-TestFile'
- #.APLTreeUtils.WriteUtf8File target'test file'
- →PassesIf 1≡##.FilesAndDirs.DeleteFile target
- →PassesIf 0=##.FilesAndDirs.IsFile target
+ ##.APLTreeUtils.WriteUtf8File target'test file'
+ →T.PassesIf 1≡##.FilesAndDirs.DeleteFile target
+ →T.PassesIf 0=##.FilesAndDirs.IsFile target
 
- R←∆OK
+ R←T._OK

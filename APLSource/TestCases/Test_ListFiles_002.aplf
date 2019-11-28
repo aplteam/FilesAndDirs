@@ -1,14 +1,14 @@
  R←Test_ListFiles_002(stopFlag batchFlag);⎕TRAP;list;path
 ⍝ Test the `ListFiles` method on a directory we have no read access to
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
      R←∆WindowsOnly
  :Else
      path←(##.WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\Configuration\BaseRegistration'
      list←##.FilesAndDirs.ListFiles path
-     →PassesIf 0=≢list
+     →T.PassesIf 0=≢list
 
-     R←∆OK
+     R←T._OK
  :EndIf

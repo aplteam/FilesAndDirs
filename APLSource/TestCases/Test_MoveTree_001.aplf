@@ -1,13 +1,13 @@
  R←Test_MoveTree_001(stopFlag batchFlag);⎕TRAP
 ⍝ Exercise `MoveTree` with an invalid left argument
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
- R←∆Failed
+ R←T._Failed
 
  :Trap 11
      ''##.FilesAndDirs.MoveTree''
-     →FailsIf 1
+     →T.FailsIf 1
  :Else
-     →PassesIf'Left argument is not a directory'≡↑⎕DM
+     →T.PassesIf'Left argument is not a directory'≡↑⎕DM
  :EndTrap
 
- R←∆OK
+ R←T._OK

@@ -1,6 +1,6 @@
  r←∆Home
  r←'TempDirForTests'
- :If 'Win'≡#.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
      r←##.FilesAndDirs.GetTempPath,r
  :Else
      r←'/tmp/',r
