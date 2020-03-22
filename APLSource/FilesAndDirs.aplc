@@ -41,15 +41,13 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'2.1.3.45' '2019-11-28'
+      r←(Last⍕⎕THIS)'3.0.0.46' '2020-03-22'
     ∇
 
     ∇ History
       :Access Public shared
-      ⍝ * 2.1.3
-      ⍝   * Bug fixes:
-      ⍝     * `FilesAndDirs` called #.APLTreeUtils.
-      ⍝     * `MoveTo` handled only files, not directories.
+      ⍝ * 3.0.0
+      ⍝   * BREAKING CHNAGE: file extension is now .aplc rather than .dyalog
       ⍝\\
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
