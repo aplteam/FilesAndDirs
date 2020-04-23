@@ -14,6 +14,10 @@
  →T.GoToTidyUp 1≠'Create!'##.FilesAndDirs.CheckPath myTempDir
  →T.GoToTidyUp~##.FilesAndDirs.IsDir myTempDir
 
+ →T.GoToTidyUp 1∨.≠'Create!'##.FilesAndDirs.CheckPath myTempDir∘,¨'/test1' '/test2'
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir myTempDir,'/test1'
+ →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir myTempDir,'/test2'
+
  :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
      ⍝ Use an invalid filename in order to provoke an error
      →T.GoToTidyUp 0≠'Create!'##.FilesAndDirs.CheckPath myTempDir,'???'
