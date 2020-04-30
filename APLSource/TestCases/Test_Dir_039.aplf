@@ -15,6 +15,6 @@
  :EndIf
  list2←('.'≠↑¨list2)/list2
 
- →T.PassesIf≡/##.APLTreeUtils.Lowercase¨list list2
+ →T.PassesIf{∧/(⍺∊⍵)∧(⍵∊⍺)}/##.APLTreeUtils.Lowercase¨list list2   ⍝ Sort sequence depends on OS!
 
  R←T._OK

@@ -8,7 +8,7 @@
  R←T._Failed
 
  :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
-     R←∆WindowsOnly
+     R←T._WindowsOnly
  :ElseIf 0=⎕NEXISTS ∆GetComputerName,'.ini'
      ⎕←'No INI file found for "',(∆GetComputerName),'"'
      R←T._OK

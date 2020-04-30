@@ -4,17 +4,20 @@
  R←T._Failed
 
  list←##.FilesAndDirs.ListFiles'.\'
+ list←{⍵/⍨'.'≠↑¨⍵}2↓¨list
  :If 'Win'≡##.APLTreeUtils.GetOperatingSystem''
      list2←⎕CMD'dir'
      list2←∆CutFilesFromDirCommand list2
      list2←##.APLTreeUtils.dtb list2
      list2←{⍵↑⍨-(⌽⍵)⍳' '}¨list2
+     list2←('.'≠↑¨list2)/list2
  :Else
      list2←⎕SH'ls'
  :EndIf
  :If 'Win'≡##.APLTreeUtils.GetOperatingSystem''
      list3←⎕CMD'dir /AD'
      list3←∆CutFilesFromDirCommand list3
+     list3←('.'≠↑¨list3)/list3
      list3←##.APLTreeUtils.dtb list3
  :Else
      list3←⎕SH'ls -l'

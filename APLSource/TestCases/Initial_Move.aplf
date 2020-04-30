@@ -1,0 +1,3 @@
+ r←Initial_Move
+⍝ Prevents the tests to be carried out in version 17.0 or better.
+ r←~17<{⎕IO←⎕ML←1 ⋄ ⊃(//){⎕VFI ⍵/⍨2>+\'.'=⍵}2⊃⍵}#.APLVersion

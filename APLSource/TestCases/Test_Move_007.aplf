@@ -12,7 +12,7 @@
  R←T._Failed
 
  :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
-     R←∆WindowsOnly
+     R←T._WindowsOnly
  :Else
 
      :If 0=⎕NEXISTS ∆GetComputerName,'.ini'

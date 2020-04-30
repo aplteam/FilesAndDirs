@@ -4,7 +4,7 @@
  R←T._Failed
 
  :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
-     R←∆WindowsOnly
+     R←T._WindowsOnly
  :Else
      path←(##.WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\*'
      list←↑('recursive' 1)##.FilesAndDirs.Dir path

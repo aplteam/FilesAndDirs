@@ -22,6 +22,6 @@
      {}##.FilesAndDirs.RmDir myTempDir
 
  :Else
-     R←∆WindowsOnly
+     R←T._WindowsOnly
  :EndIf
 

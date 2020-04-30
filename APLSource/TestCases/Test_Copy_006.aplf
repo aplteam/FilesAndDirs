@@ -34,5 +34,5 @@
      :EndIf
 
  :Else
-     R←∆WindowsOnly
+     R←T._WindowsOnly
  :EndIf

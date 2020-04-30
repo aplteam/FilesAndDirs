@@ -5,7 +5,7 @@
  R←T._Failed
 
  :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
-     R←∆WindowsOnly
+     R←T._WindowsOnly
  :Else
      parms←''
     ⍝parms,←⊂'-x' 1

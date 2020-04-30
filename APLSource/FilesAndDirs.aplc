@@ -2,11 +2,6 @@
 ⍝ ## Overview
 ⍝ This class offers methods useful for dealing with files and directories. The class aims
 ⍝ to be platform-independent and works under Windows, Linux and Mac OS.\\
-⍝ With the release of 15.0 Dyalog introduced some new `⎕n`-system functions that are helpful
-⍝ for making an application platform-independent when handling files and directories.\\
-⍝ However, those new functions do not fully cover the common needs of applications. Examples
-⍝ are "Move" and "Copy" as well as recursive listings of directories.
-⍝ `FilesAndDirs` attempts to fill this gap.\\
 ⍝ Note that error codes as well as messages may differ between operating systems for the same
 ⍝ kind of problem.\\
 ⍝ ## Characters to avoid in file names and paths
@@ -24,8 +19,12 @@
 ⍝ Otherwise you might create a directory or file with a backslash in its name, something that
 ⍝ turns easily catastrophic under Linux or Mac OS.\\
 ⍝ The methods of `FilesAndDirs` protect you from this problem by normalizing their filepaths.
-⍝ Use cover functions such as `MkDir`, `NNAMES` and `NCREATE` in preference to the
+⍝ Use cover functions such as `MkDir`, `NNAMES` and `NCREATE` etc. in preference to the
 ⍝ corresponding built-in system functions to overcome the problem.\\
+⍝ `⎕NCOPY` and `⎕NMOVE` (introduced in 17.0) are exceptions: because these allow setting options
+⍝ with the `⍠` operator cover functions would have to invent a complex syntax in order to mimic
+⍝ this, so instead we suggest to use the native system functions and massage the paths with
+⍝ `ExpandPath` befor passing them one.
 ⍝ The `CurrentSep` method returns the correct separator for the current operating system.\\
 ⍝ The `NormalizePath` method normalizes a filepath for the current operating system.\\
 ⍝ If you have a particular reason for using `/` under Windows or `\` under Linux
@@ -41,15 +40,23 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'3.1.0.49' '2020-04-23'
+      r←(Last⍕⎕THIS)'3.2.0.62' '2020-04-30'
     ∇
 
     ∇ History
       :Access Public shared
+      ⍝ * 3.2.0
+      ⍝   * Methods `NPUT` and `NGET` introduced.
+      ⍝   * New method `ExpandPath` as a shortcut for `'expand' NormalizePath` introduced.
+      ⍝   * `CheckPath`, `RmDir` and `MkDir` now all accept and processes nested right arguments.
+      ⍝   * Note that usage of `MoveTo`, CopyTo` and `CopyTree` is discouraged if you use 17.0 or
+      ⍝     better because the new built-in system functions ⎕NCOPY and ⎕NMOVE are better suited.\\
+      ⍝     These three function will be removed eventually. Use the new `ExtendPath` function with
+      ⍝     any native system function to overcome problems with the separator.
       ⍝ * 3.1.0
-      ⍝   `CheckPath`, `RmDir` and `MkDir` now both accept and processes nested right arguments.
+      ⍝   * `CheckPath`, `RmDir` and `MkDir` now all accept and process nested right arguments.
       ⍝ * 3.0.0
-      ⍝   * BREAKING CHNAGE: file extension is now .aplc rather than .dyalog
+      ⍝   * BREAKING CHANGE: file extension is now .aplc rather than .dyalog
       ⍝\\
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
@@ -208,6 +215,31 @@
       :EndIf
     ∇
 
+    ∇ {r}←x NPUT y;filename;flags
+      :Access Public Shared
+    ⍝ The purpose of this function is to cover ⎕NPUT and make sure that the filename is normalized.\\
+    ⍝ The left-argument `x` is comprised of 1, 2 or 3 items which identify (content) (encoding) (newline) respectively.
+      :If (≡y)∊0 1
+          filename←FilesAndDirs.NormalizePath y
+          r←x ⎕NPUT filename
+      :Else
+          (filename flags)←y
+          filename←FilesAndDirs.NormalizePath y
+          r←x ⎕NPUT filename
+      :EndIf
+    ∇
+
+    ∇ r←{encoding}NGET filename
+      :Access Public Shared
+    ⍝ The purpose of this function is to cover ⎕NGET and make sure that the filename is normalized.
+      filename←FilesAndDirs.NormalizePath filename
+      :If 0=⎕NC'encoding'
+          r←⎕NGET filename
+      :Else
+          r←encoding ⎕NGET filename
+      :EndIf
+    ∇
+
     ∇ {(rc more)}←source CopyTo target;buff;cmd;∆CopyFile;a
       :Access Public Shared
     ⍝ Copies `source` to `target`.\\
@@ -264,7 +296,7 @@
       :EndIf
     ∇
 
-    ∇ {(rc more)}←source MoveTo target
+    ∇ {(rc more)}←source MoveTo target;bool;buff;noOf
       :Access Public Shared
     ⍝ Moves `source` to `target`.\\
     ⍝ The function returns a 0 for "okay" and an error number otherwise. `more` is a text
@@ -310,7 +342,20 @@
           :AndIf 1≠≢target
               'Length of left and right argument do do not fit'⎕SIGNAL 5
           :EndIf
-          (rc more)←↓⍉⊃source MoveTo¨target
+          noOf←≢source
+          rc←(noOf)⍴0
+          more←noOf⍴⊂''
+          :If ∨/bool←⎕NEXISTS target
+              buff←↓⍉⊃(bool/source)MoveTo¨bool/target
+              (bool/rc)←0⊃buff
+              (bool/more)←1⊃buff
+              bool←~bool
+              (bool/rc)←3
+              (bool/more)←⊂'The system cannot find the path specified.'
+          :Else
+              rc←(≢bool)⍴3
+              more←(≢bool)⍴'The system cannot find the path specified.'
+          :EndIf
       :Else
           (source target)←{NormalizePath↑,/1 ⎕NPARTS ⍵}¨source target
           :Select GetOperatingSystem ⍬
@@ -475,15 +520,11 @@
       ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`.
       ⍝   If such characters are specified anyway then an error is signalled.\\
       ⍝   This is true even under Linux and Mac OS despite the fact that these characters are \
+      mustBeEmpty←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'mustBeEmpty'
       :If 2=|≡path
-          :If 0=⎕NC'mustBeEmpty'
-              (rc en more)←↓⍉⊃RmDir¨path
-          :Else
-              (rc en more)←↓⍉⊃mustBeEmpty RmDir¨path
-          :EndIf
+          (rc en more)←↓⍉⊃mustBeEmpty RmDir¨path
       :Else
           rc←1 ⋄ en←0 ⋄ more←''
-          mustBeEmpty←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'mustBeEmpty'
           'Invalid left argument.'⎕SIGNAL 11/⍨~mustBeEmpty∊0 1
           'Wildcard characters are not allowed'⎕SIGNAL 11/⍨∨/'*?'∊path
           path←NormalizePath path
@@ -566,6 +607,12 @@
       r←↑1 ⎕NPARTS''
       r↓⍨←-(¯1↑r)∊'/\'
       r←NormalizePath r
+    ∇
+
+    ∇ r←ExpandPath path
+    ⍝ Shortcut for  `'expand' NormalizePath` - see there.
+      :Access Public Shared
+      r←1 NormalizePath path
     ∇
 
     ∇ path←{expandFlag}NormalizePath path;UNCflag;sep;ExpandEnvironmentStrings;isScalar
@@ -1119,17 +1166,20 @@
       :EndIf
     ∇
 
-    ∇ (rc more)←source Unix_MoveTo target
+    ∇ (rc more)←source Unix_MoveTo target;cmd
       rc←0 ⋄ more←''
       (source target)←EncodeBlanks¨source target
       :If IsDir target
-          (rc more)←2↑##.OS.ShellExecute'mv ',((('/'≠¯1↑target)/'/'),' -f '),' -- "',source,'" "',target,'"'
+⍝          (rc more)←2↑##.OS.ShellExecute'mv ',((('/'≠¯1↑target)/'/'),' -f '),' -- "',source,'" "',target,'"'
+          cmd←'(shopt -s dotglob; mv ',source,' ',target,')'
+          (rc more)←2↑##.OS.ShellExecute cmd
       :Else
-          (rc more)←2↑##.OS.ShellExecute'mv -f -- "',source,'" "',target,'"'
+          cmd←'mv -f -- "',source,'" "',target,'"'
+          (rc more)←2↑##.OS.ShellExecute cmd
       :EndIf
     ∇
 
-    ∇ (rc more)←source Win_MoveTo target;∆MoveFileEx;∆MoveFile;targetDrive;sourceDrive;currDir
+    ∇ (rc more)←source Win_MoveTo target;∆MoveFileEx;∆MoveFile;targetDrive;sourceDrive;currDir;list;bool;list2;exists;dirList;fileList;dirExisted;en
       rc←0 ⋄ more←''
       :If ∨/{∨/'*?'∊⍵}¨source target
           (rc more)←¯1 'Argument must not contain either "?" or "*"'
@@ -1142,6 +1192,7 @@
           :Else
               :If IsDir source
               :AndIf Exists target
+              :AndIf 0=IsDir target
                   rc←¯1
                   more←'Target already exists'
               :Else
@@ -1159,6 +1210,28 @@
                               rc←32
                               more←GetMsgFromError rc
                           :EndTrap
+                      :EndIf
+                  :ElseIf ∧/IsDir source target
+                      :If CurrentSep≠¯1↑target
+                          rc←¯1
+                          more←'Target already exists'
+                          :Return
+                      :EndIf
+                      :If 0<≢list←↑('recursive' 1)Dir source,CurrentSep
+                          bool←IsDir list
+                          dirList←bool/list
+                          dirExisted←IsDir target∘,¨(≢source)↓¨dirList
+                          {0=≢⍵:shy←⍬ ⋄ ⎕MKDIR¨⍵}target∘,¨(≢source)↓¨(~dirExisted)/dirList
+                          fileList←(~bool)/list
+                          :If 0<≢fileList
+                              (rc more)←↓⍉⊃fileList{⍺ CopyTo ⍵}¨(target,CurrentSep)∘,¨(≢source)↓¨fileList
+                              :If rc∧.=0
+                                  (rc en more)←RmDir source
+                              :EndIf
+                          :EndIf
+                      :Else
+                          ⎕MKDIR target,CurrentSep Last ¯1↓source
+                          (rc en more)←RmDir source
                       :EndIf
                   :Else
                       '∆MoveFileEx'⎕NA'I kernel32.C32|MoveFileEx* <0T <0T I4'

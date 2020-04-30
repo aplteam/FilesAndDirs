@@ -14,5 +14,6 @@
  R←T._OK
 
 ∆TidyUp:
- rc←##.FilesAndDirs.RmDir tempPath
- Assert 0=0⊃rc
+ ##.FilesAndDirs.RmDir tempPath
+ ##.FilesAndDirs.RmDir tempPath,'__copy/'
+⍝Done
