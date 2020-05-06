@@ -40,11 +40,14 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'3.2.0.62' '2020-04-30'
+      r←(Last⍕⎕THIS)'3.2.1.63' '2020-05-06'
     ∇
 
     ∇ History
       :Access Public shared
+      ⍝ * 3.2.1
+      ⍝   * Bug fix: `MkDir` consumed 0.05 seconds on successful operation - it shouldn't. Naturally
+      ⍝     this hurts when a significant number of directories are to be created.
       ⍝ * 3.2.0
       ⍝   * Methods `NPUT` and `NGET` introduced.
       ⍝   * New method `ExpandPath` as a shortcut for `'expand' NormalizePath` introduced.
@@ -53,10 +56,6 @@
       ⍝     better because the new built-in system functions ⎕NCOPY and ⎕NMOVE are better suited.\\
       ⍝     These three function will be removed eventually. Use the new `ExtendPath` function with
       ⍝     any native system function to overcome problems with the separator.
-      ⍝ * 3.1.0
-      ⍝   * `CheckPath`, `RmDir` and `MkDir` now all accept and process nested right arguments.
-      ⍝ * 3.0.0
-      ⍝   * BREAKING CHANGE: file extension is now .aplc rather than .dyalog
       ⍝\\
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
@@ -1086,7 +1085,7 @@
                           :Leave ⍝ Something went wrong
                       :EndTrap
                       flag←⎕NEXISTS path
-                      ⎕DL flag×0.05×counter+1
+                      ⎕DL(~flag)×0.05×counter+1
                   :Until flag∨10<counter←counter+1
               :EndTrap
           :EndIf
