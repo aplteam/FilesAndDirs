@@ -55,7 +55,9 @@ Of course this means that `FilesAndDirs` cannot deal under Linux and Mac OS with
   MoveTo
   MoveTree
   NCREATE
+  NGET
   NNAMES
+  NPUT
   NormalizePath
   PolishCurrentDir
   PWD
@@ -63,4 +65,4 @@ Of course this means that `FilesAndDirs` cannot deal under Linux and Mac OS with
   Version
 ```
 
-`FilesAndDirs` needs version 15.0 Unicode of Dyalog APL, or better.
+`FilesAndDirs` needs version 16.0 Unicode of Dyalog APL, or better.
