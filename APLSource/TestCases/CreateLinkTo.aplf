@@ -6,7 +6,7 @@
      :Else
          cmd←'"cmd.exe" /C MKLINK "',link,'" "',source,'"'
      :EndIf
-     1 ##.WinSys.ShellExecute cmd
+     1 ##.OS.WinExecute cmd
  :Else
      cmd←'ln -s "',source,'" "',link,'"'
      ⎕SH cmd

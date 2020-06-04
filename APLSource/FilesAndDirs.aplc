@@ -40,11 +40,15 @@
 
     ∇ r←Version
       :Access Public shared
-      r←(Last⍕⎕THIS)'3.2.1.63' '2020-05-06'
+      r←'FilesAndDirs' '3.2.2.65' '2020-06-04'
     ∇
 
     ∇ History
       :Access Public shared
+      ⍝ * 3.2.2
+      ⍝   `RmDir` occasionally did not delete a directory that contained stuff. Now it checks, and
+      ⍝   in case the direcotry still exists it waits for a split of a second and then tries again.
+      ⍝   Apparently that solved the problem.
       ⍝ * 3.2.1
       ⍝   * Bug fix: `MkDir` consumed 0.05 seconds on successful operation - it shouldn't. Naturally
       ⍝     this hurts when a significant number of directories are to be created.
@@ -228,14 +232,20 @@
       :EndIf
     ∇
 
-    ∇ r←{encoding}NGET filename
+    ∇ r←{encoding}NGET x;flag;filename
       :Access Public Shared
     ⍝ The purpose of this function is to cover ⎕NGET and make sure that the filename is normalized.
-      filename←FilesAndDirs.NormalizePath filename
-      :If 0=⎕NC'encoding'
-          r←⎕NGET filename
+      :If 326=⎕DR x
+          (filename flag)←x
+          filename←FilesAndDirs.NormalizePath filename
       :Else
-          r←encoding ⎕NGET filename
+          filename←FilesAndDirs.NormalizePath x
+          flag←0
+      :EndIf
+      :If 0=⎕NC'encoding'
+          r←⎕NGET filename flag
+      :Else
+          r←encoding ⎕NGET filename flag
       :EndIf
     ∇
 
@@ -344,7 +354,7 @@
           noOf←≢source
           rc←(noOf)⍴0
           more←noOf⍴⊂''
-          :If ∨/bool←⎕NEXISTS target
+          :If ∨/bool←⎕NEXISTS¨target
               buff←↓⍉⊃(bool/source)MoveTo¨bool/target
               (bool/rc)←0⊃buff
               (bool/more)←1⊃buff
@@ -518,7 +528,8 @@
       ⍝ * If `path` does not exist `(0 0 'Directory does not exist')` is returned.
       ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`.
       ⍝   If such characters are specified anyway then an error is signalled.\\
-      ⍝   This is true even under Linux and Mac OS despite the fact that these characters are \
+      ⍝   This is true even under Linux and Mac OS despite the fact that these characters are legal in
+      ⍝   the names of any files and directories.
       mustBeEmpty←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'mustBeEmpty'
       :If 2=|≡path
           (rc en more)←↓⍉⊃mustBeEmpty RmDir¨path
@@ -597,6 +608,14 @@
                   more←{↑{⍺,'; ',⍵}/⍵/⍨' '=↑¨0⍴¨⍵}⎕DMX.OSError
               :EndIf
           :EndTrap
+          :If ⎕NEXISTS path  ⍝ Experience show that this does happen quite often!
+              ⎕DL 0.1
+              :Trap 19 22
+                  rc∧←~0 ⎕NDELETE path  ⍝ One more time; that ususally fixed the problem
+              :Else
+                  rc←1
+              :EndTrap
+          :EndIf
       :EndIf
     ∇
 
