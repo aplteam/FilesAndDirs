@@ -1,4 +1,4 @@
- R←Test_Misc_022(stopFlag batchFlag);⎕TRAP;tempSubDir;buff;filename;qdmx
+ R←Test_Misc_022(stopFlag batchFlag);⎕TRAP;tempSubDir;buff;filename;qdmx;NEL
 ⍝ Test the `NPUT` and `NGET` methods
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -20,6 +20,16 @@
  (⊂buff)##.FilesAndDirs.NPUT filename 1
  →T.GoToTidyUp buff≢0⊃##.FilesAndDirs.NGET filename 1
  →T.GoToTidyUp(∊buff)≢⎕TC~⍨0⊃##.FilesAndDirs.NGET filename
+
+ (⊂'Nested' 'vector')##.FilesAndDirs.NPUT filename 1
+ →T.GoToTidyUp'Nested' 'vector'≢0⊃##.FilesAndDirs.NGET filename 1
+
+ (('Nested' 'vector')'UTF-16')##.FilesAndDirs.NPUT filename 1
+ →T.GoToTidyUp('Nested' 'vector')'UTF-16LE-BOM'≢2↑##.FilesAndDirs.NGET filename 1
+
+ NEL←,133
+ (('Nested' 'vector')'UTF-16'NEL)##.FilesAndDirs.NPUT filename 1
+ →T.GoToTidyUp('Nested' 'vector')'UTF-16LE-BOM'NEL≢##.FilesAndDirs.NGET filename 1
 
  R←T._OK
 

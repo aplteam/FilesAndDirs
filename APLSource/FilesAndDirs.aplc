@@ -40,11 +40,13 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '3.2.2.65' '2020-06-04'
+      r←'FilesAndDirs' '3.2.3.66' '2020-07-05'
     ∇
 
     ∇ History
       :Access Public shared
+      ⍝ * 3.2.3
+      ⍝   Bug in `NPUT` fixed.
       ⍝ * 3.2.2
       ⍝   `RmDir` occasionally did not delete a directory that contained stuff. Now it checks, and
       ⍝   in case the direcotry still exists it waits for a split of a second and then tries again.
@@ -137,7 +139,9 @@
                   ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
                       :If ('.',CurrentSep)≡2↑path
                           'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+⍝                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
                       :Else
+⍝                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
                           'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
                       :EndIf
                   :Else
@@ -227,8 +231,8 @@
           r←x ⎕NPUT filename
       :Else
           (filename flags)←y
-          filename←FilesAndDirs.NormalizePath y
-          r←x ⎕NPUT filename
+          filename←FilesAndDirs.NormalizePath filename
+          r←(,¨x)⎕NPUT filename flags
       :EndIf
     ∇
 
