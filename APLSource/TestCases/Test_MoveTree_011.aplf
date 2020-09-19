@@ -3,8 +3,8 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempPathSource←##.FilesAndDirs.GetTempPath,'source_',↑⎕SI
- tempPathTarget←##.FilesAndDirs.GetTempPath,'target_',↑⎕SI
+ tempPathSource←##.FilesAndDirs.GetTempPath,'source_',⊃⎕SI
+ tempPathTarget←##.FilesAndDirs.GetTempPath,'target_',⊃⎕SI
  {}##.FilesAndDirs.RmDir tempPathSource
  {}##.FilesAndDirs.RmDir tempPathTarget
  ∆CreateDirsAndFiles tempPathSource

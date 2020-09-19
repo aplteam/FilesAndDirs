@@ -11,24 +11,24 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
  :Else
 
      :If 0=⎕NEXISTS ∆GetComputerName,'.ini'
-         ⎕←'No INI file found for "',(∆GetComputerName),'", therefore ',(↑⎕SI),' not executed!'
+         ⎕←'No INI file found for "',(∆GetComputerName),'", therefore ',(⊃⎕SI),' not executed!'
          R←∆Inactive
          :Return
      :EndIf
      ini←⎕NEW ##.IniFiles(,⊂##.FilesAndDirs.PWD,'/',∆GetComputerName,'.ini')
      parms←''
     ⍝parms,←⊂'-x' 1
-     parms,←⊂'filename'((↑⎕SI),'.txt"')
+     parms,←⊂'filename'((⊃⎕SI),'.txt"')
     ⍝parms,←⊂'session_file' ''
      (successFlag more)←parms ∆StartDyalogInstance'Tests/ReadOnlyTie'
      Assert successFlag
      ⎕DL 3
-     filename←↑,/1 ⎕NPARTS'Tests/',(↑⎕SI),'.txt'
+     filename←↑,/1 ⎕NPARTS'Tests/',(⊃⎕SI),'.txt'
      targetDir←##.FilesAndDirs.NormalizePath(↑ini.Get'Config:FolderOnSecondDrive'),('/',⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir targetDir
      (rc more)←filename ##.FilesAndDirs.MoveTo targetDir

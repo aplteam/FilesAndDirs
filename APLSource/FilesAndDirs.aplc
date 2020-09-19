@@ -34,34 +34,21 @@
 ⍝ Kai Jaeger ⋄ APL Team Ltd\\
 ⍝ Homepage: <http://github.com/aplteam/FilesAndDirs>
 
-    :Include APLTreeUtils
-
-    ⎕IO←0 ⋄ ⎕ML←3
+    ⎕IO←0 ⋄ ⎕ML←1
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '3.2.3.66' '2020-07-05'
+      r←'FilesAndDirs' '4.0.0.80' '2020-09-18'
     ∇
+
 
     ∇ History
       :Access Public shared
-      ⍝ * 3.2.3
-      ⍝   Bug in `NPUT` fixed.
-      ⍝ * 3.2.2
-      ⍝   `RmDir` occasionally did not delete a directory that contained stuff. Now it checks, and
-      ⍝   in case the direcotry still exists it waits for a split of a second and then tries again.
-      ⍝   Apparently that solved the problem.
-      ⍝ * 3.2.1
-      ⍝   * Bug fix: `MkDir` consumed 0.05 seconds on successful operation - it shouldn't. Naturally
-      ⍝     this hurts when a significant number of directories are to be created.
-      ⍝ * 3.2.0
-      ⍝   * Methods `NPUT` and `NGET` introduced.
-      ⍝   * New method `ExpandPath` as a shortcut for `'expand' NormalizePath` introduced.
-      ⍝   * `CheckPath`, `RmDir` and `MkDir` now all accept and processes nested right arguments.
-      ⍝   * Note that usage of `MoveTo`, CopyTo` and `CopyTree` is discouraged if you use 17.0 or
-      ⍝     better because the new built-in system functions ⎕NCOPY and ⎕NMOVE are better suited.\\
-      ⍝     These three function will be removed eventually. Use the new `ExtendPath` function with
-      ⍝     any native system function to overcome problems with the separator.
+      ⍝ * 4.0.0 ⋄ 2020-09-18
+      ⍝   * APLTreeUtils is not any longer :Included but instead...
+      ⍝   * APLTreeUtils2 is required as a class
+      ⍝   * Requires at least version 18.0 of Dyalog
+      ⍝   * Internally ⎕ML←1 is used now
       ⍝\\
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
@@ -119,8 +106,8 @@
               {}parms.{{⍎⍺,'←⍵'}/⍵}¨parms_.({⍵(⍎⍵)}¨↓⎕NL 2)
               'Invalid parameter'⎕SIGNAL 11/⍨∨/~(' '~¨⍨↓parms.⎕NL 2)∊'follow' 'recursive' 'type' 'selfCall' 'depth'
           :Else
-              parms_←,⊂∘,⍣(2=≡parms_)⊣parms_
-              'Invalid parameter'⎕SIGNAL 11/⍨0∊(↑¨parms_)∊(' '~¨⍨↓parms.⎕NL 2),⊂'selfCall'
+              parms_←,⊂∘,⍣(2=|≡parms_)⊣parms_
+              'Invalid parameter'⎕SIGNAL 11/⍨0∊(⊃¨parms_)∊(' '~¨⍨↓parms.⎕NL 2),⊂'selfCall'
               parms.{{⍎⍺,'←⍵'}/⍵}¨parms_
           :EndIf
       :EndIf
@@ -130,26 +117,13 @@
       path↓⍨←-(CurrentSep,'*')≡¯2↑path
       :If CurrentSep=¯1↑{⍵↓⍨-'*'=¯1↑⍵}path
           'Directory does not exist'⎕SIGNAL 6/⍨0=⎕NEXISTS path
-          :If 'Win'≢GetOperatingSystem ⍬
+          :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
           :OrIf ~{(':'=0⊃⍵)∧CurrentSep=1⊃⍵}¯2↑path
               :Trap 19 22
-                  :If 0<1594
-                  ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access
-                  ⍝ See bug report <01594>
-                  ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
-                      :If ('.',CurrentSep)≡2↑path
-                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
-⍝                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
-                      :Else
-⍝                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
-                          'Not a directory'⎕SIGNAL 11/⍨1≠{↑↑1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
-                      :EndIf
-                  :Else
-                      'Not a directory'⎕SIGNAL 11/⍨1≠1 ⎕NINFO⊣path
-                  :EndIf
+                  'Not a directory'⎕SIGNAL 11/⍨1≠1 ⎕NINFO⊣path
               :Else
                   :If 1 5 'Access is denied.'≢⎕DMX.OSError
-                      ({1↓↑,/(⎕UCS 13),¨⍵}⎕DMX.DM)⎕SIGNAL ⎕EN
+                      ({1↓⊃,/(⎕UCS 13),¨⍵}⎕DMX.DM)⎕SIGNAL ⎕EN
                   :Else
                       :Return
                   :EndIf
@@ -171,10 +145,10 @@
           :AndIf (0=≢parms.depth)∨1↑0<parms.depth
               buff←parms∘Dir¨((1=1⊃r)/0⊃r),¨CurrentSep
               :If 0≠≢buff←(0<≢¨buff)/buff
-                  r←r,¨↑,¨/buff
+                  r←r,¨⊃,¨/buff
               :EndIf
               :If 1=+/∧\'Dir'∘≡¨⎕SI
-                  r←(⊂⍋⊃0⊃r)∘⌷¨r
+                  r←(⊂⍋↑0⊃r)∘⌷¨r
               :EndIf
           :EndIf
           :If 1=+/∧\'Dir'∘≡¨⎕SI
@@ -184,7 +158,7 @@
           :If ∨/'*?'∊path
               (folder filename extension)←⎕NPARTS path
               ('Wildcard characters are allowed only after the last "',CurrentSep,'"')⎕SIGNAL 11/⍨∨/'*?'∊folder
-              :If 0≠≢buff←↑⎕NPARTS ¯1↓↑⎕NPARTS folder
+              :If 0≠≢buff←⊃⎕NPARTS ¯1↓⊃⎕NPARTS folder
               :AndIf 0=⎕NEXISTS buff
                   'path does not exist'⎕SIGNAL 6
               :EndIf
@@ -202,7 +176,7 @@
                   :If 0=+/'*?'∊path
                       buff←(⊂∘⊂¨subFolders),¨¨buff
                   :EndIf
-                  :If 0≠≢buff←↑{⍺,¨⍵}/buff
+                  :If 0≠≢buff←⊃{⍺,¨⍵}/buff
                   :AndIf 0≠≢buff←(0<≢¨buff)/buff
                       r←r,¨buff
                   :EndIf
@@ -282,19 +256,19 @@
     ⍝ `more` are nested as well, and the length will match the length of `source`.
       rc←0 ⋄ more←''
       :If 2=≡source
-          target←Nest target
+          target←⊆target
           :If ≢/⍴¨source target
           :AndIf 1≠≢target
               'Length of left and right argument do do not fit'⎕SIGNAL 5
           :EndIf
-          (rc more)←↓⍉⊃source CopyTo¨target
+          (rc more)←↓⍉↑source CopyTo¨target
       :Else
           (source target)←NormalizePath source target
-          :Select GetOperatingSystem ⍬
+          :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
           :Case 'Win'
               '∆CopyFile'⎕NA'I kernel32.C32|CopyFile* <0T <0T I2'
               :If CurrentSep=¯1↑target
-                  target,←↑,/1↓⎕NPARTS source
+                  target,←⊃,/1↓⎕NPARTS source
               :EndIf
               :If 0=∆CopyFile((source~'"')(target~'"')),0
                   rc←GetLastError
@@ -348,7 +322,7 @@
           more←'Invalid left argument'
       :EndIf
       :If 2=≡source
-          target←Nest target
+          target←⊆target
           source←NormalizePath source
           target←NormalizePath target
           :If ≢/⍴¨source target
@@ -359,7 +333,7 @@
           rc←(noOf)⍴0
           more←noOf⍴⊂''
           :If ∨/bool←⎕NEXISTS¨target
-              buff←↓⍉⊃(bool/source)MoveTo¨bool/target
+              buff←↓⍉↑(bool/source)MoveTo¨bool/target
               (bool/rc)←0⊃buff
               (bool/more)←1⊃buff
               bool←~bool
@@ -370,8 +344,8 @@
               more←(≢bool)⍴'The system cannot find the path specified.'
           :EndIf
       :Else
-          (source target)←{NormalizePath↑,/1 ⎕NPARTS ⍵}¨source target
-          :Select GetOperatingSystem ⍬
+          (source target)←{NormalizePath⊃,/1 ⎕NPARTS ⍵}¨source target
+          :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
           :Case 'Win'
               (rc more)←source Win_MoveTo target
           :CaseList 'Lin' 'Mac'
@@ -423,7 +397,7 @@
           :EndTrap
       :EndIf
       :Trap 11
-          tree←((⍉⊃('recursive' 1)('type'(0 1))Dir source,CurrentSep),0),' '
+          tree←((⍉↑('recursive' 1)('type'(0 1))Dir source,CurrentSep),0),' '
       :Else
           success←0
           more←'Could not get contents of source directory'
@@ -432,12 +406,12 @@
       list⍪←({⍵↓⍨-CurrentSep=¯1↑⍵}target)0 ''
       :If 0≠≢tree
         ⍝ We now create all directories
-          ind←Where 1=tree[;1]
+          ind←⍸1=tree[;1]
           tree[ind;2]←~'Create!'CheckPath target∘,¨(≢source)↓¨tree[ind;0]
         ⍝ Now we copy the files over
           tree[ind;3]←⊂''
-          ind←Where 2=tree[;1]
-          tree[ind;2 3]←⍉⊃tree[ind;0]CopyTo target∘,¨(≢source)↓¨tree[ind;0]
+          ind←⍸2=tree[;1]
+          tree[ind;2 3]←⍉↑tree[ind;0]CopyTo target∘,¨(≢source)↓¨tree[ind;0]
           buff←tree[;0 2 3]
           buff[;0]←(⊂target),¨(≢source)↓¨buff[;0]
           list⍪←buff
@@ -448,7 +422,7 @@
     ∇ r←CurrentSep
     ⍝ Returns what is the "correct" filename separator under the current OS.
       :Access Public Shared
-      r←('Win'≡GetOperatingSystem ⍬)⊃'/\'
+      r←('Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⊃'/\'
     ∇
 
     ∇ (success more list)←source MoveTree target;success;ind;delFlags;isLinkOrFile;isLinkOrDir;okay;bool;linksAndDirs;isFile;lowercase
@@ -497,10 +471,10 @@
       {}{0::⍬ ⋄ 1 ⎕NDELETE ⍵}¨bool/list[;0]                                 ⍝ Links and files first
       isLinkOrDir←okay∧({19 22::0 ⋄ 1 ⎕NINFO⍠('Follow' 0)⊣⍵}¨list[;0])∊1 4
       linksAndDirs←isLinkOrDir/list[;0]
-      ind←⍒+/CurrentSep=⊃linksAndDirs                                       ⍝ Sub directories first!
+      ind←⍒+/CurrentSep=↑linksAndDirs                                       ⍝ Sub directories first!
       {}{0::⍬ ⋄ 1 ⎕NDELETE ⍵}¨linksAndDirs[ind]
       list[;2]←~Exists list[;0]
-      lowercase←{Lowercase⍣('Win'≡GetOperatingSystem ⍬)⊣⍵}
+      lowercase←{##.APLTreeUtils2.Lowercase⍣('Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⊣⍵}
       (source target)←lowercase¨source target
       (source target)←NormalizePath¨source target
       :If source{(⍺,(¯1↑⍵))≡⍵}(1+≢source)↑target
@@ -536,7 +510,7 @@
       ⍝   the names of any files and directories.
       mustBeEmpty←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'mustBeEmpty'
       :If 2=|≡path
-          (rc en more)←↓⍉⊃mustBeEmpty RmDir¨path
+          (rc en more)←↓⍉↑mustBeEmpty RmDir¨path
       :Else
           rc←1 ⋄ en←0 ⋄ more←''
           'Invalid left argument.'⎕SIGNAL 11/⍨~mustBeEmpty∊0 1
@@ -551,7 +525,7 @@
               :EndIf
           :Else
               :If Exists path
-                  more←{(≡⍵)∊0 1:⍵ ⋄ ↑{⍺,'; ',⍵}/⍵/⍨' '=↑¨1↑¨0⍴¨⍵}⎕DMX.OSError
+                  more←{(≡⍵)∊0 1:⍵ ⋄ ⊃{⍺,'; ',⍵}/⍵/⍨' '=⊃¨1↑¨0⍴¨⍵}⎕DMX.OSError
                   en←⎕EN
               :Else
                   rc←0
@@ -564,7 +538,7 @@
           :Else
               :If 0=mustBeEmpty
          ⍝ First we delete all files
-                  :If 0=≢list←⍉⊃('recursive' 1)('type'(0 1))Dir path,CurrentSep
+                  :If 0=≢list←⍉↑('recursive' 1)('type'(0 1))Dir path,CurrentSep
               ⍝ This can happen if for example somebody "look" into the folder
                       rc←1
                       en←11
@@ -609,7 +583,7 @@
                   :EndTrap
               :Else
                   en←⎕EN
-                  more←{↑{⍺,'; ',⍵}/⍵/⍨' '=↑¨0⍴¨⍵}⎕DMX.OSError
+                  more←{⊃{⍺,'; ',⍵}/⍵/⍨' '=⊃¨0⍴¨⍵}⎕DMX.OSError
               :EndIf
           :EndTrap
           :If ⎕NEXISTS path  ⍝ Experience show that this does happen quite often!
@@ -626,7 +600,7 @@
     ∇ r←PWD
       :Access Public Shared
       ⍝ Print Work Directory; same as `Cd''`.
-      r←↑1 ⎕NPARTS''
+      r←⊃1 ⎕NPARTS''
       r↓⍨←-(¯1↑r)∊'/\'
       r←NormalizePath r
     ∇
@@ -654,19 +628,19 @@
       isScalar←⍬≡⍴path
       :If 0≠≢path
           :If '%'∊path
-          :AndIf 'Win'≡GetOperatingSystem ⍬
+          :AndIf 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
               'ExpandEnvironmentStrings'⎕NA'I4 KERNEL32.C32|ExpandEnvironmentStrings* <0T >0T I4'
               path←1⊃ExpandEnvironmentStrings path 2048 2048
           :EndIf
-          expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡Lowercase ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
+          expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡##.APLTreeUtils2.Lowercase ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
           :If 1<≡path
               path←expandFlag NormalizePath¨path
           :Else
               UNCflag←(⊂2⍴path)∊'\\' '//'
               :If expandFlag
-                  path←↑,/1 ⎕NPARTS path
+                  path←⊃,/1 ⎕NPARTS path
               :EndIf
-              sep←('Win'≡GetOperatingSystem ⍬)⌽'\/'
+              sep←('Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⌽'\/'
               ((path=0⊃sep)/path)←1⊃sep
               path←(~(2⍴1⊃sep)⍷path)/path
               :If UNCflag
@@ -674,7 +648,7 @@
               :EndIf
               :If isScalar
               :AndIf 1=≢path
-                  path←↑path
+                  path←⊃path
               :EndIf
           :EndIf
       :EndIf
@@ -702,7 +676,7 @@
       wsid←NormalizePath ⎕WSID
       :If ('.',CurrentSep)≢2⍴⎕WSID,' '
       :AndIf CurrentSep∊wsid
-          r←NormalizePath Cd 0⊃SplitPath wsid
+          r←NormalizePath Cd 0⊃##.APLTreeUtils2.SplitPath wsid
       :EndIf
     ∇
 
@@ -715,26 +689,26 @@
     ⍝ See also [`PWD`](#) (Print Work Directory).
       :Access Public Shared
       path←NormalizePath path
-      :Select GetOperatingSystem ⍬
+      :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
       :Case 'Win'
           '∆GetCurrentDirectory'⎕NA'I4 KERNEL32.C32|GetCurrentDirectory* I4 >T[]'
           '∆SetCurrentDirectory'⎕NA'I4 KERNEL32.C32|SetCurrentDirectory* <0T'
-          :If 0=↑rc←∆GetCurrentDirectory 260 260
+          :If 0=⊃rc←∆GetCurrentDirectory 260 260
               r←GetLastError'GetCurrentDirectory error' ''
           :Else
-              r←NormalizePath↑↑/rc
+              r←NormalizePath⊃↑/rc
           :EndIf
           :If 0≠≢path←path~'"'
           :AndIf ' '=1↑0⍴path
               path,←(CurrentSep≠¯1↑path)/CurrentSep
               :If ~∆SetCurrentDirectory⊂path
-                  11 ⎕SIGNAL⍨⊃{⍵,'; rc=',⍕⍺}/GetLastError'SetCurrentDirectory error'
+                  11 ⎕SIGNAL⍨↑{⍵,'; rc=',⍕⍺}/GetLastError'SetCurrentDirectory error'
               :EndIf
           :EndIf
       :CaseList 'Lin' 'Mac'
           path←NormalizePath path
           :If 0=≢path
-              r←↑⎕SH'pwd'
+              r←⊃⎕SH'pwd'
           :Else
               '∆chdir'⎕NA'I ',##.OS.GetSharedLib,'| chdir <0T1[]'
               r←∆chdir⊂path
@@ -747,10 +721,10 @@
     ∇ path←GetTempPath;∆GetTempPath
     ⍝ Returns the path to the temp directory on the current system.
       :Access Public Shared
-      :Select GetOperatingSystem ⍬
+      :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
       :Case 'Win'
           '∆GetTempPath'⎕NA'I4 KERNEL32.C32|GetTempPath* I4 >T[]'
-          path←↑↑/∆GetTempPath 1024 1024
+          path←⊃↑/∆GetTempPath 1024 1024
           :If 0=≢path
               11 ⎕SIGNAL⍨'Problem getting Windows temp path!; rc=',⍕GetLastError
           :Else
@@ -777,17 +751,17 @@
           path←NormalizePath path
           :Trap 11
               :If r←⎕NEXISTS path
-                  :If 'Win'≢GetOperatingSystem ⍬
+                  :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
                   :OrIf ~{(':'=0⊃⍵)∧CurrentSep=1⊃⍵}¯2↑path
                       :Trap 22
                           :If 0<1594
                       ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access
                       ⍝ See bug report <01594>
-                      ⍝ The `↑↑` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
+                      ⍝ The `⊃⊃` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)
                               :If ('.',CurrentSep)≡2↑path
-                                  r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
+                                  r←{⊃⊃1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path
                               :Else
-                                  r←{↑↑1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
+                                  r←{⊃⊃1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path
                               :EndIf
                           :Else
                               r←1=1 ⎕NINFO path
@@ -867,7 +841,7 @@
               success←IsDir path
           :Else
               success←0
-              newFlag←'CREATE!' 1∊⍨⊂{6::0 ⋄ {(0=1↑0⍴⍵):⍵ ⋄ Uppercase ⍵}⍎⍵}'new'
+              newFlag←'CREATE!' 1∊⍨⊂{6::0 ⋄ {(0=1↑0⍴⍵):⍵ ⋄ 1 ⎕C ⍵}⍎⍵}'new'
               :If newFlag
                   success←MkDir path
               :EndIf
@@ -990,18 +964,18 @@
       ⍝ Mac OS they are both regular characters that might well be part of a name.\\
       ⍝ Returns a vector of text vectors in case anything was found and `''` otherwise.
       x←{0<⎕NC ⍵:⍎⍵ ⋄ ''⍬}'x'
-      x←⊂∘,⍣((↑' '=1↑0⍴↑x)∧1=≡x)⊣x
+      x←⊂∘,⍣((⊃' '=1↑0⍴↑x)∧1=≡x)⊣x
       (recursive depth)←2↑x,(≢x)↓0 ⍬
       depth-←1
       path←NormalizePath path
-      (part1 part2)←SplitPath path
+      (part1 part2)←##.APLTreeUtils2.SplitPath path
       'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1
-      :If 'Win'≢GetOperatingSystem ⍬
+      :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
       :OrIf {(':'=0⊃⍵)∧(1⊃⍵)∊'\/'}¯2↑{⍵↓⍨-(¯1↑⍵)∊'/\'}path
-          'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir{(a b)←SplitPath ⍵ ⋄ ~∨/'*?'∊b:⍵ ⋄ a}path
+          'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir{(a b)←##.APLTreeUtils2.SplitPath ⍵ ⋄ ~∨/'*?'∊b:⍵ ⋄ a}path
       :EndIf
       path↓⍨←-CurrentSep=¯1↑path
-      recursiveFlag←{0=⎕NC ⍵:0 ⋄ w←⍎⍵ ⋄ 0=1↑0⍴w:w ⋄ 'recursive'≡Lowercase w}'recursive'
+      recursiveFlag←{0=⎕NC ⍵:0 ⋄ w←⍎⍵ ⋄ 0=1↑0⍴w:w ⋄ 'recursive'≡##.APLTreeUtils2.Lowercase w}'recursive'
       :If recursiveFlag
       :AndIf ∨/'*?'∊path
           '"path" must not carry wildcard chars in case "Recursive" is specified'⎕SIGNAL 11
@@ -1018,7 +992,7 @@
       :AndIf 1=recursiveFlag
       :AndIf 0=+/'*?'∊path
       :AndIf (0=≢depth)∨1↑0<depth
-      :AndIf 0≠≢buff←↑,/(⊂recursiveFlag depth)ListDirs¨r,¨'/'
+      :AndIf 0≠≢buff←⊃,/(⊂recursiveFlag depth)ListDirs¨r,¨'/'
           r,←buff
       :EndIf
     ∇
@@ -1036,14 +1010,14 @@
       ⍝ of the path and only if "recursive" is **not** specified as left argument.\\
       ⍝ Returns a vector of text vectors in case anything was found and `''` otherwise.
       x←{0<⎕NC ⍵:⍎⍵ ⋄ ''⍬}'x'
-      x←⊂∘,⍣((↑' '=1↑0⍴↑x)∧1=≡x)⊣x
+      x←⊂∘,⍣((⊃' '=1↑0⍴↑x)∧1=≡x)⊣x
       (recursive depth)←2↑x,(≢x)↓0 ⍬
       path←NormalizePath path
-      (part1 part2)←SplitPath path
+      (part1 part2)←##.APLTreeUtils2.SplitPath path
       'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1
       'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir part1
       path↓⍨←-CurrentSep=¯1↑path
-      recursiveFlag←'recursive'≡Lowercase{0<⎕NC ⍵:⍎⍵ ⋄ ''}'recursive'
+      recursiveFlag←'recursive'≡##.APLTreeUtils2.Lowercase{0<⎕NC ⍵:⍎⍵ ⋄ ''}'recursive'
       :If recursiveFlag
       :AndIf ∨/'*?'∊path
           '"path" must not carry wildcard chars in case "Recursive" is specified'⎕SIGNAL 11
@@ -1070,7 +1044,7 @@
       :If 0=≢filenames
           success←0
       :Else
-          filenames←Nest filenames
+          filenames←⊆filenames
           filenames←NormalizePath filenames
           success←{19 22::0 ⋄ 0=≢⍵:0 ⋄ 1 ⎕NDELETE ⍵}¨filenames
       :EndIf
@@ -1141,7 +1115,7 @@
       :Access Public Shared
       ⍝ Returns the proper `newline` character(s) for `os` or, if `os` is empty, for the current OS.
       :If 0=≢os
-          os←GetOperatingSystem ⍬
+          os←##.APLTreeUtils2.GetOperatingSystem ⍬
       :EndIf
       '⍵ is not a supported Operating System'⎕SIGNAL 11/⍨~(⊂os)∊'Win' 'Lin' 'Mac'
       newline←('Win' 'Lin' 'Mac'⍳⊂os)⊃(⎕UCS 13 10)(⎕UCS 10)(⎕UCS 10)
@@ -1152,7 +1126,8 @@
     ⍝ * returns a vector rather than a matrix.
     ⍝ * normalizes all filenames
       :Access Public Shared
-      r←NormalizePath dtb↓⎕NNAMES
+ ⍝TODO⍝       r←NormalizePath ##.APLTreeUtils2.DTB↓⎕NNAMES ⍝ One day...
+      r←NormalizePath{⍵↓⍨-+/∧\' '=⌽⍵}¨↓⎕NNAMES
     ∇
 
     ∇ r←filename NCREATE tieNo
@@ -1164,7 +1139,7 @@
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝ Private stuff
 
     ∇ r←GetLastError;∆GetLastError
-      :Select GetOperatingSystem ⍬
+      :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
       :Case 'Win'
           '∆GetLastError'⎕NA'I4 kernel32.C32|GetLastError'
           r←∆GetLastError
@@ -1176,7 +1151,7 @@
     ∇
 
     ∇ (drive path)←HandlePath path
-      path←NormalizePath↑,/1 ⎕NPARTS path
+      path←NormalizePath⊃,/1 ⎕NPARTS path
       drive←''
       :If '\\'≢2↑path
           :If ~':'∊path
@@ -1239,20 +1214,20 @@
                           more←'Target already exists'
                           :Return
                       :EndIf
-                      :If 0<≢list←↑('recursive' 1)Dir source,CurrentSep
+                      :If 0<≢list←⊃('recursive' 1)Dir source,CurrentSep
                           bool←IsDir list
                           dirList←bool/list
                           dirExisted←IsDir target∘,¨(≢source)↓¨dirList
                           {0=≢⍵:shy←⍬ ⋄ ⎕MKDIR¨⍵}target∘,¨(≢source)↓¨(~dirExisted)/dirList
                           fileList←(~bool)/list
                           :If 0<≢fileList
-                              (rc more)←↓⍉⊃fileList{⍺ CopyTo ⍵}¨(target,CurrentSep)∘,¨(≢source)↓¨fileList
+                              (rc more)←↓⍉↑fileList{⍺ CopyTo ⍵}¨(target,CurrentSep)∘,¨(≢source)↓¨fileList
                               :If rc∧.=0
                                   (rc en more)←RmDir source
                               :EndIf
                           :EndIf
                       :Else
-                          ⎕MKDIR target,CurrentSep Last ¯1↓source
+                          ⎕MKDIR target,CurrentSep ##.APLTreeUtils2.Last ¯1↓source
                           (rc en more)←RmDir source
                       :EndIf
                   :Else
@@ -1268,7 +1243,7 @@
       :EndIf
     ∇
 
-    EncodeBlanks←{0=+/b←' '=w←⍵:w ⋄ (b/w)←⊂'\ '⋄ ↑,/w}
+    EncodeBlanks←{0=+/b←' '=w←⍵:w ⋄ (b/w)←⊂'\ '⋄ ⊃,/w}
 
     ∇ r←GetMsgFromError mid;FORMAT_MESSAGE_IGNORE_INSERTS;FORMAT_MESSAGE_FROM_SYSTEM;FormatMsg;mid;size;LangID;LoadLibrary;this;FORMAT_MESSAGE_FROM_HMODULE;hModule;FreeLibrary;ind;multiByte
     ⍝ Translate Message ID (mid) to something more useful for human beings.
@@ -1277,13 +1252,13 @@
       FORMAT_MESSAGE_FROM_SYSTEM←4096
       LangID←0
       'FormatMsg'⎕NA'I KERNEL32|FormatMessage* I4 I4 I4 I4 >T[] I4 I4'
-      :If 0>mid←↑mid
+      :If 0>mid←⊃mid
       :AndIf ¯16777216≤mid
           mid←-mid
       :EndIf
       multiByte←80=⎕DR' '                  ⍝ Flag: is Unicode
       size←1024×1+multiByte                ⍝ Dynamic buffer size
-      r←⊃↑/FormatMsg(FORMAT_MESSAGE_FROM_SYSTEM+FORMAT_MESSAGE_IGNORE_INSERTS)0 mid LangID size size 0
+      r←↑⊃/FormatMsg(FORMAT_MESSAGE_FROM_SYSTEM+FORMAT_MESSAGE_IGNORE_INSERTS)0 mid LangID size size 0
       :If 0=≢r
           'LoadLibrary'⎕NA'I KERNEL32|LoadLibrary* <0T'
           ⎕NA'I KERNEL32|FreeLibrary I'
@@ -1293,9 +1268,9 @@
                       ind←10013 10014 10024 10035 10036 10037 10038 10039 10040 10041 10042 10043 10044 10046 10047 10048 10049 10050 10051 10052 10053 10054 10055 10056 10057 10058 10059 10060 10061 10063 10064 10065 10066 10067 10068 10069 10070 10071 10091 10092 10093 10112 11001 11002 11003 11004
                       mid←(10060 10013 10023 10010 10011 10012 10026 10014 10015 10044 10036 10031 10030 10016 10029 10028 10122 10039 10046 10040 10038 10037 10127 10034 10035 10003 10047 10033 10135 10000 10042 10043 10017 10018 10019 10020 10021 10025 10001 10002 10148 10041 10005 10006 10007 10114,mid)[ind⍳mid]
                   :EndIf
-                  r←⊃↑/FormatMsg(FORMAT_MESSAGE_FROM_HMODULE+FORMAT_MESSAGE_IGNORE_INSERTS)hModule mid LangID size size 0
+                  r←↑⊃/FormatMsg(FORMAT_MESSAGE_FROM_HMODULE+FORMAT_MESSAGE_IGNORE_INSERTS)hModule mid LangID size size 0
                   {}FreeLibrary hModule
-                  :If ×↑⍴r
+                  :If ×⊃⍴r
                       :Leave
                   :EndIf
               :EndIf

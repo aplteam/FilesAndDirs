@@ -2,13 +2,13 @@
 ⍝ Exercise `MoveTree` with `source` having a trailing '/' but `target` does not. Was once a bug.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
- :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
      :Return
  :Else
      F←##.FilesAndDirs
-     tempPathSource←F.GetTempPath,'top',(↑⎕SI),'/'
-     tempPathTarget←F.GetTempPath,'Top',(↑⎕SI),'/target_'
+     tempPathSource←F.GetTempPath,'top',(⊃⎕SI),'/'
+     tempPathTarget←F.GetTempPath,'Top',(⊃⎕SI),'/target_'
      (rc en more)←F.RmDir tempPathSource
      Assert 0=rc
      (rc en more)←F.RmDir tempPathTarget

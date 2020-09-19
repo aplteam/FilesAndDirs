@@ -1,3 +1,6 @@
- r←Initial_Copy
+ r←Initial_Copy ps
 ⍝ Prevents the tests to be carried out in version 17.0 or better.
- r←~17<{⎕IO←⎕ML←1 ⋄ ⊃(//){⎕VFI ⍵/⍨2>+\'.'=⍵}2⊃⍵}#.APLVersion
+ :If ~r←~17<{⎕IO←⎕ML←1 ⋄ ⊃(//){⎕VFI ⍵/⍨2>+\'.'=⍵}2⊃⍵}# ⎕WG'APLVersion'
+ :AndIf 0=ps.batchFlag
+     ⎕←'"Copy" tests are suppressed because this can be achieved with built-in native function in this version of Dyalog'
+ :EndIf

@@ -7,7 +7,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
  :ElseIf 0=⎕NEXISTS ∆GetComputerName,'.ini'
      ⎕←'No INI file found for "',(∆GetComputerName),'"'
@@ -16,20 +16,20 @@
      ini←⎕NEW ##.IniFiles(,⊂∆GetComputerName,'.ini')
      sourceDir←##.FilesAndDirs.GetTempPath,('/',⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir sourceDir
-     filename←sourceDir,↑⎕SI
-     ##.APLTreeUtils.WriteUtf8File filename(↑⎕SI)
+     filename←sourceDir,⊃⎕SI
+     ⎕SI[1]##.FilesAndDirs.NPUT filename
      targetDir←##.FilesAndDirs.NormalizePath(↑ini.Get'Config:FolderOnSecondDrive'),('/',⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir targetDir
      (rc more)←filename ##.FilesAndDirs.MoveTo targetDir
      →T.GoToTidyUp 0≠rc
-     →T.GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,↑⎕SI
+     →T.GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,⊃⎕SI
      →T.GoToTidyUp 0≠##.FilesAndDirs.IsFile filename
-     ##.APLTreeUtils.WriteUtf8File filename'Overwritten'
+     (⊂'Overwritten')##.FilesAndDirs.NPUT filename 1
      (rc more)←filename ##.FilesAndDirs.MoveTo targetDir
      →T.GoToTidyUp 0≠rc
-     →T.GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,↑⎕SI
+     →T.GoToTidyUp 0=##.FilesAndDirs.IsFile targetDir,⊃⎕SI
      →T.GoToTidyUp 0≠##.FilesAndDirs.IsFile filename
-     →T.GoToTidyUp'Overwritten'≢##.APLTreeUtils.ReadUtf8File targetDir,↑⎕SI
+     →T.GoToTidyUp'Overwritten'≢⊃##.FilesAndDirs.NGET targetDir,⊃⎕SI
 
      R←T._OK
 

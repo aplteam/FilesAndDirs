@@ -5,13 +5,13 @@
 
  R←T._Failed
 
- :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬  ⍝ This makes sense under Windows only
+ :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬  ⍝ This makes sense under Windows only
 
-     filename←(↑⎕SI),'.txt'
+     filename←(⊃⎕SI),'.txt'
      parms←('filename'filename)('RIDE_INIT' '')
      (successFlag more)←parms ∆StartDyalogInstance'Tests/ExclusiveTie'
      :If 0=successFlag
-         ⎕←'Could not start instance of Dyalog, therefore test case ',(↑⎕SI),' failed.'
+         ⎕←'Could not start instance of Dyalog, therefore test case ',(⊃⎕SI),' failed.'
          :Return
      :Else
          ⎕DL 5

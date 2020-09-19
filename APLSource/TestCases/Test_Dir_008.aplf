@@ -7,10 +7,10 @@
      {}##.FilesAndDirs.Dir ∆Home,'/Second/*/*_?????'
      →T.PassesIf 0
  :Else
-     :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
-         →T.PassesIf∨/'Wildcard characters are allowed only after the last "\"'⍷↑⎕DM
+     :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
+         →T.PassesIf∨/'Wildcard characters are allowed only after the last "\"'⍷⊃⎕DM
      :Else
-         →T.PassesIf∨/'Wildcard characters are allowed only after the last "/"'⍷↑⎕DM
+         →T.PassesIf∨/'Wildcard characters are allowed only after the last "/"'⍷⊃⎕DM
      :EndIf
  :EndTrap
 

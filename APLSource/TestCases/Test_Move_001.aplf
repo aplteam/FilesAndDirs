@@ -5,12 +5,12 @@
 
  myTempDir←##.FilesAndDirs.GetTempPath,(⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
  ##.FilesAndDirs.MkDir myTempDir
- filename←myTempDir,↑⎕SI
- ##.APLTreeUtils.WriteUtf8File filename(↑⎕SI)
+ filename←myTempDir,⊃⎕SI
+ ⎕SI[1]##.FilesAndDirs.NPUT filename
  ##.FilesAndDirs.MkDir myTempDir,'TargetDir'
  (rc more)←filename ##.FilesAndDirs.MoveTo myTempDir,'TargetDir/'
  →T.GoToTidyUp 0≠rc
- →T.GoToTidyUp 0=##.FilesAndDirs.IsFile myTempDir,'TargetDir/',↑⎕SI
+ →T.GoToTidyUp 0=##.FilesAndDirs.IsFile myTempDir,'TargetDir/',⊃⎕SI
  →T.GoToTidyUp 0≠##.FilesAndDirs.IsFile filename
 
  R←T._OK

@@ -2,13 +2,13 @@
 ⍝ Exercise `MoveTree`: move a tree of dirs & files with 1 file tied (can be copied, not deleted) & 1 file tied exclusively (no copy & no delete)
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
- :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
      :Return
  :Else
      F←##.FilesAndDirs
-     tempPathSource←F.GetTempPath,'source_',↑⎕SI
-     tempPathTarget←F.GetTempPath,'target_',↑⎕SI
+     tempPathSource←F.GetTempPath,'source_',⊃⎕SI
+     tempPathTarget←F.GetTempPath,'target_',⊃⎕SI
      (rc en more)←F.RmDir tempPathSource
      Assert 0=rc
      (rc en more)←F.RmDir tempPathTarget
@@ -33,7 +33,7 @@
      →T.GoToTidyUp noOf_1a≠1+noOf2                    ⍝ One copy operation failed due to the exclusive tie
      →T.GoToTidyUp noOf_1b≠4                          ⍝ Deleting  failed on two files and their parent directories!
      →T.GoToTidyUp(noOf_1b+1)≠≢(~list[;2])⌿list[;0]   ⍝ We must add 1 for the top-most directory
-     row←filename(##.APLTreeUtils.Lowercase{↑##.APLTreeUtils.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
+     row←filename(##.APLTreeUtils2.Lowercase{↑##.APLTreeUtils2.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
      →T.GoToTidyUp 0=≢2⊃list[row;]
 
      R←T._OK

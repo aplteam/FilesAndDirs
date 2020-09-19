@@ -5,7 +5,7 @@
 
  list←('recursive' 1)##.FilesAndDirs.ListDirs ∆Home,'/'
 
- list2←↑('recursive' 1)('depth' 2)##.FilesAndDirs.Dir ∆Home,'/'
+ list2←⊃('recursive' 1)('depth' 2)##.FilesAndDirs.Dir ∆Home,'/'
  list2←(##.FilesAndDirs.IsDir list2)/list2
 
  →T.PassesIf(≢list)<≢list2                        ⍝ list2 must be smaller than list

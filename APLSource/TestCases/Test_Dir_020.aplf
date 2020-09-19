@@ -4,6 +4,6 @@
  R←T._Failed
 
  list←('follow' 0)##.FilesAndDirs.Dir ∆Home,'\Second\Sub_a\deep\*_*'
- →T.PassesIf 2=≢↑list
+ →T.PassesIf 2=≢⊃list
 
  R←T._OK

@@ -4,10 +4,10 @@
  R←T._Failed
 
  currentDir←##.FilesAndDirs.PWD
- path←##.FilesAndDirs.GetTempPath,'\',↑⎕SI
+ path←##.FilesAndDirs.GetTempPath,'\',⊃⎕SI
  'Create!'##.FilesAndDirs.CheckPath path
  {}##.FilesAndDirs.Cd path
- ##.APLTreeUtils.WriteUtf8File('file.md')('# File 1' '' 'A para')
+ {(⊂⍵)##.FilesAndDirs.NPUT ⍺}/('file.md')('# File 1' '' 'A para')
  list←↑##.FilesAndDirs.Dir'*.md'
 
  →T.GoToTidyUp 1≠≢list

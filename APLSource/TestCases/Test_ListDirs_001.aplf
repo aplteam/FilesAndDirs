@@ -17,14 +17,14 @@
      {}'Recursive'##.FilesAndDirs.ListDirs ∆Home,'/Second/Sub*'
      →T.FailsIf 1
  :Else
-     →T.PassesIf'"path" must not carry wildcard chars in case "Recursive" is specified'≡↑⎕DM
+     →T.PassesIf'"path" must not carry wildcard chars in case "Recursive" is specified'≡⊃⎕DM
  :EndTrap
 
  :Trap 11
      {}##.FilesAndDirs.ListDirs ∆Home,'/Sec*/Sub'
      →T.FailsIf 1
  :Else
-     →T.PassesIf'Wildcard characters are allowed only in the last part of a path'≡↑⎕DM
+     →T.PassesIf'Wildcard characters are allowed only in the last part of a path'≡⊃⎕DM
  :EndTrap
 
  R←T._OK

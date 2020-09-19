@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- myTempDir←##.FilesAndDirs.GetTempPath,(↑⎕SI),'/'
+ myTempDir←##.FilesAndDirs.GetTempPath,(⊃⎕SI),'/'
  ##.FilesAndDirs.MkDir myTempDir
  ##.FilesAndDirs.MkDir myTempDir,'From\'
  ##.FilesAndDirs.MkDir myTempDir,'To\'

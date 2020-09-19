@@ -4,15 +4,15 @@
  R←T._Failed
 
  list←##.FilesAndDirs.ListDirs'.\'
- list←2↓¨('.'≠↑¨2↓¨list)/list
- :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
+ list←2↓¨('.'≠⊃¨2↓¨list)/list
+ :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
      list2←⎕CMD'dir /AD'
      list2←2↓∆CutFilesFromDirCommand list2
-     list2←{⍵/⍨'.'≠↑¨⍵}{↑¯1↑' '(≠⊆⊢)##.APLTreeUtils.dmb ⍵}¨list2
+     list2←{⍵/⍨'.'≠⊃¨⍵}{↑¯1↑' '(≠⊆⊢)##.APLTreeUtils2.DMB ⍵}¨list2
  :Else
      list2←⎕SH'ls -l'
-     list2←('d'=↑¨list2)/list2
-     list2←{⍵↑⍨-(⌽⍵)⍳' '}¨list2
+     list2←('d'=⊃¨list2)/list2
+     list2←{⍵↑⍨-¯1+(⌽⍵)⍳' '}¨list2
  :EndIf
  →T.PassesIf≡/≢¨list list2
 

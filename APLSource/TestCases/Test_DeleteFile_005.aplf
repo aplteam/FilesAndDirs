@@ -4,7 +4,8 @@
  R←T._Failed
 
  target←'-TestFile'
- ##.APLTreeUtils.WriteUtf8File target'test file'
+ (⊂'test file')##.FilesAndDirs.NPUT target
+ ⎕DL 0.1
  →T.PassesIf 1≡##.FilesAndDirs.DeleteFile target
  →T.PassesIf 0=##.FilesAndDirs.IsFile target
 

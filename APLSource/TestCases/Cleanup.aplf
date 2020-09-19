@@ -4,5 +4,5 @@
  ⎕FUNTIE ⎕FNUMS
  :If ##.FilesAndDirs.Exists ∆Home
      rc←##.FilesAndDirs.RmDir ∆Home
-     ⍎(0≠0⊃rc)/'. ⍝ Huuh?!'
+     Assert 0=1⊃rc
  :EndIf

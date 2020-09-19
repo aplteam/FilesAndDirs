@@ -4,17 +4,17 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
  :Else
      parms←''
     ⍝parms,←⊂'-x' 1
-     parms,←⊂'filename'((↑⎕SI),'.txt"')
+     parms,←⊂'filename'((⊃⎕SI),'.txt"')
     ⍝parms,←⊂'session_file' ''
      (successFlag more)←parms ∆StartDyalogInstance'Tests/ReadOnlyTie'
      Assert successFlag
      ⎕DL 3
-     filename←↑,/1 ⎕NPARTS'Tests/',(↑⎕SI),'.txt'
+     filename←↑,/1 ⎕NPARTS'Tests/',(⊃⎕SI),'.txt'
      targetDir←##.FilesAndDirs.NormalizePath ##.FilesAndDirs.GetTempPath,('/',⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir targetDir
      (rc more)←filename ##.FilesAndDirs.MoveTo targetDir

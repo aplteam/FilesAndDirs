@@ -8,7 +8,7 @@
  myTempDir←##.FilesAndDirs.GetTempPath,(⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
  ##.FilesAndDirs.MkDir myTempDir
  filenames←{'foo_',(⍕⍵),'.txt'}¨1+⍳3
- ##.APLTreeUtils.WriteUtf8File{⍺⍺ ⍵ ⍵}¨myTempDir∘,¨filenames
+ ##.FilesAndDirs.NPUT{(⊂⍵)⍺⍺ ⍵}¨myTempDir∘,¨filenames
  ##.FilesAndDirs.MkDir myTempDir,'Sub/'
  (rc more)←(myTempDir∘,¨filenames)##.FilesAndDirs.CopyTo myTempDir,'Sub/'
  →T.GoToTidyUp 1∨.≠##.FilesAndDirs.IsFile¨(⊂myTempDir,'Sub/'),¨filenames

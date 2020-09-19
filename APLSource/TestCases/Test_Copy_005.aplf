@@ -3,13 +3,13 @@
 ⍝ This test makes sense under Windows only: there are no invalid filenames under Linux
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
 
- :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._Failed
 
      myTempDir←##.FilesAndDirs.GetTempPath,(⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir myTempDir
-     filename←myTempDir,↑⎕SI
-     ##.APLTreeUtils.WriteUtf8File filename(↑⎕SI)
+     filename←myTempDir,⊃⎕SI
+     ⎕SI[1]##.FilesAndDirs.NPUT filename
      (rc more)←filename ##.FilesAndDirs.CopyTo myTempDir,'TargetDir/***'
      →T.GoToTidyUp 0=rc
 

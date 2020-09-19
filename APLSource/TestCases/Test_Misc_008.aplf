@@ -5,11 +5,11 @@
  R←T._Failed
 
  currentDir←##.FilesAndDirs.PWD
- :Select ##.APLTreeUtils.GetOperatingSystem ⍬
+ :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
-     buff←↑⎕SH'cd'
+     buff←⊃⎕SH'cd'
  :CaseList 'Lin' 'Mac'
-     buff←↑⎕SH'pwd'
+     buff←⊃⎕SH'pwd'
  :Else
      .⍝ Huuh?!
  :EndSelect

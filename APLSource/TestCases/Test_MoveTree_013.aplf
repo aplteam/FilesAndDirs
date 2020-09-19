@@ -2,13 +2,13 @@
 ⍝ Exercise `MoveTree`: move a tree of dirs and files with one file tied so that is can be copied but not deleted.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
- :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
      :Return
  :Else
      F←##.FilesAndDirs
-     tempPathSource←F.GetTempPath,'source_',↑⎕SI
-     tempPathTarget←F.GetTempPath,'target_',↑⎕SI
+     tempPathSource←F.GetTempPath,'source_',⊃⎕SI
+     tempPathTarget←F.GetTempPath,'target_',⊃⎕SI
      (rc en more)←F.RmDir tempPathSource
      Assert 0=rc
      (rc en more)←F.RmDir tempPathTarget
@@ -28,7 +28,7 @@
      noOf_1b←≢sourceList←↑('recursive' 1)F.Dir tempPathSource,'\'
      →T.GoToTidyUp noOf_1a≠noOf2          ⍝ Copy worked!
      →T.GoToTidyUp noOf_1b≠3              ⍝ But deleting one file and its parent directories failed!
-     row←filename(##.APLTreeUtils.Lowercase{↑##.APLTreeUtils.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
+     row←filename(##.APLTreeUtils2.Lowercase{↑##.APLTreeUtils2.Where((-≢⍺)↑¨⍺⍺ ⍵)≡¨⊂⍺⍺ ⍺})list[;0]
      →T.GoToTidyUp 0=≢2⊃list[row;]
 
      R←T._OK

@@ -4,9 +4,9 @@
  R←T._Failed
 
  path←∆Home
- list1←0⊃('recursive' 1)('follow' 0)##.FilesAndDirs.Dir path,'\'
+ list1←1⊃('recursive' 1)('follow' 0)##.FilesAndDirs.Dir path,'\'
  →T.PassesIf 20=≢list1     ⍝ Without following the symbolic link
- list2←0⊃('recursive' 1)##.FilesAndDirs.Dir path,'\'
+ list2←1⊃('recursive' 1)##.FilesAndDirs.Dir path,'\'
  →T.PassesIf 23=≢list2
 
  R←T._OK

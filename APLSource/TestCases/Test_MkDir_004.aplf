@@ -3,7 +3,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- myTempPath←('Win'≡##.APLTreeUtils.GetOperatingSystem ⍬)⊃'\0Doesnotwork' '2:\Doesnotwork'
+ myTempPath←(1+'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⊃'\0Doesnotwork' '2:\Doesnotwork'
 
  →T.PassesIf 0=##.FilesAndDirs.MkDir myTempPath
 

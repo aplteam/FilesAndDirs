@@ -7,14 +7,14 @@
  tempSubDir←##.FilesAndDirs.GetTempSubDir''
  (path folder)←2↑⎕NPARTS tempSubDir
  →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →T.GoToTidyUp ⎕AN≢↑'_'##.APLTreeUtils.Split folder
+ →T.GoToTidyUp ⎕AN≢⊃'_'##.APLTreeUtils2.Split folder
  →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 
  tempSubDir←##.FilesAndDirs.GetTempSubDir'Foo'
  (path folder)←2↑⎕NPARTS tempSubDir
  →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →T.GoToTidyUp'Foo'≢↑'_'##.APLTreeUtils.Split folder
+ →T.GoToTidyUp'Foo'≢⊃'_'##.APLTreeUtils2.Split folder
  →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 

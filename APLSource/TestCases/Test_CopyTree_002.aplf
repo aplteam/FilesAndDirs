@@ -9,7 +9,7 @@
      →T.FailsIf 1
  :Else
      dmx←⎕DMX
-     →T.PassesIf'Right argument has wildcard characters'≡↑dmx.DM
+     →T.PassesIf'Right argument has wildcard characters'≡⊃dmx.DM
  :EndTrap
 
  R←T._OK

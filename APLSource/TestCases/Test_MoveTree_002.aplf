@@ -9,7 +9,7 @@
      (success more list)←∆Home ##.FilesAndDirs.MoveTree tempPath
      →T.FailsIf 1
  :Else
-     →T.PassesIf'Right argument has wildcard characters'≡↑⎕DM
+     →T.PassesIf'Right argument has wildcard characters'≡⊃⎕DM
  :EndTrap
 
  R←T._OK

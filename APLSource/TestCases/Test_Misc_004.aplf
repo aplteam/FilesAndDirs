@@ -7,8 +7,8 @@
  tempDir←##.FilesAndDirs.GetTempPath
  myTempFile←tempDir,(⍕##.OS.GetPID),'_',' '~⍨(⍕⎕TS),'_1'
  myTempFile2←tempDir,(⍕##.OS.GetPID),'_',' '~⍨(⍕⎕TS),'_2'
- ##.APLTreeUtils.WriteUtf8File myTempFile'Temp test file'
- ##.APLTreeUtils.WriteUtf8File myTempFile2'Another temp test file'
+ {(⊂⍵)##.FilesAndDirs.NPUT ⍺}/myTempFile'Temp test file'
+ {(⊂⍵)##.FilesAndDirs.NPUT ⍺}/myTempFile2'Another temp test file'
  →T.GoToTidyUp 0≠##.FilesAndDirs.IsDir myTempFile
  →T.GoToTidyUp 1≠##.FilesAndDirs.IsFile myTempFile
  →T.GoToTidyUp 1 1≢##.FilesAndDirs.IsFile myTempFile myTempFile2

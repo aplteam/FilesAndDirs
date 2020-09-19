@@ -3,10 +3,10 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- :If 'Win'≢##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
  :Else
-     path←(##.WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\Configuration\BaseRegistration'
+     path←(##.WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\Configuration\'
      list←##.FilesAndDirs.ListFiles path
      →T.PassesIf 0=≢list
 

@@ -4,26 +4,26 @@
  R←T._Failed
 
  list←##.FilesAndDirs.ListFiles'.\'
- list←{⍵/⍨'.'≠↑¨⍵}2↓¨list
- :If 'Win'≡##.APLTreeUtils.GetOperatingSystem''
+ list←{⍵/⍨'.'≠⊃¨⍵}2↓¨list
+ :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem''
      list2←⎕CMD'dir'
      list2←∆CutFilesFromDirCommand list2
-     list2←##.APLTreeUtils.dtb list2
-     list2←{⍵↑⍨-(⌽⍵)⍳' '}¨list2
-     list2←('.'≠↑¨list2)/list2
+     list2←##.APLTreeUtils2.DLB ##.APLTreeUtils2.DTB list2
+     list2←{⍵↑⍨-¯1+(⌽⍵)⍳' '}¨list2
+     list2←('.'≠⊃¨list2)/list2
  :Else
      list2←⎕SH'ls'
  :EndIf
- :If 'Win'≡##.APLTreeUtils.GetOperatingSystem''
+ :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem''
      list3←⎕CMD'dir /AD'
      list3←∆CutFilesFromDirCommand list3
-     list3←('.'≠↑¨list3)/list3
-     list3←##.APLTreeUtils.dtb list3
+     list3←('.'≠⊃¨list3)/list3
+     list3←##.APLTreeUtils2.DLB ##.APLTreeUtils2.DTB list3
  :Else
      list3←⎕SH'ls -l'
-     list3←('d'=↑¨list3)⌿list3
+     list3←('d'=⊃¨list3)⌿list3
  :EndIf
- list3←{⍵↑⍨-(⌽⍵)⍳' '}¨list3
+ list3←{⍵↑⍨-¯1+(⌽⍵)⍳' '}¨list3
  list2~←list3
  →T.PassesIf≡/≢¨list list2
 

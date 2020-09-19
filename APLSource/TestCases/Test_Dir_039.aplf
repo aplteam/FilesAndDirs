@@ -3,18 +3,19 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- list←2↓¨↑##.FilesAndDirs.Dir'./'
- list←('.'≠↑¨list)/list
- :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
+⍝ Because .git is hidden we simply remove everything that starts with a "."
+ list←2↓¨⊃##.FilesAndDirs.Dir'./'
+ list←('.'≠⊃¨list)/list
+ :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
      list2←⎕CMD'dir'
      list2←∆CutFilesFromDirCommand list2
-     list2←##.APLTreeUtils.dtb list2
-     list2←2↓{⍵↑⍨-(⌽⍵)⍳' '}¨list2
+     list2←##.APLTreeUtils2.DLB ##.APLTreeUtils2.DTB list2
+     list2←{⍵↑⍨-¯1+(⌽⍵)⍳' '}¨list2
  :Else
      list2←⎕SH'ls'
  :EndIf
- list2←('.'≠↑¨list2)/list2
+ list2←('.'≠⊃¨list2)/list2
 
- →T.PassesIf{∧/(⍺∊⍵)∧(⍵∊⍺)}/##.APLTreeUtils.Lowercase¨list list2   ⍝ Sort sequence depends on OS!
+ →T.PassesIf{∧/(⍺∊⍵)∧(⍵∊⍺)}/##.APLTreeUtils2.Lowercase¨list list2   ⍝ Sort sequence depends on OS!
 
  R←T._OK

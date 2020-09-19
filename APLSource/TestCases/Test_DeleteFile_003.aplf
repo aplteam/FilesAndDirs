@@ -4,8 +4,8 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- source←##.FilesAndDirs.GetTempPath,(↑⎕SI),'_source'
- link←##.FilesAndDirs.GetTempPath,(↑⎕SI),'_link'
+ source←##.FilesAndDirs.GetTempPath,(⊃⎕SI),'_source'
+ link←##.FilesAndDirs.GetTempPath,(⊃⎕SI),'_link'
  {}##.FilesAndDirs.RmDir source ⍝ Get rid of any leftovers
 
  ##.FilesAndDirs.MkDir source

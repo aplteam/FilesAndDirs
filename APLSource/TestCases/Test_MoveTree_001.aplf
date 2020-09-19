@@ -7,7 +7,7 @@
      ''##.FilesAndDirs.MoveTree''
      →T.FailsIf 1
  :Else
-     →T.PassesIf'Left argument is not a directory'≡↑⎕DM
+     →T.PassesIf'Left argument is not a directory'≡⊃⎕DM
  :EndTrap
 
  R←T._OK

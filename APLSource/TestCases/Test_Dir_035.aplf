@@ -4,13 +4,13 @@
  R←T._Failed
 
  path←'Tests\Test Dir'
- list←0⊃('recursive' 1)##.FilesAndDirs.Dir path,'\'
+ list←1⊃('recursive' 1)##.FilesAndDirs.Dir path,'\'
  →T.PassesIf 9=≢list
- list←0⊃('recursive' 1)##.FilesAndDirs.Dir path,'\sha*.*'
+ list←⊃('recursive' 1)##.FilesAndDirs.Dir path,'\sha*.*'
  →T.PassesIf 3=≢list
- →T.PassesIf∧/'sha'{⍺∘≡¨(≢⍺)↑¨⍵}1⊃∘⎕NPARTS¨{⍵/⍨##.FilesAndDirs.IsFile ⍵}list
- list←0⊃('recursive' 1)##.FilesAndDirs.Dir path,'\*.log'
+ →T.PassesIf∧/'sha'{⍺∘≡¨(≢⍺)↑¨⍵}2⊃∘⎕NPARTS¨{⍵/⍨##.FilesAndDirs.IsFile ⍵}list
+ list←1⊃('recursive' 1)##.FilesAndDirs.Dir path,'\*.log'
  →T.PassesIf 3=≢list
- →T.PassesIf∧/'.log'∘≡¨2⊃∘⎕NPARTS¨{⍵/⍨##.FilesAndDirs.IsFile ⍵}list
+ →T.PassesIf∧/'.log'∘≡¨3⊃∘⎕NPARTS¨{⍵/⍨##.FilesAndDirs.IsFile ⍵}list
 
  R←T._OK

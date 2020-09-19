@@ -7,7 +7,7 @@
  →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Lin'
  →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Mac'
 
- :Select ##.APLTreeUtils.GetOperatingSystem ⍬
+ :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
      →T.PassesIf(⎕UCS 13 10)≡##.FilesAndDirs.GetNewLineCharsFor''
  :Case 'Lin'
@@ -20,7 +20,7 @@
      {}##.FilesAndDirs.GetNewLineCharsFor'Foo'
      →T.FailsIf 1
  :Else
-     →T.PassesIf'⍵ is not a supported Operating System'≡↑⎕DM
+     →T.PassesIf'⍵ is not a supported Operating System'≡⊃⎕DM
  :EndTrap
 
  R←T._OK

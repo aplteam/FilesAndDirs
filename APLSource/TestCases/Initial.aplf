@@ -1,6 +1,6 @@
  Initial
- ⎕IO←0 ⋄ ⎕ML←3
+ ⎕IO←1 ⋄ ⎕ML←1
  ##.FilesAndDirs.PolishCurrentDir
  Cleanup
- ∆CreateDirsAndFiles ∆Home
+ {}∆CreateDirsAndFiles ∆Home
 ⍝Done

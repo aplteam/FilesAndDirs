@@ -5,11 +5,11 @@
 
  R←T._Failed
 
- :If 'Win'≡##.APLTreeUtils.GetOperatingSystem ⍬
+ :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
      myTempDir←##.FilesAndDirs.GetTempPath,(⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
      ##.FilesAndDirs.MkDir myTempDir
      filenames←{'foo_',(⍕⍵),'.txt'}¨'1' '*' '3'
-     ##.APLTreeUtils.WriteUtf8File{⍺⍺ ⍵ ⍵}¨myTempDir∘,¨1 0 1/filenames
+     ##.FilesAndDirs.NPUT{(⊂⍵)⍺⍺ ⍵}¨myTempDir∘,¨1 0 1/filenames
      ##.FilesAndDirs.MkDir myTempDir,'Sub/'
      (rc more)←(myTempDir∘,¨filenames)##.FilesAndDirs.CopyTo myTempDir,'Sub/'
      →T.GoToTidyUp 2≠+/##.FilesAndDirs.IsFile¨(⊂myTempDir,'Sub/'),¨filenames
@@ -24,4 +24,3 @@
  :Else
      R←T._WindowsOnly
  :EndIf
-

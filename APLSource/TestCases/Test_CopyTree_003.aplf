@@ -7,7 +7,7 @@
      111 ##.FilesAndDirs.CopyTree''
      →T.FailsIf 1
  :Else
-     →T.PassesIf'Invalid left argument'≡↑⎕DM
+     →T.PassesIf'Invalid left argument'≡⊃⎕DM
  :EndTrap
 
  R←T._OK

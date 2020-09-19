@@ -4,7 +4,7 @@
  R←T._Failed
 
  myTempDir←##.FilesAndDirs.GetTempPath,(⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS),'/'
- filename←myTempDir,↑⎕SI
+ filename←myTempDir,⊃⎕SI
  (rc more)←filename ##.FilesAndDirs.CopyTo ##.FilesAndDirs.GetTempPath
  →T.FailsIf 0=rc
 

@@ -2,8 +2,8 @@
  result←more←''
  :Trap 11
      buff←⎕SH cmd,' 2>&1; echo "CMDEXIT=$?"; exit 0'
-     :If 0≠rc←⍎(⍴'CMDEXIT=')↓↑¯1↑buff
-         more←0⊃buff
+     :If 0≠rc←⍎(⍴'CMDEXIT=')↓⊃¯1↑buff
+         more←1⊃buff
      :Else
          result←¯1↓buff
      :EndIf
