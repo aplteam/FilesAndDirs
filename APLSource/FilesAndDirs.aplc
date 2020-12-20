@@ -38,19 +38,21 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '4.1.0.86' '2020-11-22'
+      r←'FilesAndDirs' '5.0.0.92' '2020-12-20'
     ∇
 
 
     ∇ History
       :Access Public shared
-      ⍝ * 4.1.0 ⋄ 2020-11-22
+      ⍝ * 5.0.0 ⋄ 2020-12-20
+      ⍝   * BREAKING CHANGE: `CopyTo` and `MoveTo` as well as `CopyTree` and `MoveTree` and also `CreateFile`
+      ⍝     were removed from `FilesAndDirs`. Reason is that the system functions `⎕NCOPY` and `⎕NMOVE`
+      ⍝     can be used for this now.
       ⍝   * Both `NPUT` and `NGET` now try to overcome a FILE ACCESS error twice before giving up.
-      ⍝ * 4.0.0 ⋄ 2020-09-18
-      ⍝   * APLTreeUtils is not any longer :Included but instead...
-      ⍝   * APLTreeUtils2 is required as a class
-      ⍝   * Requires at least version 18.0 of Dyalog
-      ⍝   * Internally `⎕ML←1` is used now
+      ⍝   * `DeleteFile` tries to overcome such problems in a similar fashion.
+      ⍝   * `RmDir` now uses `⎕NDELETE` internally with the benefit of being resilient when somebody
+      ⍝     is looking into a folder that is about to be deleted.
+      ⍝   * Internal change: calls to `APLTreeUtils.Lowercase` were removed by calls to `⎕C`
       ⍝\\
       ⍝ For information regarding older version see <https://github.com/aplteam/FilesAndDirs/releases>
     ∇
@@ -220,7 +222,7 @@
               :EndIf
               success←1
           :Else
-              :If 3>counter←counter+1
+              :If 4>counter←counter+1
                   ⎕DL 0.1×counter
               :Else
                   qdmx←⎕DMX
@@ -250,7 +252,7 @@
               :EndIf
               success←1
           :Else
-              :If 3>counter←counter+1
+              :If 4>counter←counter+1
                   ⎕DL 0.1×counter
               :Else
                   qdmx←⎕DMX
@@ -260,275 +262,19 @@
       :Until success
     ∇
 
-    ∇ {(rc more)}←source CopyTo target;buff;cmd;∆CopyFile;a
-      :Access Public Shared
-    ⍝ Copies `source` to `target`.\\
-    ⍝ The left argument must be one of:
-    ⍝ * A filename (simple string).
-    ⍝ * A vector of text strings, each representing a filename.\\
-    ⍝ In case it is a single filename then the right argument must be either a
-    ⍝ directory (in which case the filename itself persists) or a filename.\\
-    ⍝ In case the left argument is a vector of filenames the right argument
-    ⍝ must be either a single directory (all files are copied into that
-    ⍝ directory, and the filenames as such persist) or a vector of the same
-    ⍝ length as the left argument defining the new filenames.\\
-    ⍝ Note that wildcard characters are not supported.\\
-    ⍝ `CopyTo` overwrites target file(s) if there are any.\\
-    ⍝ Examples:
-    ⍝ ~~~
-    ⍝ 'C:\readme.txt' FilesAndDirs.CopyTo 'D:\buffer\'
-    ⍝ 'C:\readme.txt' FilesAndDirs.CopyTo 'D:\buffer\newname.txt'
-    ⍝ 'C:\file1' 'C:\file2' FilesAndDirs.CopyTo 'D:\buffer\'
-    ⍝ 'C:\file1' 'C:\file2' FilesAndDirs.CopyTo 'D:\buffer\A' D:\buffer\B
-    ⍝ ~~~
-    ⍝ The method always returns a (shy) two-item vector as result:
-    ⍝ 1. `rc` is either 0 for "okay" or an error code.
-    ⍝ 2. `more` is an empty text vector in case `rc` is 0. It might hold
-    ⍝    additional information in case `rc` is not 0.\\
-    ⍝ Note that in case `source` is a nested vector of text vectors than both `rc` and
-    ⍝ `more` are nested as well, and the length will match the length of `source`.
-      rc←0 ⋄ more←''
-      :If 2=≡source
-          target←⊆target
-          :If ≢/⍴¨source target
-          :AndIf 1≠≢target
-              'Length of left and right argument do do not fit'⎕SIGNAL 5
-          :EndIf
-          (rc more)←↓⍉↑source CopyTo¨target
-      :Else
-          (source target)←NormalizePath source target
-          :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
-          :Case 'Win'
-              '∆CopyFile'⎕NA'I kernel32.C32|CopyFile* <0T <0T I2'
-              :If CurrentSep=¯1↑target
-                  target,←⊃,/1↓⎕NPARTS source
-              :EndIf
-              :If 0=∆CopyFile((source~'"')(target~'"')),0
-                  rc←GetLastError
-                  more←GetMsgFromError rc
-              :EndIf
-          :CaseList 'Lin' 'Mac'
-              cmd←'cp -- "',source,'" "',target,'"'
-              (rc more buff)←##.OS.ShellExecute cmd
-          :Else
-              . ⍝Huuh?!
-          :EndSelect
-      :EndIf
-    ∇
-
-    ∇ {(rc more)}←source MoveTo target;bool;buff;noOf
-      :Access Public Shared
-    ⍝ Moves `source` to `target`.\\
-    ⍝ The function returns a 0 for "okay" and an error number otherwise. `more` is a text
-    ⍝  message which is empty in case of success.\\
-    ⍝ The left argument must be a either a text vector representing a filename or a directory
-    ⍝ name or a vector of text vectors representing a vector of filenames.\\
-    ⍝ The right argument might be a filename or a directory in case the left argument
-    ⍝ is a single filename/directory name. If the left argument is a vector of filenames then
-    ⍝ the right argument must be either a single directory name or a vector of the same length
-    ⍝ than the left argument with filenames and/or directory names.\\
-    ⍝ If the right argument specifies a directory the filename part of `source` is used for
-    ⍝ the new file.\\
-    ⍝ Notes:
-    ⍝ * Wildcard characters are not supported.
-    ⍝ * If you try to move a non-existing file you get a `¯1` as return code and
-    ⍝   an appropriate message on `more`.
-    ⍝ * If there is a name clash in `target` the already existing file will be overwritten.\\
-    ⍝ The function returns a two-item vector. The first item is one of:
-    ⍝ * `¯1` for internal errors (invalid argument(s) etc).
-    ⍝ * `0` for success.
-    ⍝ * OS error codes otherwise\\
-    ⍝ The second item is an empty vector in case of success but may be a text vector with
-    ⍝ additional information otherwise.\\
-    ⍝ Both items will be vectors themselves in case `source` is a nested vector.\\
-    ⍝ This function will move file(s) by first copying them over and then 
-    ⍝ attempting to delete the source file. Note however that when the delete operation
-    ⍝ fails the copied file will be deleted. This is consistent with the behaviour of the
-    ⍝ Windows `MoveFileEx` function. Note that `MoveTree` behaves **differently**.\\
-    ⍝ Examples:
-    ⍝ ~~~
-    ⍝ 'C:\readme.txt' FilesAndDirs.MoveTo 'D:\buffer\'
-    ⍝ 'C:\readme.txt' FilesAndDirs.MoveTo 'D:\buffer\newname.txt'
-    ⍝ ~~~
-      :If ∨/0=≢¨source target
-          rc←¯1
-          more←'Invalid left argument'
-      :EndIf
-      :If 2=≡source
-          target←⊆target
-          source←NormalizePath source
-          target←NormalizePath target
-          :If ≢/⍴¨source target
-          :AndIf 1≠≢target
-              'Length of left and right argument do do not fit'⎕SIGNAL 5
-          :EndIf
-          noOf←≢source
-          rc←(noOf)⍴0
-          more←noOf⍴⊂''
-          :If ∨/bool←⎕NEXISTS¨target
-              buff←↓⍉↑(bool/source)MoveTo¨bool/target
-              (bool/rc)←0⊃buff
-              (bool/more)←1⊃buff
-              bool←~bool
-              (bool/rc)←3
-              (bool/more)←⊂'The system cannot find the path specified.'
-          :Else
-              rc←(≢bool)⍴3
-              more←(≢bool)⍴'The system cannot find the path specified.'
-          :EndIf
-      :Else
-          (source target)←{NormalizePath⊃,/1 ⎕NPARTS ⍵}¨source target
-          :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
-          :Case 'Win'
-              (rc more)←source Win_MoveTo target
-          :CaseList 'Lin' 'Mac'
-              (rc more)←source Unix_MoveTo target
-          :Else
-              .  ⍝ Huuh?!
-          :EndSelect
-      :EndIf
-    ∇
-
-    ∇ (success more list)←source CopyTree target;tree;ind;buff
-    ⍝ ## Overview
-    ⍝ `source` must be an existing directory. `target` must be either a existing directory
-    ⍝ or a valid directory name.\\
-    ⍝ All files and directories in `source` are copied over to `target`.\\
-    ⍝ ## Result
-    ⍝ * `success` is a Boolean with 1 indicating success. A 0 means failure, but the failure
-    ⍝    may not be total: in case, say, 100 files are to be copied and some of them failed
-    ⍝    because of a, say, ACCESS DENIED error then `success` will be 0 but `list` gives
-    ⍝    you the full story.\\
-    ⍝ * `more` is empty if everything is okay. It may contain additional information if
-    ⍝    something goes wrong. An example is when the `target` directory cannot be created.\\
-    ⍝ * `list` is a matrix with three columns:
-    ⍝   * `[;0]` is a list of names of all files and directories that were copied/created.
-    ⍝   * `[;1]` is the return code: either 0 for okay or an error number.
-    ⍝   * `[;2]` is either an empty vector (in case of success) or additional information as
-    ⍝     a text vector.\\
-    ⍝ ## Notes
-    ⍝ * `CopyTree` does not rollback in case something goes wrong; instead it keeps trying.
-    ⍝ * `target` might already contain stuff; in case of name conflicts any already
-    ⍝   existing files will be overwritten.
-      :Access Public Shared
-      success←1 ⋄ more←'' ⋄ list←0 3⍴'' 0 0
-     
-      'Invalid left argument'⎕SIGNAL 11/⍨(~(≡source)∊0 1)∨80≠⎕DR source
-      'Invalid right argument'⎕SIGNAL 11/⍨(~(≡target)∊0 1)∨80≠⎕DR target
-      'Left argument is not a directory'⎕SIGNAL 11/⍨0=IsDir source
-      'Right argument is a file'⎕SIGNAL 11/⍨IsFile target
-      'Right argument has wildcard characters'⎕SIGNAL 11/⍨∨/'*?'∊target
-      (source target)←NormalizePath source target
-      source←(-+/∧\CurrentSep=⌽source)↓source
-      :If 0=⎕NEXISTS target
-          :Trap 19 22
-              MkDir target
-          :Else
-              success←0
-              more←'Could not create target directory'
-              :Return
-          :EndTrap
-      :EndIf
-      :Trap 11
-          tree←((⍉↑('recursive' 1)('type'(0 1))Dir source,CurrentSep),0),' '
-      :Else
-          success←0
-          more←'Could not get contents of source directory'
-          :Return
-      :EndTrap
-      list⍪←({⍵↓⍨-CurrentSep=¯1↑⍵}target)0 ''
-      :If 0≠≢tree
-        ⍝ We now create all directories
-          ind←⍸1=tree[;1]
-          tree[ind;2]←~'Create!'CheckPath target∘,¨(≢source)↓¨tree[ind;0]
-        ⍝ Now we copy the files over
-          tree[ind;3]←⊂''
-          ind←⍸2=tree[;1]
-          tree[ind;2 3]←⍉↑tree[ind;0]CopyTo target∘,¨(≢source)↓¨tree[ind;0]
-          buff←tree[;0 2 3]
-          buff[;0]←(⊂target),¨(≢source)↓¨buff[;0]
-          list⍪←buff
-          success←list[;1]∧.=0
-      :EndIf
-    ∇
-
     ∇ r←CurrentSep
     ⍝ Returns what is the "correct" filename separator under the current OS.
       :Access Public Shared
       r←('Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⊃'/\'
     ∇
 
-    ∇ (success more list)←source MoveTree target;success;ind;delFlags;isLinkOrFile;isLinkOrDir;okay;bool;linksAndDirs;isFile;lowercase
-    ⍝ ## Overview
-    ⍝ `source` must be an existing directory. `target` must be either an existing directory
-    ⍝ or a valid directory name.\\
-    ⍝ All files and directories in `source` are copied over to `target` and then deleted from `source`.\\
-    ⍝ ## Result
-    ⍝ `success` is Boolean with 1 indicating complete success. A 0 means failure, but the failure may
-    ⍝ not be total: in case, say, 100 files are to be copied and just some of them failed
-    ⍝ because of, say, an ACCESS DENIED error then `success` will be 0 but `list` gives you the
-    ⍝ full story. Even if all copy operations succeed `success` might become 0 because one of the
-    ⍝ delete operations failed. Note however that when files (and possibly directories) are moved
-    ⍝ into a sub-directorie then the hosting directory cannot be deleted of course; this does not
-    ⍝ count as a failure.\\
-    ⍝ `more` is empty if everything is okay. It may contain additional information if
-    ⍝ something goes wrong. An example is when the `target` directory cannot be created.\\
-    ⍝ `list` is a matrix with four columns:
-    ⍝ * `[;0]` is a list of names of all files and directories that were copied.
-    ⍝ * `[;1]` is the copy-related return code: 0 if okay or and an error number otherwise.
-    ⍝ * `[;2]` is delete-related Boolean indicating success (1) or failure (0).
-    ⍝ * `[;3]` is either `''` (in case of success) or possibly additional information (text vector).\\
-    ⍝ ## Misc
-    ⍝ `MoveTree` does not rollback in case something goes wrong;
-    ⍝ instead it keeps trying. That means that both the copy and the delete operation may have failed
-    ⍝ but can also mean that a copy-operation might have been successful but the associated delete
-    ⍝ operation failed. Note that `MoveTo` behaves **differently**.\\
-    ⍝ Note that `target` might already contain stuff; in case of name conflicts any already
-    ⍝ existing files will be overwritten.
-      :Access Public Shared
-      success←1 ⋄ more←'' ⋄ list←0 4⍴'' 0 0 ''
-      'Invalid left argument'⎕SIGNAL 11/⍨(~(≡source)∊0 1)∨80≠⎕DR source
-      'Invalid right argument'⎕SIGNAL 11/⍨(~(≡target)∊0 1)∨80≠⎕DR target
-      'Left argument is not a directory'⎕SIGNAL 11/⍨0=IsDir source
-      'Right argument is a file'⎕SIGNAL 11/⍨IsFile target
-      (source target)←NormalizePath source target
-      (source target)←{⍵↓⍨-'/\'∊⍨¯1↑⍵}¨source target
-      (success more list)←source CopyTree target
-      list←list[;0 1 1 2]
-      list[;0]←source∘,¨(≢target)↓¨list[;0]
-      isLinkOrFile←({1 ⎕NINFO⍠('Follow' 0)⊣⍵}¨list[;0])∊2 4
-      isLinkOrFile∧←isLinkOrFile\IsFile isLinkOrFile/list[;0]
-      okay←list[;1]=0
-      bool←okay∧isLinkOrFile
-      isFile←IsFile list[;0]
-      {}{0::⍬ ⋄ 1 ⎕NDELETE ⍵}¨bool/list[;0]                                 ⍝ Links and files first
-      isLinkOrDir←okay∧({19 22::0 ⋄ 1 ⎕NINFO⍠('Follow' 0)⊣⍵}¨list[;0])∊1 4
-      linksAndDirs←isLinkOrDir/list[;0]
-      ind←⍒+/CurrentSep=↑linksAndDirs                                       ⍝ Sub directories first!
-      {}{0::⍬ ⋄ 1 ⎕NDELETE ⍵}¨linksAndDirs[ind]
-      list[;2]←~Exists list[;0]
-      lowercase←{##.APLTreeUtils2.Lowercase⍣('Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬)⊣⍵}
-      (source target)←lowercase¨source target
-      (source target)←NormalizePath¨source target
-      :If source{(⍺,(¯1↑⍵))≡⍵}(1+≢source)↑target
-          success←list[;1]∧.=0
-          ⍝ We copied into a sub-dir, so both the top dir and the target dir cannot be deleted:
-          success∧←∧/(~(lowercase list[;0])∊source target)/list[;2]
-      :Else
-          success←(∧/list[;2])∧list[;1]∧.=0
-      :EndIf
-     ⍝Done
-    ∇
-
-    ∇ {(rc en more)}←{mustBeEmpty}RmDir path;list;bool
+    ∇ {(rc en more)}←{mustBeEmpty}RmDir path;list;bool;flags;flag;counter;qdmx
       :Access Public Shared
       ⍝ Tries to remove `path`.\\
       ⍝ The method attempts to remove `path` and, by default, **all its contents**.\\
       ⍝ If for some reason you want to make sure that `path` is only removed when empty you can
       ⍝ specify a 1 as left argument. In that case the method will not do anything if the directory
       ⍝ `path` is not empty.\\
-      ⍝ Note that this method may fail for reasons as trivial as somebody looking into `path`
-      ⍝ with a file explorer at the moment of execution.
       ⍝ However, the method may still be partly successful because it might have deleted files
       ⍝ in `path` before it actually fails to remove the directory `path` itself.\\
       ⍝ The result is a three-element vector:
@@ -537,95 +283,47 @@
       ⍝ 1. `more`: empty text vector in case `rc` is 0 and possible additional information otherwise.\\
       ⍝ Notes:
       ⍝ * If `path` does not exist `(0 0 'Directory does not exist')` is returned.
+      ⍝ * If `path` exists but is not a directory `(1 6 'Not a directory')` is returned.
       ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`.
       ⍝   If such characters are specified anyway then an error is signalled.\\
       ⍝   This is true even under Linux and Mac OS despite the fact that these characters are legal in
       ⍝   the names of any files and directories.
+      ⍝ * If `path` is a nested vector `RmDir` calls itself recurively. The length of `rc` and `en` and `more`
+      ⍝   match `≢path` in this case.
       mustBeEmpty←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'mustBeEmpty'
+      'Invalid left argument.'⎕SIGNAL 11/⍨~(⊂mustBeEmpty)∊0 1
+      rc←0 ⋄ en←0 ⋄ more←''
+      'Wildcard characters are not allowed'⎕SIGNAL 11/⍨∨/'*?'∊path
       :If 2=|≡path
           (rc en more)←↓⍉↑mustBeEmpty RmDir¨path
       :Else
-          rc←1 ⋄ en←0 ⋄ more←''
-          'Invalid left argument.'⎕SIGNAL 11/⍨~mustBeEmpty∊0 1
-          'Wildcard characters are not allowed'⎕SIGNAL 11/⍨∨/'*?'∊path
           path←NormalizePath path
-          path↓⍨←-CurrentSep=¯1↑path
-          :Trap 19 22
-              :If 1≠1 ⎕NINFO path
-                  en←6
+          :If ⎕NEXISTS path
+              :If IsDir path
+                  flags←1+2×~mustBeEmpty
+                  counter←flag←0
+                  :Repeat
+                      :Trap 19 22
+                          flags ⎕NDELETE path
+                          flag←1
+                      :Else
+                          :If 4>counter←counter+1
+                              ⎕DL 0.1×counter
+                          :Else
+                              qdmx←⎕DMX
+                              en←qdmx.EN
+                              more←qdmx.EM
+                              flag←rc←1
+                          :EndIf
+                      :EndTrap
+                  :Until flag
+              :Else
                   more←'Not a directory'
-                  :Return
-              :EndIf
-          :Else
-              :If Exists path
-                  more←{(≡⍵)∊0 1:⍵ ⋄ ⊃{⍺,'; ',⍵}/⍵/⍨' '=⊃¨1↑¨0⍴¨⍵}⎕DMX.OSError
-                  en←⎕EN
-              :Else
-                  rc←0
-                  more←'Directory does not exist'
-              :EndIf
-              :Return
-          :EndTrap
-          :Trap 19 22
-              rc←~0 ⎕NDELETE path
-          :Else
-              :If 0=mustBeEmpty
-         ⍝ First we delete all files
-                  :If 0=≢list←⍉↑('recursive' 1)('type'(0 1))Dir path,CurrentSep
-              ⍝ This can happen if for example somebody "look" into the directory
-                      rc←1
-                      en←11
-                      more←'Could not delete all files/directories.'
-                      :Return
-                  :EndIf
-                  :If 0<+/bool←1≠list[;1]
-                      :Trap 0
-                          {}{1 ⎕NDELETE ⍵}¨bool/list[;0]  ⍝ Return code might be 0 for links!
-                      :Else
-                          en←⎕EN
-                          more←⎕DMX.EM
-                          :Return
-                      :EndTrap
-                      :If 0∊{19 22::1 ⋄ 0⊣1 ⎕NINFO ⍵}¨bool/list[;0]
-                          en←11
-                          more←'Could not delete all files.'
-                          :Return
-                      :EndIf
-                  :EndIf
-         ⍝ Now we remove all sub-directories
-                  :If 0≠≢list←(~bool)/list[;0]
-                      list←list[⍒≢¨list]
-                      :Trap 0
-                          rc←~{1 ⎕NDELETE ⍵}¨list
-                      :Else
-                          en←⎕EN
-                          more←⎕DMX.EM
-                          :Return
-                      :EndTrap
-                      :If 0∊{19 22::1 ⋄ 0⊣1 ⎕NINFO ⍵}¨list
-                          en←11
-                          more←'Could not delete all directories.'
-                          :Return
-                      :EndIf
-                      rc←0
-                  :EndIf
-                  :Trap 19 22
-                      rc∧←~0 ⎕NDELETE path  ⍝ Now we try again
-                  :Else
-                      rc←1
-                  :EndTrap
-              :Else
-                  en←⎕EN
-                  more←{⊃{⍺,'; ',⍵}/⍵/⍨' '=⊃¨0⍴¨⍵}⎕DMX.OSError
-              :EndIf
-          :EndTrap
-          :If ⎕NEXISTS path  ⍝ Experience show that this does happen quite often!
-              ⎕DL 0.1
-              :Trap 19 22
-                  rc∧←~0 ⎕NDELETE path  ⍝ One more time; that ususally fixed the problem
-              :Else
                   rc←1
-              :EndTrap
+                  en←6
+              :EndIf
+          :Else
+              more←'Directory does not exist'
           :EndIf
       :EndIf
     ∇
@@ -665,7 +363,7 @@
               'ExpandEnvironmentStrings'⎕NA'I4 KERNEL32.C32|ExpandEnvironmentStrings* <0T >0T I4'
               path←1⊃ExpandEnvironmentStrings path 2048 2048
           :EndIf
-          expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡##.APLTreeUtils2.Lowercase ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
+          expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡⎕C ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
           :If 1<≡path
               path←expandFlag NormalizePath¨path
           :Else
@@ -956,7 +654,7 @@
     ∇
 
     ∇ dirname←GetTempSubDir prefixString;path;start;no;flag;success
-    ⍝ Returns name of previously unused sub directory in the `TEMP` directory.\\
+    ⍝ Returns name of previously unused sub directory in the `TEMP` directory with a random name.\\
     ⍝ The directory will be created.
     ⍝ `prefixString`, when empty, defaults to `⎕AN`. The name of the directory will
     ⍝ match `prefixString` followed by an `_` and a randomly generated number.\\
@@ -1007,7 +705,7 @@
           'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir{(a b)←##.APLTreeUtils2.SplitPath ⍵ ⋄ ~∨/'*?'∊b:⍵ ⋄ a}path
       :EndIf
       path↓⍨←-CurrentSep=¯1↑path
-      recursiveFlag←{0=⎕NC ⍵:0 ⋄ w←⍎⍵ ⋄ 0=1↑0⍴w:w ⋄ 'recursive'≡##.APLTreeUtils2.Lowercase w}'recursive'
+      recursiveFlag←{0=⎕NC ⍵:0 ⋄ w←⍎⍵ ⋄ 0=1↑0⍴w:w ⋄ 'recursive'≡⎕C w}'recursive'
       :If recursiveFlag
       :AndIf ∨/'*?'∊path
           '"path" must not carry wildcard chars in case "Recursive" is specified'⎕SIGNAL 11
@@ -1049,7 +747,7 @@
       'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1
       'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir part1
       path↓⍨←-CurrentSep=¯1↑path
-      recursiveFlag←'recursive'≡##.APLTreeUtils2.Lowercase{0<⎕NC ⍵:⍎⍵ ⋄ ''}'recursive'
+      recursiveFlag←'recursive'≡⎕C{0<⎕NC ⍵:⍎⍵ ⋄ ''}'recursive'
       :If recursiveFlag
       :AndIf ∨/'*?'∊path
           '"path" must not carry wildcard chars in case "Recursive" is specified'⎕SIGNAL 11
@@ -1063,22 +761,47 @@
       :EndIf
     ∇
 
-    ∇ {success}←DeleteFile filenames
+    ∇ {success}←DeleteFile filenames;thisFile;flag;counter;i;depth
       :Access Public Shared
-      ⍝ Attempts to delete one or more files. Returns 1 in case of succes and 0 otherwise
+      ⍝ Attempts to delete one or more files. Returns 1 in case of success and 0 otherwise
       ⍝ for each file in `filenames`.\\
+      ⍝ Retries up to three times for every single files in case of any error 19 or 22.\\
       ⍝ This function does not care whether the file exists or not, although naturally
       ⍝ `success` will be 0 for any non-existing file.\\
       ⍝ `filenames` can be one of:
       ⍝ * Text vector representing a single filename.
       ⍝ * Vector of text vectors each representing a single file.\\
-      ⍝ In case `filenames` is empty a 0 is returned.
+      ⍝ In case `filenames` is empty a 0 is returned.\\
+      ⍝ Do not uses this function for removing directories: use `RmDir` instead.
       :If 0=≢filenames
           success←0
       :Else
-          filenames←⊆filenames
+          depth←≡filenames
+          filenames←,⊆filenames
           filenames←NormalizePath filenames
-          success←{19 22::0 ⋄ 0=≢⍵:0 ⋄ 1 ⎕NDELETE ⍵}¨filenames
+          success←(≢filenames)⍴0
+          :For i :In ⍳≢filenames
+              thisFile←i⊃filenames
+              :If ⎕NEXISTS thisFile
+                  flag←counter←0
+                  :Repeat
+                      :Trap 19 22
+                          1 ⎕NDELETE thisFile
+                          success[i]←flag←1
+                          flag←1
+                      :Else
+                          :If 4>counter←counter+1
+                              ⎕DL 0.1×counter
+                          :Else
+                              flag←1
+                          :EndIf
+                      :EndTrap
+                  :Until flag
+              :EndIf
+          :EndFor
+          :If 1≡depth
+              success←⊃success
+          :EndIf
       :EndIf
     ∇
 
@@ -1104,14 +827,14 @@
           :Else
               :Trap 19 22
                   counter←flag←0
+                  ⍝ This loop tries to overcome the problem that on some machines ⎕MKDIR does not work
+                  ⍝ as expected. This cannot (!) be solved by a simple delay.
+                  ⍝ However, tracing as well as the loop do work.
                   :Repeat
-              ⍝ This loop tries to overcome the problem that on some machines ⎕MKDIR does not work
-              ⍝ as expected. This cannot (!) be solved by a simple delay. Tracing as well as the
-              ⍝ loop however work.
                       :Trap 19 22
                           success←3 ⎕MKDIR path
                       :Else
-                          :Leave ⍝ Something went wrong
+                          :Leave ⍝ Something went wrong, indicated by `success ←→ 0`
                       :EndTrap
                       flag←⎕NEXISTS path
                       ⎕DL(~flag)×0.05×counter+1
@@ -1132,15 +855,6 @@
       :Else
           bool←⎕NEXISTS y
       :EndIf
-    ∇
-
-    ∇ tno←{tno}CreateFile filename
-      :Access Public Shared
-      ⍝ Same as `⎕NCREATE` but `filename` is normalized first.\\
-      ⍝ Returns the tie number.
-      tno←{0<⎕NC ⍵:⍎⍵ ⋄ 0}'tno'
-      filename←NormalizePath filename
-      tno←filename ⎕NCREATE tno
     ∇
 
     ∇ newline←GetNewLineCharsFor os
@@ -1190,86 +904,6 @@
           :EndIf
           :If ':'∊path
               drive←1↑path
-          :EndIf
-      :EndIf
-    ∇
-
-    ∇ (rc more)←source Unix_MoveTo target;cmd
-      rc←0 ⋄ more←''
-      (source target)←EncodeBlanks¨source target
-      :If IsDir target
-⍝          (rc more)←2↑##.OS.ShellExecute'mv ',((('/'≠¯1↑target)/'/'),' -f '),' -- "',source,'" "',target,'"'
-          cmd←'(shopt -s dotglob; mv ',source,' ',target,')'
-          (rc more)←2↑##.OS.ShellExecute cmd
-      :Else
-          cmd←'mv -f -- "',source,'" "',target,'"'
-          (rc more)←2↑##.OS.ShellExecute cmd
-      :EndIf
-    ∇
-
-    ∇ (rc more)←source Win_MoveTo target;∆MoveFileEx;∆MoveFile;targetDrive;sourceDrive;currDir;list;bool;list2;exists;dirList;fileList;dirExisted;en
-      rc←0 ⋄ more←''
-      :If ∨/{∨/'*?'∊⍵}¨source target
-          (rc more)←¯1 'Argument must not contain either "?" or "*"'
-      :Else
-          (sourceDrive source)←HandlePath source
-          (targetDrive target)←HandlePath target
-          :If ~Exists source
-              rc←¯1
-              more←'Source file/directory does not exist'
-          :Else
-              :If IsDir source
-              :AndIf Exists target
-              :AndIf 0=IsDir target
-                  rc←¯1
-                  more←'Target already exists'
-              :Else
-                  :If CurrentSep=¯1↑target
-                  :AndIf CurrentSep≠¯1↑source
-                      target,←source↑⍨-CurrentSep⍳⍨⌽source
-                  :EndIf
-                  :If sourceDrive≢targetDrive
-                      (rc more)←source CopyTo target
-                      :If 0=rc
-                          :Trap 11 19 22
-                              ⎕NDELETE source
-                          :Else
-                              ⎕NDELETE target ⍝ This is consistent with the Windows function `MoveFileEx`!
-                              rc←32
-                              more←GetMsgFromError rc
-                          :EndTrap
-                      :EndIf
-                  :ElseIf ∧/IsDir source target
-                      :If CurrentSep≠¯1↑target
-                          rc←¯1
-                          more←'Target already exists'
-                          :Return
-                      :EndIf
-                      :If 0<≢list←⊃('recursive' 1)Dir source,CurrentSep
-                          bool←IsDir list
-                          dirList←bool/list
-                          dirExisted←IsDir target∘,¨(≢source)↓¨dirList
-                          {0=≢⍵:shy←⍬ ⋄ ⎕MKDIR¨⍵}target∘,¨(≢source)↓¨(~dirExisted)/dirList
-                          fileList←(~bool)/list
-                          :If 0<≢fileList
-                              (rc more)←↓⍉↑fileList{⍺ CopyTo ⍵}¨(target,CurrentSep)∘,¨(≢source)↓¨fileList
-                              :If rc∧.=0
-                                  (rc en more)←RmDir source
-                              :EndIf
-                          :EndIf
-                      :Else
-                          ⎕MKDIR target,CurrentSep ##.APLTreeUtils2.Last ¯1↓source
-                          (rc en more)←RmDir source
-                      :EndIf
-                  :Else
-                      '∆MoveFileEx'⎕NA'I kernel32.C32|MoveFileEx* <0T <0T I4'
-                      '∆MoveFile'⎕NA'I Kernel32.C32|MoveFile* <0T <0T'
-                      :If 0=∆MoveFileEx((source~'"')(target~'"')),3       ⍝ 3=REPLACE_EXISTING (1) + COPY_ALLOWED (2)
-                          rc←GetLastError
-                          more←GetMsgFromError rc
-                      :EndIf
-                  :EndIf
-              :EndIf
           :EndIf
       :EndIf
     ∇

@@ -33,6 +33,4 @@
      →T.PassesIf'Right argument is not a directory'≡⊃⎕DM
  :EndTrap
 
- 'recursive' 1 ##.FilesAndDirs.ListFiles ∆Home
-
  R←T._OK
