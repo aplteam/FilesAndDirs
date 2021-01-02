@@ -38,7 +38,7 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '5.0.0.92' '2020-12-20'
+      r←'FilesAndDirs' '5.0.0.94' '2020-12-20'
     ∇
 
 
