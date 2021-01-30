@@ -1,6 +1,6 @@
  {r}←source CreateLinkTo link;cmd
  r←⍬
- :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
+ :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
      :If ##.FilesAndDirs.IsDir source
          cmd←'"cmd.exe" /C MKLINK /D "',link,'" "',source,'"'
      :Else

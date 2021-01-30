@@ -6,7 +6,7 @@
  ∆←{##.FilesAndDirs.PWD,##.FilesAndDirs.CurrentSep,⍵}
  →T.PassesIf(∆'a')≡##.FilesAndDirs.ExpandPath'a'
 
- :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
+ :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
      →T.PassesIf 0=≢##.FilesAndDirs.ExpandPath''
      →T.PassesIf 0=≢##.FilesAndDirs.ExpandPath''
      →T.PassesIf(##.FilesAndDirs.(EnforceBackslash PWD),'\a')≡##.FilesAndDirs.ExpandPath'a'
@@ -21,7 +21,7 @@
      →T.PassesIf appdata≡##.FilesAndDirs.ExpandPath'%appdata%'                         ⍝ Env Vars are expanded since 1.5
 
      ⍝ There is no need for the ¨ ↓ here but it should work anyway, and there was once a bug!
-     →T.PassesIf(3⍴⊂buff)≡##.FilesAndDirs.ExpandPath¨3⍴{'..\',⍵}¨¯1↑'\'##.APLTreeUtils2.Split buff←##.FilesAndDirs.PWD
+     →T.PassesIf(3⍴⊂buff)≡##.FilesAndDirs.ExpandPath¨3⍴{'..\',⍵}¨¯1↑'\'APLTreeUtils2.Split buff←##.FilesAndDirs.PWD
  :Else
      →T.PassesIf 0=≢##.FilesAndDirs.ExpandPath''
      →T.PassesIf 0=≢##.FilesAndDirs.ExpandPath''

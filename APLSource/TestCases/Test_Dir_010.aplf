@@ -11,7 +11,7 @@
 
  →T.PassesIf 23=≢buff
  →T.PassesIf 7=∪≢¨buff[;1]                    ⍝ Is 4 is size in bytes
- :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
+ :Select APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
      →T.PassesIf∧/0<≢¨buff[;2]                ⍝ Is 5 is Windows SID
  :CaseList 'Lin' 'Mac'

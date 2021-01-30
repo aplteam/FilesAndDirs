@@ -5,7 +5,7 @@
 
  list←1⊃('recursive' 1)('type'(0 1 2 3 4))##.FilesAndDirs.Dir ∆Home,'/file_*'
 
- :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
+ :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
      noOf←≢⎕CMD'dir /S /B ',∆Home,'\file_*'
  :Else
      noOf←≢⎕SH'find -L ',∆Home,' -name "file_*"'

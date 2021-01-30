@@ -2,7 +2,7 @@
 ⍝ Test the `ListDirs` method on 'C:\'
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
 
- :If 'Win'≢##.APLTreeUtils2.GetOperatingSystem ⍬
+ :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬
      R←T._WindowsOnly
  :Else
      R←T._Failed

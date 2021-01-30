@@ -28,7 +28,7 @@
  parms,←('session_file' 'DoesNotExist')('maxws' '32MB')('-rt' 0)('-x' 0)
  options←'-'=⊃∘⊃¨parms
  ⎕SIGNAL/{0=≢⍵:''⍬ ⋄ ∧/(⊃¨1↓¨⍵)∊0 1:''⍬ ⋄ 'Invalid value for option' 11}options/parms
- :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
+ :Select APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
      wsname←'expand'##.FilesAndDirs.NormalizePath wsname
      cmd←⊂'"',(⊃2 ⎕NQ'#' 'GetCommandLineArgs'),'"'
@@ -43,7 +43,7 @@
  :CaseList 'Lin' 'Mac'
      wsname←⊃,/1 ⎕NPARTS wsname
      wsname←' '⎕R'\\ '⊣wsname   ⍝ Encode blanks
-     wsname,←('.dws'≢##.APLTreeUtils2.Lowercase ¯4↑wsname)/'.dws'
+     wsname,←('.dws'≢APLTreeUtils2.Lowercase ¯4↑wsname)/'.dws'
      cmd←2 ⎕NQ'.' 'GetEnvironment' 'DYALOG'
      cmd,←'/dyalog ',wsname
      parms2←options/parms

@@ -7,7 +7,7 @@
  →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Lin'
  →T.PassesIf(⎕UCS 10)≡##.FilesAndDirs.GetNewLineCharsFor'Mac'
 
- :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
+ :Select APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
      →T.PassesIf(⎕UCS 13 10)≡##.FilesAndDirs.GetNewLineCharsFor''
  :Case 'Lin'

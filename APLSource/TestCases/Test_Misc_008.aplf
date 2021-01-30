@@ -5,7 +5,7 @@
  R←T._Failed
 
  currentDir←##.FilesAndDirs.PWD
- :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
+ :Select APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
      buff←⊃⎕SH'cd'
  :CaseList 'Lin' 'Mac'

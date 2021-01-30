@@ -5,7 +5,7 @@
 
  list←##.FilesAndDirs.Dir ∆Home,'/'
 
- :If 'Win'≡##.APLTreeUtils2.GetOperatingSystem ⍬
+ :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
      →T.PassesIf(∆Home∘,¨'\First' '\Second')≡1⊃list
  :Else
      →T.PassesIf(∆Home∘,¨'/First' '/Second')≡1⊃list

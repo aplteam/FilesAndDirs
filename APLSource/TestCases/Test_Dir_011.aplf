@@ -16,7 +16,7 @@
  →T.PassesIf 2=buff[;2]+.=4                    ⍝      We have two symbolic links, and they should show (follow←1)
  →T.PassesIf 0∧.<(2=buff[;2])⌿buff[;3]         ⍝ 3 is size in bytes: all files are larger than zero bytes
  →T.PassesIf 7=∪≢¨buff[;4]                     ⍝ 4 is timestamp
- :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
+ :Select APLTreeUtils2.GetOperatingSystem ⍬
  :Case 'Win'
      →T.PassesIf∧/0<≢¨buff[;5]                 ⍝ 5 is Windows SID
  :CaseList 'Lin' 'Mac'
