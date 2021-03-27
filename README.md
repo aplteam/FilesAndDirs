@@ -29,6 +29,15 @@ That's the reason why the class offers method like `Exists`, `CreateFile`, `Dele
 
 Of course this means that `FilesAndDirs` cannot deal under Linux and Mac OS with names that contain a `\`, but if you try to write platform independent code then you must not do this anyway, and most likely you shouldn't even if you don't.
 
+## Consuming `FilesAndDirs`
+
+`FilesAndDirs` is a Tatin package. You may load it (for investigation) or install it (for permanent usage:
+
+```
+]Tatin.LoadPackage [Tatin]FilesAndDirs #
+]Tatin.InstallPackage [Tatin]FilesAndDirs /path/to/installFolder
+```
+
 ## Methods 
 
 ```
