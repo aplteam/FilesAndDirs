@@ -34,26 +34,25 @@ Of course this means that `FilesAndDirs` cannot deal under Linux and Mac OS with
 ```
   Cd
   CheckPath
-  CopyTo
-  CopyTree
-  CreateFile
   CurrentSep
   DeleteFile
   Dir
   EnforceBackslash
   EnforceSlash
   Exists
+  ExpandPath
   GetNewLineCharsFor
   GetTempFilename
+  GetTempFilename2
   GetTempPath
+  GetTempSubDir
+  History
   IsDir
   IsFile
   IsSymbolicLink
   ListDirs
   ListFiles
   MkDir
-  MoveTo
-  MoveTree
   NCREATE
   NGET
   NNAMES
