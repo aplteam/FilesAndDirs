@@ -9,10 +9,10 @@
 
  list←('recursive' 1)##.FilesAndDirs.Dir'Tests\Test Dir\*.?o?'
  →T.PassesIf 1=≢list
- →T.PassesIf 3=≢¨list
+ →T.PassesIf 6=≢¨list
 
  list←('recursive' 1)('type'(5 2 1 0))##.FilesAndDirs.Dir'Tests\Test Dir\*.?o?'
  →T.PassesIf 4=≢list
- →T.PassesIf 3 3 3 3≡≢¨list
+ →T.PassesIf 6 6 6 6≡≢¨list
 
  R←T._OK

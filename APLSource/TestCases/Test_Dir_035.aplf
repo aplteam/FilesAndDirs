@@ -5,12 +5,12 @@
 
  path←'Tests\Test Dir'
  list←1⊃('recursive' 1)##.FilesAndDirs.Dir path,'\'
- →T.PassesIf 9=≢list
+ →T.PassesIf 14=≢list
  list←⊃('recursive' 1)##.FilesAndDirs.Dir path,'\sha*.*'
  →T.PassesIf 3=≢list
  →T.PassesIf∧/'sha'{⍺∘≡¨(≢⍺)↑¨⍵}2⊃∘⎕NPARTS¨{⍵/⍨##.FilesAndDirs.IsFile ⍵}list
  list←1⊃('recursive' 1)##.FilesAndDirs.Dir path,'\*.log'
- →T.PassesIf 3=≢list
+ →T.PassesIf 6=≢list
  →T.PassesIf∧/'.log'∘≡¨3⊃∘⎕NPARTS¨{⍵/⍨##.FilesAndDirs.IsFile ⍵}list
 
  R←T._OK
