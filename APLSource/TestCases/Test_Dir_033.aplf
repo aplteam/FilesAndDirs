@@ -1,5 +1,5 @@
  R←Test_Dir_033(stopFlag batchFlag);⎕TRAP;list
-⍝ Test the `Dir` method with wildcards
+⍝ Test the `Dir` method with wildcards matching files
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

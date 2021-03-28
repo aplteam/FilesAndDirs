@@ -38,14 +38,16 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '5.0.2+99' '2021-03-25'
+      r←'FilesAndDirs' '5.0.3+101' '2021-03-28'
     ∇
 
 
     ∇ History
       :Access Public shared
+      ⍝ * 5.0.3 ⋄ 2021-03-28
+      ⍝   * Bug fix: wildcard without recursion in `Dir is no longer handled correctly (introduced with 5.0.3)
       ⍝ * 5.0.2 ⋄ 2021-03-27
-      ⍝   * Bug fixes: 
+      ⍝   * Bug fixes:
       ⍝     * `GetTempSubDir` did not execute `⎕DL` in case of a problem, resulting in an error on fast PCs.
       ⍝     * `Dir` did not work as expected when wildcards were used and `recursive>0`
       ⍝     * `Dir` crashed on `recursive←2`
@@ -75,11 +77,11 @@
     ⍝ that contain a `*` or a `?` as part of any name, be it directory or filename; under Linux and Mac OS
     ⍝ these are legal characters for filenames and directory names.\\
     ⍝ Only the very last partition of `path` is allowed to carry wildcard characters.\\
-    ⍝ If the last partition of `path` contains wildcards then `Dir` uses them to filter filenames but not 
+    ⍝ If the last partition of `path` contains wildcards then `Dir` uses them to filter filenames but not
     ⍝ directories.\\
     ⍝ The result is a vector of the same length as `type`. `type` defaults to 0 which stands for filenames
     ⍝ and directory names.\\
-    ⍝ You may specify parameters either as key/value pairs or via a namespace populated with variables. 
+    ⍝ You may specify parameters either as key/value pairs or via a namespace populated with variables.
     ⍝ Examples:
     ⍝ ~~~
     ⍝ ('recursive' 2) FilesAndDirs.Dir ''      ⍝ returns list with directories & files in the current dir.
@@ -175,7 +177,9 @@
               :Else
                   buff←⍬ ⍬
               :EndTrap
-              buff←((1⊃buff)∊2 4)∘/¨buff   ⍝ Just ordinary files and links
+              :If 0<parms.recursive
+                  buff←((1⊃buff)∊2 4)∘/¨buff   ⍝ Just ordinary files and links
+              :EndIf
               (0⊃buff)←NormalizePath 0⊃buff
               r←buff[,(0 1,parms.type~0 1)⍳parms.type]
               isrecursiveCall←parms.recursiveCall
