@@ -1,0 +1,11 @@
+ R←Test_Misc_025(stopFlag batchFlag);⎕TRAP;appdata;buff;younger;older;tsOlder
+⍝ Test the `YoungerThan` method
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ younger←'./Tests/YoungerThan/younger.txt'
+ older←'./Tests/YoungerThan/older.txt'
+
+ →T.PassesIf younger ##.FilesAndDirs.YoungerThan older
+
+ R←T._OK
