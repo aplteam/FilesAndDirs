@@ -38,12 +38,14 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '5.1.0+105' '2021-08-18'
+      r←'FilesAndDirs' '5.1.1+106' '2021-08-20'
     ∇
 
 
     ∇ History
       :Access Public shared
+      ⍝ * 5.1.1 ⋄ 2021-08-20
+      ⍝   * `DateToReal` was buggy
       ⍝ * 5.1.0 ⋄ 2021-08-18
       ⍝   * `YoungerThan` introduced
       ⍝   * `GetModifiedDate` introduced
@@ -843,7 +845,7 @@
     ∇ real←DateToReal timestamp
     ⍝ Converts a timestamp (6↑⎕TS) into a real (YYYYMMDD.hhmmss)
       :Access Public Shared
-      real←⊃(//)⎕VFI⊃{⍺,'.',⍵}/⍕¨⊃¯20 ⎕DT⊂timestamp
+      real←60 ⎕DT⊂6↑timestamp
     ∇
 
     ∇ {success}←MkDir path;counter;flag

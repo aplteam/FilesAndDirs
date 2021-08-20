@@ -1,4 +1,4 @@
- R←Test_Misc_025(stopFlag batchFlag);⎕TRAP;appdata;buff;younger;older;tsOlder
+ R←Test_Misc_025(stopFlag batchFlag);⎕TRAP;younger;older
 ⍝ Test the `YoungerThan` method
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
