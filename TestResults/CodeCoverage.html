@@ -49,7 +49,9 @@ ul li, ol li {margin: 0.7em 0.2em;}
     src:
         local("APL385 Unicode"),
         url("https://misc.aplteam.com/apl385.ttf") format("truetype");
-}}
+}
+.info {border: 1px silver dashed; background-color: #F2F2F2;margin: 0.5em; padding: 0.5em;}
+}
 @media print{@page {size: portrait}
 @page {
     margin: 1cm 1cm 1cm 1.75cm;
@@ -106,60 +108,166 @@ ul li, ol li {margin: 8pt 3pt;}
     src:
         local("APL385 Unicode"),
         url("https://misc.aplteam.com/apl385.ttf") format("truetype");
-}}
+}
+.info {border: 1px silver dashed; background-color: #F2F2F2;margin: 8px; padding: 8px;}
+}
 </style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.2/b-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.2/b-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.js"></script>
 </head>
 <body>
 <h1 id="top">Coverage Report</h1>
 <p>Watched: 41 fns/opr within <code>#.FilesAndDirs.FilesAndDirs</code></p>
-<p>The test test suite was execute once:</p>
+<p>The test suite was executed once:</p>
 <table>
 <thead>
 <tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
-<thead>
-</tbody>
-<tr><td>2021-08-20 17:23:55</td><td>Windows-64 ⋄ 18.0.44280.0 ⋄ W ⋄ Development</td><td>118</td></tr>
-</tbody>
-</table>
-<p>Overall 79% of the testable code is  covered.</p>
-<p>(Comment lines, empty lines, all <code>:End</code>* lines etc. are all ignored)</p>
-<p>23 of the fns/opr are 100% covered.</p>
-<p>4 are not covered at all:</p>
-<table>
+</thead>
 <tbody>
-<tr><td>#.FilesAndDirs.FilesAndDirs.PolishCurrentDir</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.GetLastError</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.HandlePath</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.GetMsgFromError</td></tr>
+<tr><td>2021-10-18 20:57:59</td><td>Windows-64 ⋄ 18.0.44659.0 ⋄ W ⋄ Development</td><td>52</td></tr>
 </tbody>
 </table>
+<p>Overall 79% of the testable code is covered.</p>
+<p>(Comment lines, empty lines, all <code>:End</code>* lines etc. are ignored)</p>
+<p>24 of the fns/opr are 100% covered.</p>
 <div id="partly-covered" class="keep-together">
-<p>14 are partly covered:</p>
-<table>
+<table id="percent">
 <thead>
 <tr><th style="text-align:left;">Function/Operator</th><th style="text-align:left;">Lines not executed</th><th style="text-align:left;">Coverage</th><th style="text-align:right;">≢</th></tr>
 </thead>
 <tbody>
-<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempPath</td><td>5←≢8,13-15,17</td><td>58%</td><td class="align-right">12</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.Cd</td><td>8←≢13,21,25-27,29-30,33</td><td>60%</td><td class="align-right">20</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.IsDir</td><td>5←≢19-20,22,28,33</td><td>67%</td><td class="align-right">15</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.NGET</td><td>5←≢16,20-21,23-24</td><td>71%</td><td class="align-right">17</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.Exists</td><td>7</td><td>75%</td><td class="align-right">4</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.NPUT</td><td>4←≢23-24,26-27</td><td>76%</td><td class="align-right">17</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempFilename</td><td>20,24,34</td><td>85%</td><td class="align-right">20</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.DeleteFile</td><td>29,30,32</td><td>86%</td><td class="align-right">21</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.Dir</td><td>9←≢64-65,67,102,108,126,136-138</td><td>89%</td><td class="align-right">83</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.IsFile</td><td>20</td><td>91%</td><td class="align-right">11</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.CheckPath</td><td>11</td><td>91%</td><td class="align-right">11</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempSubDir</td><td>19</td><td>93%</td><td class="align-right">15</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempFilename2</td><td>23</td><td>94%</td><td class="align-right">16</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.ListDirs</td><td>22</td><td>96%</td><td class="align-right">27</td></tr>
+<tr class="uncovered"><td>#.FilesAndDirs.FilesAndDirs.PolishCurrentDir</td><td>5←≢5-9</td><td>0</td><td>5</td></tr>
+<tr class="uncovered"><td>#.FilesAndDirs.FilesAndDirs.GetLastError</td><td>7←≢1-6,8</td><td>0</td><td>7</td></tr>
+<tr class="uncovered"><td>#.FilesAndDirs.FilesAndDirs.HandlePath</td><td>7←≢1-5,7-8</td><td>0</td><td>7</td></tr>
+<tr class="uncovered"><td>#.FilesAndDirs.FilesAndDirs.GetMsgFromError</td><td>24←≢2-9,11-21,23-26,31</td><td>0</td><td>24</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempPath</td><td>5←≢8,13-15,17</td><td>58</td><td>12</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.Cd</td><td>8←≢13,21,25-27,29-30,33</td><td>60</td><td>20</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.IsDir</td><td>5←≢19-20,22,28,33</td><td>67</td><td>15</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.NGET</td><td>5←≢16,20-21,23-24</td><td>71</td><td>17</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.Exists</td><td>7</td><td>75</td><td>4</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.NPUT</td><td>4←≢23-24,26-27</td><td>76</td><td>17</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempFilename</td><td>20, 24, 34</td><td>85</td><td>20</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.DeleteFile</td><td>29, 30, 32</td><td>86</td><td>21</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.Dir</td><td>9←≢64-65,67,102,108,126,136-138</td><td>89</td><td>83</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.IsFile</td><td>20</td><td>91</td><td>11</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.CheckPath</td><td>11</td><td>91</td><td>11</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempFilename2</td><td>23</td><td>94</td><td>16</td></tr>
+<tr><td>#.FilesAndDirs.FilesAndDirs.ListDirs</td><td>22</td><td>96</td><td>27</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.Version</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.History</td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.CurrentSep</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.YoungerThan</td><td></td><td>100</td><td>3</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.RmDir</td><td></td><td>100</td><td>26</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.PWD</td><td></td><td>100</td><td>3</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.ExpandPath</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.NormalizePath</td><td></td><td>100</td><td>20</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.EnforceBackslash</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.EnforceSlash</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.IsSymbolicLink</td><td></td><td>100</td><td>7</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.GetTempSubDir</td><td></td><td>100</td><td>15</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.ListFiles</td><td></td><td>100</td><td>17</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.GetModifiedDate</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.DateToReal</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.MkDir</td><td></td><td>100</td><td>15</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.GetNewLineCharsFor</td><td></td><td>100</td><td>4</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.NNAMES</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.NCREATE</td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.mustBeEmpty</td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.prefixString</td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.extension</td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.x</td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.recursiveFlag</td><td></td><td>100</td><td>0</td></tr>
 </tbody>
 </table>
 </div>
 <div id="footer">
 <hr>
-<p>Created by "CodeCoverage" version 0.7.2+40 from 2021-03-01</p>
+<p>Created by "CodeCoverage" version 0.9.0+46 from 2021-10-06</p>
 </div>
+<script>
+$(document).ready(function() {
+    var oTable;
+    oTable = $("#percent").DataTable( {
+        paging:   false,
+        ordering: true,
+        info:     true,
+        fixedHeader: true,
+        order: [2,"desc"],
+        dom: "Bft",
+        buttons: [
+        {
+            text: "Partly covered (13)",
+            titleAttr: "50%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "^(?!(0%|100%)).*";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "Uncovered (4)",
+            titleAttr: "0%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "^0%";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "Fully covered (24)",
+            titleAttr: "100%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "100%";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "All (41)",
+            titleAttr: "all",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = ".";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+    ],
+ 
+        columnDefs: [
+            {className: "align-right", targets: [2,3]
+            },
+            {
+                render: function ( data, type, row, meta ) {
+                            return data+"%" ;        
+                        },
+                targets: 2
+            }
+        ]             
+    } );
+    oTable.button(0).trigger();
+
+} );    
+</script>
+
 </body>
 </html>

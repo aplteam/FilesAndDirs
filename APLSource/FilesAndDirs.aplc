@@ -38,14 +38,15 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '5.1.1+106' '2021-08-20'
+      r←'FilesAndDirs' '5.1.1+106' '2021-10-18'
     ∇
 
 
     ∇ History
       :Access Public shared
-      ⍝ * 5.1.1 ⋄ 2021-08-20
+      ⍝ * 5.1.1 ⋄ 2021-10-18
       ⍝   * `DateToReal` was buggy
+      ⍝   * Internal changes: now managed by Cider rather than acre.
       ⍝ * 5.1.0 ⋄ 2021-08-18
       ⍝   * `YoungerThan` introduced
       ⍝   * `GetModifiedDate` introduced
@@ -684,7 +685,7 @@
       filename←NormalizePath filename
     ∇
 
-    ∇ dirname←GetTempSubDir prefixString;path;start;no;flag;success
+    ∇ dirname←GetTempSubDir prefixString;path;no;flag;success;i
     ⍝ Returns name of previously unused sub directory in the `TEMP` directory with a random name.\\
     ⍝ The directory will be created.
     ⍝ `prefixString`, when empty, defaults to `⎕AN`. The name of the directory will
@@ -694,21 +695,21 @@
           prefixString←⎕AN
       :EndIf
       path←GetTempPath
-      start←no←⍎{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
+      no←⍎{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon
+      i←0
       ⍝ no←100⊥3↓⎕TS ⍝ Not reliable: can take a large number of tries before successful
       success←flag←0
       :Repeat
-          dirname←path,(prefixString,'_',⍕no)
+          dirname←path,(({⍵↓⍨-(¯1↑⍵)∊'/\'}prefixString),'_',⍕no)
           :Trap 22
               ⎕MKDIR dirname
               flag←success←1
           :Else
               ⎕DL 0.01
           :EndTrap
-          no+←10
-      :Until flag∨no>start+1000×10  ⍝ max 1000 tries
+      :Until flag∨20<i←i+1
       dirname←NormalizePath dirname
-      ('Unable to create "',dirname,'"')⎕SIGNAL 11/⍨~success
+      ('Unable to create "',dirname,'"')⎕SIGNAL 22/⍨~success
     ∇
 
     ∇ r←{x}ListDirs path;buff;recursiveFlag;part1;part2;recursive;depth
