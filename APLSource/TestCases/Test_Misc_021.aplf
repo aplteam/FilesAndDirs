@@ -11,10 +11,10 @@
  →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 
- tempSubDir←##.FilesAndDirs.GetTempSubDir'Foo\'
+ tempSubDir←##.FilesAndDirs.GetTempSubDir'Foo\Goo\Zoo'
  (path folder)←2↑⎕NPARTS tempSubDir
- →T.GoToTidyUp path≢##.FilesAndDirs.GetTempPath
- →T.GoToTidyUp'Foo'≢⊃'_'APLTreeUtils2.Split folder
+ →T.GoToTidyUp path≢(##.FilesAndDirs.NormalizePath ##.FilesAndDirs.GetTempPath,'\Foo\Goo'),'\'
+ →T.GoToTidyUp'Zoo'≢⊃'_'APLTreeUtils2.Split folder
  →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 
