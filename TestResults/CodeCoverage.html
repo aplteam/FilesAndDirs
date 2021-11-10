@@ -124,12 +124,12 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
 </thead>
 <tbody>
-<tr><td>2021-10-29 11:06:59</td><td>Windows-64 ⋄ 18.0.44659.0 ⋄ W ⋄ Development</td><td>54</td></tr>
+<tr><td>2021-11-10 10:17:57</td><td>Windows-64 ⋄ 18.0.44659.0 ⋄ W ⋄ Development</td><td>54</td></tr>
 </tbody>
 </table>
-<p>Overall 79% of the testable code is covered.</p>
+<p>Overall 80% of the testable code is covered.</p>
 <p>(Comment lines, empty lines, all <code>:End</code>* lines etc. are ignored)</p>
-<p>24 of the fns/opr are 100% covered.</p>
+<p>25 of the fns/opr are 100% covered.</p>
 <div id="partly-covered" class="keep-together">
 <table id="percent">
 <thead>
@@ -151,7 +151,6 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr><td>#.FilesAndDirs.FilesAndDirs.Dir</td><td>9←≢64-65,67,102,108,126,136-138</td><td>89</td><td>83</td></tr>
 <tr><td>#.FilesAndDirs.FilesAndDirs.IsFile</td><td>20</td><td>91</td><td>11</td></tr>
 <tr><td>#.FilesAndDirs.FilesAndDirs.CheckPath</td><td>11</td><td>91</td><td>11</td></tr>
-<tr><td>#.FilesAndDirs.FilesAndDirs.GetTempFilename2</td><td>23</td><td>94</td><td>16</td></tr>
 <tr><td>#.FilesAndDirs.FilesAndDirs.ListDirs</td><td>22</td><td>96</td><td>27</td></tr>
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.Version</td><td></td><td>100</td><td>1</td></tr>
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.History</td><td></td><td>100</td><td>0</td></tr>
@@ -164,6 +163,7 @@ ul li, ol li {margin: 8pt 3pt;}
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.EnforceBackslash</td><td></td><td>100</td><td>1</td></tr>
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.EnforceSlash</td><td></td><td>100</td><td>1</td></tr>
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.IsSymbolicLink</td><td></td><td>100</td><td>7</td></tr>
+<tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.GetTempFilename2</td><td></td><td>100</td><td>16</td></tr>
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.GetTempSubDir</td><td></td><td>100</td><td>15</td></tr>
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.ListFiles</td><td></td><td>100</td><td>17</td></tr>
 <tr class="fullyCovered"><td>#.FilesAndDirs.FilesAndDirs.GetModifiedDate</td><td></td><td>100</td><td>1</td></tr>
@@ -196,7 +196,7 @@ $(document).ready(function() {
         dom: "Bft",
         buttons: [
         {
-            text: "Partly covered (13)",
+            text: "Partly covered (12)",
             titleAttr: "50%",
             className: "active",
             action: function ( e, dt, node, config ) {
@@ -224,7 +224,7 @@ $(document).ready(function() {
             }
         },
         {
-            text: "Fully covered (24)",
+            text: "Fully covered (25)",
             titleAttr: "100%",
             className: "active",
             action: function ( e, dt, node, config ) {
