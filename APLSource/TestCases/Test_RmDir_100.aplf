@@ -4,7 +4,7 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- tempFolder←##.FilesAndDirs.GetTempSubDir'FilesAndDirs-',⊃⎕SI
+ tempFolder←##.FilesAndDirs.GetTempSubDir'FilesAndDirs ',⊃⎕SI
  (tempFolder,'/')⎕NCOPY ##.CiderConfig.HOME,'/APLSource'
  {}1 ⎕SE.APLGit2.Init tempFolder
  res←⎕SE.APLGit2.Add tempFolder

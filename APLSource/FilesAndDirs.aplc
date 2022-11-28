@@ -38,12 +38,15 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '5.2.0+115' '2022-11-27'
+      r←'FilesAndDirs' '5.2.1+117' '2022-11-28'
     ∇
 
 
     ∇ History
       :Access Public shared
+      ⍝ * 5.2.1 ⋄ 2022-11-28
+      ⍝   * `RmDirByForce` did not work on directories with a space in their name
+      ⍝   * `RmDirByForce` now checks whether `path` was successfully deleted
       ⍝ * 5.2.0 ⋄ 2022-11-27
       ⍝   * Method `RmDirByForce` added
       ⍝\\
@@ -338,16 +341,17 @@
       :EndIf
     ∇
 
-    ∇ (rc msg)←RmDirByForce path;r
+    ∇ (rc msg)←RmDirByForce path;r;buff;flag;i
     ⍝ Removes files and directories by force no matter what, inlcuding files that has the read-only flag set.\\
     ⍝ Notes:
     ⍝ * If `path` does not exist `(0 'Directory does not exist')` is returned
     ⍝ * If `path` exists but is not a directory `(1 'Not a directory')` is returned
-    ⍝ * In case of success `(0 '')` is returned 
+    ⍝ * In case of success `(0 '')` is returned
     ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`
     ⍝   If such characters are specified anyway then an error is signalled.\\
     ⍝   This is true even under Linux and Mac OS despite the fact that these characters are legal in
     ⍝   the names of any files and directories.
+    ⍝ * The function checks whether `path` was successfully removed indeed.
       :Access Public Shared
       path←NormalizePath path
       'Wildcard characters are not allowed'⎕SIGNAL 11/⍨∨/'*?'∊path
@@ -360,11 +364,25 @@
       :Else
           :Select ##.APLTreeUtils2.GetOperatingSystem ⍬
           :Case 'Win'
-              r←⎕SH'rmdir /s /q ',path
+              buff←∊⎕SH'rmdir /s /q "',(path~'"'),'"'
           :Else
-              r←⎕SH'rm -f -r ',path
+              buff←∊⎕SH'rm -f -r "',(path~'"'),'"'
           :EndSelect
-          rc←~0=≢r
+          flag←i←0
+          :Repeat
+              :If 0≠rc←⎕NEXISTS path
+                  :If 5=i←i+1
+                      :If 0=≢msg←buff
+                          msg←'Removing direcotry failed'
+                      :EndIf
+                      flag←1
+                  :Else
+                      ⎕DL 0.05×i
+                  :EndIf
+              :Else
+                  flag←1
+              :EndIf
+          :Until flag
       :EndIf
     ∇
 
