@@ -3,8 +3,11 @@
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- younger←'./Tests/YoungerThan/younger.txt'
  older←'./Tests/YoungerThan/older.txt'
+ {}(⊂'older')⎕NPUT older 1
+ ⎕DL 1.2
+ younger←'./Tests/YoungerThan/younger.txt'
+ {}(⊂'younger')⎕NPUT younger 1
 
  →T.PassesIf younger ##.FilesAndDirs.YoungerThan older
 
