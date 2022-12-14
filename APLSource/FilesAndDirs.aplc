@@ -38,12 +38,15 @@
 
     ∇ r←Version
       :Access Public shared
-      r←'FilesAndDirs' '5.2.1+117' '2022-11-28'
+      r←'FilesAndDirs' '5.2.2+117' '2022-11-??'
     ∇
 
 
     ∇ History
-      :Access Public shared
+      :Access Public shared 
+      ⍝ * 5.2.2 ⋄ 2022-11-??
+      ⍝   * Bug fixes
+      ⍝     * Typo in a comment fixed
       ⍝ * 5.2.1 ⋄ 2022-11-28
       ⍝   * `RmDirByForce` did not work on directories with a space in their name
       ⍝   * `RmDirByForce` now checks whether `path` was successfully deleted
@@ -373,7 +376,7 @@
               :If 0≠rc←⎕NEXISTS path
                   :If 5=i←i+1
                       :If 0=≢msg←buff
-                          msg←'Removing direcotry failed'
+                          msg←'Removing directory failed'
                       :EndIf
                       flag←1
                   :Else
