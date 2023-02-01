@@ -1,4 +1,4 @@
- Make flag;C;path;zipFilename;M;cfg
+ Make flag;C;path;zipFilename;M;cfg;version
  :If flag
      C←##.CiderConfig ⋄ M←⎕SE.MakeHelpers
      path←C.HOME,'/Dist/'
@@ -6,7 +6,8 @@
      ##.FilesAndDirs.MkDir path
      cfg←M.GetPackageCfg C.HOME
      M.CreateAPI ##.FilesAndDirs ##.FilesAndDirs.Public cfg.api
-     zipFilename←⎕SE.Tatin.BuildPackage C.HOME path''
+     version←cfg M.HandleVersionNumber path
+     zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
      ⎕←'*** New version build successfully:',(⎕UCS 13),'   ',zipFilename
  :EndIf
  ⍝Done

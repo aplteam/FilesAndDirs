@@ -1,4 +1,6 @@
 (
+ '* 5.3.1 ⋄ 2023-02-01'
+ '  * Bug fix in `RmDirByForce` got somehow lost...'
  '* 5.3.0 ⋄ 2023-02-01'
  '  * Operator `ExecNfunction` added for executing ⎕NMOVE and ⎕NCOPY'
  '  * Converted from a script to an ordinary namespace'

@@ -18,18 +18,18 @@
      rc←1
      msg←'Not a directory'
  :Else
-     :Select APLTreeUtils2.GetOperatingSystem ⍬
-     :Case 'Win'
-         buff←∊⎕SH'rmdir /s /q "',(path~'"'),'"'
-     :Else
-         buff←∊⎕SH'rm -f -r "',(path~'"'),'"'
-     :EndSelect
-     flag←i←0
      :Repeat
+         :Select APLTreeUtils2.GetOperatingSystem ⍬
+         :Case 'Win'
+             buff←∊⎕SH'rmdir /s /q "',(path~'"'),'"'
+         :Else
+             buff←∊⎕SH'rm -f -r "',(path~'"'),'"'
+         :EndSelect
+         flag←i←0
          :If 0≠rc←⎕NEXISTS path
              :If 5=i←i+1
                  :If 0=≢msg←buff
-                     msg←'Removing direcotry failed'
+                     msg←'Removing directory failed'
                  :EndIf
                  flag←1
              :Else
