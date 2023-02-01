@@ -39,7 +39,7 @@
      parms2←options/parms
      parms2←({(⍵⍳⍵)=⍳≢⍵}⊃¨parms2)/parms2
      cmd,←{' ',(2⊃⍵)/1⊃⍵}¨parms2
-     (successFlag more)←2↑##.OS.WinExecute∊cmd
+     (successFlag more)←2↑OS.WinExecute∊cmd
  :CaseList 'Lin' 'Mac'
      wsname←⊃,/1 ⎕NPARTS wsname
      wsname←' '⎕R'\\ '⊣wsname   ⍝ Encode blanks
@@ -56,7 +56,7 @@
      :EndIf
      cmd,←' &'
      :Trap 11
-         (rc more result)←##.OS.ShellExecute cmd
+         (rc more result)←OS.ShellExecute cmd
          successFlag←1
          more←''
      :Else

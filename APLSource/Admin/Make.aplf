@@ -1,8 +1,12 @@
- Make flag
- :If 0=⎕SE.⎕NC'MakeHelpers'
-     'The package https://github.com/aplteam/MakeHelpers is required in ⎕SE'⎕SIGNAL 6
- :Else
-     :If flag
-         ⎕SE.MakeHelpers.CreateTatinPackageFromSingleScript ##.FilesAndDirs
-     :EndIf
+ Make flag;C;path;zipFilename;M;cfg
+ :If flag
+     C←##.CiderConfig ⋄ M←⎕SE.MakeHelpers
+     path←C.HOME,'/Dist/'
+     {}##.FilesAndDirs.RmDirByForce path
+     ##.FilesAndDirs.MkDir path
+     cfg←M.GetPackageCfg C.HOME
+     M.CreateAPI ##.FilesAndDirs ##.FilesAndDirs.Public cfg.api
+     zipFilename←⎕SE.Tatin.BuildPackage C.HOME path''
+     ⎕←'*** New version build successfully:',(⎕UCS 13),'   ',zipFilename
  :EndIf
+ ⍝Done

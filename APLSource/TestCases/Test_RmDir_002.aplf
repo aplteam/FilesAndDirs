@@ -1,5 +1,5 @@
  R←Test_RmDir_002(stopFlag batchFlag);⎕TRAP;list;parms;rc;more;en
-⍝ Test the `RmDir` method with a wildcard caracter
+⍝ Test the `RmDir` method with a wildcard character
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

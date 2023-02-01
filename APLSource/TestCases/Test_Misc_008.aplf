@@ -14,7 +14,7 @@
      .⍝ Huuh?!
  :EndSelect
  →T.GoToTidyUp currentDir≢##.FilesAndDirs.NormalizePath buff
- myTempDir←##.FilesAndDirs.GetTempPath,(⍕##.OS.GetPID),'_',(' '~⍨⍕⎕TS)
+ myTempDir←##.FilesAndDirs.GetTempPath,(⍕OS.GetPID),'_',(' '~⍨⍕⎕TS)
  :If ##.FilesAndDirs.IsDir myTempDir,'/aaa/b b/c'
  :AndIf 1≠↑##.FilesAndDirs.RmDir myTempDir
      .⍝ Something is wrong

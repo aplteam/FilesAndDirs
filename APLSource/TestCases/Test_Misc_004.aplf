@@ -5,8 +5,8 @@
 
  →T.PassesIf 0=##.FilesAndDirs.IsFile'**********'
  tempDir←##.FilesAndDirs.GetTempPath
- myTempFile←tempDir,(⍕##.OS.GetPID),'_',' '~⍨(⍕⎕TS),'_1'
- myTempFile2←tempDir,(⍕##.OS.GetPID),'_',' '~⍨(⍕⎕TS),'_2'
+ myTempFile←tempDir,(⍕OS.GetPID),'_',' '~⍨(⍕⎕TS),'_1'
+ myTempFile2←tempDir,(⍕OS.GetPID),'_',' '~⍨(⍕⎕TS),'_2'
  {(⊂⍵)##.FilesAndDirs.NPUT ⍺}/myTempFile'Temp test file'
  {(⊂⍵)##.FilesAndDirs.NPUT ⍺}/myTempFile2'Another temp test file'
  →T.GoToTidyUp 0≠##.FilesAndDirs.IsDir myTempFile

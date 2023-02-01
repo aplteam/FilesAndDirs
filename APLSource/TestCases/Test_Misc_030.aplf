@@ -1,0 +1,16 @@
+ R←Test_Misc_030(stopFlag batchFlag);⎕TRAP;tempDir
+⍝ Test the `ExecNfunction` method on both ⎕NCOPY and ⎕NMOVE
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ tempDir←##.FilesAndDirs.GetTempSubDir⊃⎕SI
+
+ tempDir(⎕NCOPY⍠('IfExists' 'Replace')##.FilesAndDirs.ExecNfunction)##.CiderConfig.HOME,'/Tests/FOO.txt'
+ (tempDir,'/GOOGOO')(⎕NMOVE⍠('IfExists' 'Skip')##.FilesAndDirs.ExecNfunction)tempDir,'/FOO.txt'
+ (tempDir,'/foo.md')(⎕NMOVE⍠('IfExists' 'Skip')##.FilesAndDirs.ExecNfunction)tempDir,'/GOOGOO'
+ →T.GoToTidyUp 0=⎕NEXISTS tempDir,'/foo.md'
+
+ R←T._OK
+
+∆TidyUp:
+ Assert~⊃##.FilesAndDirs.RmDirByForce tempDir
