@@ -1,1 +1,1 @@
-Sample file used for movoing and copying a file around
+Sample file used for moving and copying a file around
