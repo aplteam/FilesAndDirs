@@ -6,7 +6,7 @@
      ##.FilesAndDirs.MkDir path
      cfg←M.GetPackageCfg C.HOME
      M.CreateAPI ##.FilesAndDirs ##.FilesAndDirs.Public cfg.api
-     version←cfg M.HandleVersionNumber path
+     version←cfg M.CompileVersionNumberPattern path
      zipFilename←⎕SE.Tatin.BuildPackage C.HOME path version
      ⎕←'*** New version build successfully:',(⎕UCS 13),'   ',zipFilename
  :EndIf
