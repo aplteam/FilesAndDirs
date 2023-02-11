@@ -8,6 +8,7 @@
  r,←⊂'Dir'
  r,←⊂'EnforceBackslash'
  r,←⊂'EnforceSlash'
+ r,←⊂'ExecNfunction'
  r,←⊂'Exists'
  r,←⊂'ExpandPath'
  r,←⊂'GetModifiedDate'
