@@ -1,5 +1,6 @@
  r←Public
  r←''
+ r,←⊂'AddTrailingSep'
  r,←⊂'Cd'
  r,←⊂'CheckPath'
  r,←⊂'CurrentSep'

@@ -1,4 +1,8 @@
 (
+ '* 5.4.0 ⋄ 2023-03-24'
+ '  * Function `AddTrailingSep` added'
+ '  * Renamed `ADOC_Dec` to `ADOC_Doc`'
+ '  * Documentation polished'
  '* 5.3.4 ⋄ 2023-02-11'
  '  * Bug fix: `ExecNfunction` was not available via the API'
  '* 5.3.3 ⋄ 2023-02-09'
