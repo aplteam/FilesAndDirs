@@ -3,6 +3,7 @@
 ⍝ The directory will be created.
 ⍝ `prefixString`, when empty, defaults to `⎕AN`. The name of the directory will
 ⍝ match `prefixString` followed by an `_` and a randomly generated number.\\
+ 'The right argument must not carry a * or a \'⎕SIGNAL 11/⍨∨/prefixString∊'\*'
  :If 0=≢prefixString
      prefixString←⎕AN
  :EndIf
@@ -13,7 +14,7 @@
  :Repeat
      dirname←path,(({⍵↓⍨-(¯1↑⍵)∊'/\'}prefixString),'_',(⍕no),'_',(⍕i))
      :Trap 22
-         2 ⎕MKDIR dirname
+         2 ⎕MKDIR dirname~'"'
          flag←success←1
      :Else
          ⎕DL 0.01+0.01×0=5|5

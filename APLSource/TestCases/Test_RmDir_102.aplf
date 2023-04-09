@@ -6,7 +6,7 @@
  tempFolder←##.FilesAndDirs.GetTempSubDir'FilesAndDirs-',⊃⎕SI
  (⊂'Hello world')⎕NPUT tempFolder,'/foo'
 
- res←##.FilesAndDirs.RmDirByForce tempFolder,'/Foo'
+ res←##.FilesAndDirs.RmDirByForce tempFolder,'/foo'
  →T.GoToTidyUp 1 'Not a directory'≢res
 
  R←T._OK

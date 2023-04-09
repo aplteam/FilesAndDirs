@@ -11,19 +11,19 @@
  →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 
- tempSubDir←##.FilesAndDirs.GetTempSubDir'Foo\Goo\Zoo'
+ tempSubDir←##.FilesAndDirs.GetTempSubDir'Foo/Goo/Zoo'
  (path folder)←2↑⎕NPARTS tempSubDir
- →T.GoToTidyUp path≢(##.FilesAndDirs.NormalizePath ##.FilesAndDirs.GetTempPath,'\Foo\Goo'),'\'
+ →T.GoToTidyUp≢/##.FilesAndDirs.NormalizePath¨path((##.FilesAndDirs.NormalizePath ##.FilesAndDirs.GetTempPath,'/Foo/Goo'),'/')
  →T.GoToTidyUp'Zoo'≢⊃'_'APLTreeUtils2.Split folder
  →T.GoToTidyUp 1≠##.FilesAndDirs.IsDir tempSubDir
  ##.FilesAndDirs.RmDir tempSubDir
 
- :Trap 22
+ :Trap 11
      tempSubDir←##.FilesAndDirs.GetTempSubDir'***'
      →T.GoToTidyUp 1
  :Else
      dmx←⎕DMX
-     →T.GoToTidyUp'Unable to create '{⍺≢(≢⍺)↑⍵}dmx.EM
+     →T.GoToTidyUp'The right argument must not carry a * or a \'{⍺≢(≢⍺)↑⍵}dmx.EM
  :EndTrap
 
  R←T._OK

@@ -1,4 +1,8 @@
 (
+ '* 5.4.1 ⋄ 2023-04-08'
+ '  * Bug fix in `Cd`: returned a 0 rather than the previous directory on non-Windows platforms'
+ '  * Several tests fixed that would not work on Mac-OS'
+ '  * Two superfluous non-public functions removed'
  '* 5.4.0 ⋄ 2023-03-24'
  '  * Function `AddTrailingSep` added'
  '  * Renamed `ADOC_Dec` to `ADOC_Doc`'

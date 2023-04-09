@@ -6,13 +6,14 @@
  testFilename←testPath,'/CodeCoverage'
  flag←0
  :If ⎕NEXISTS testPath
-     :If ⎕NEXISTS testFilename,'.dcf'
+     :If ⎕NEXISTS testFilename,'.profile'
+     :OrIf ⎕NEXISTS testFilename,'.dcf'
          ind←('Code Coverage' 0 1)CommTools.Select'Append' 'Replace' 'Neither'
+         :If 2=ind
+             CodeCoverage.DeleteFiles testFilename
+         :EndIf
          →(3=ind)/0
          flag←1
-         :If 2≡ind
-             1 ⎕NDELETE testFilename,'.dcf'
-         :EndIf
      :Else
          flag←0 CommTools.YesOrNo'Code coverage?'
      :EndIf
@@ -22,7 +23,7 @@
  :If flag
      3 ⎕MKDIR testPath  ⍝
      T.codeCoverage←⎕NEW CodeCoverage(,⊂'#.',{⍵,'.',⍵}2↓⍕⎕THIS.##)
-     ⍝T.codeCoverage.ignore←''
+     T.codeCoverage.ignore←'#.FilesAndDirs.FilesAndDirs.API'
      T.codeCoverage.filename←testFilename
  :EndIf
 ⍝Done
