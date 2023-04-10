@@ -14,7 +14,7 @@
  x←⊂∘,⍣((⊃' '=1↑0⍴↑x)∧1=≡x)⊣x
  (recursive depth)←2↑x,(≢x)↓0 ⍬
  depth-←1
- path←NormalizePath path
+ path←NormalizePath ,path
  (part1 part2)←APLTreeUtils2.SplitPath path
  'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1
  :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬

@@ -12,6 +12,9 @@
  x←{0<⎕NC ⍵:⍎⍵ ⋄ ''⍬}'x'
  x←⊂∘,⍣((⊃' '=1↑0⍴↑x)∧1=≡x)⊣x
  (recursive depth)←2↑x,(≢x)↓0 ⍬
+ :If ∧/~'?*'∊1⊃⎕NPARTS path
+     path,←(~'/\'∊⍨¯1↑path)/'/'
+ :EndIf
  path←NormalizePath path
  (part1 part2)←APLTreeUtils2.SplitPath path
  'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1
