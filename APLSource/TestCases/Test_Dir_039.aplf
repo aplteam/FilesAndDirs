@@ -16,6 +16,6 @@
  :EndIf
  list2←('.'≠⊃¨list2)/list2
 
- →T.PassesIf{∧/(⍺∊⍵)∧(⍵∊⍺)}/APLTreeUtils2.Lowercase¨list list2   ⍝ Sort sequence depends on OS!
+ →T.PassesIf APLTreeUtils2.LazyMatch/APLTreeUtils2.Lowercase¨list list2   ⍝ Sort sequence depends on OS!
 
  R←T._OK

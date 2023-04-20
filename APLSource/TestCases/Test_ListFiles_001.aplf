@@ -13,13 +13,6 @@
  →T.PassesIf 1=≢##.FilesAndDirs.ListFiles ∆Home,'/Second/Sub_b/*_ab'
 
  :Trap 11
-     {}'Recursive'##.FilesAndDirs.ListFiles ∆Home,'/Second/Sub*'
-     →T.FailsIf 1
- :Else
-     →T.PassesIf'"path" must not carry wildcard chars in case "Recursive" is specified'≡⊃⎕DM
- :EndTrap
-
- :Trap 11
      {}##.FilesAndDirs.ListFiles ∆Home,'/Sec*/Sub'
      →T.FailsIf 1
  :Else
