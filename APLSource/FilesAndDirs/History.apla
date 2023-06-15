@@ -1,4 +1,11 @@
 (
+ '* 5.5.1 ⋄ 2023-06-??'
+ '  * Superfluous `ADOC_Dec` deleted'
+ '  * Latest test helpers established'
+ '  * Packages updated'
+ '                    '
+ '  Changes merged into main and pushed and dev re-created, but not new version created '
+ ''
  '* 5.5.0 ⋄ 2023-04-20'
  '  * `ListFiles` does allow wildcard characters now even with "recursive"'
  '  * Bug fix: mistake in the documentation of ListDirs corrected regarding wildcard  characters'
