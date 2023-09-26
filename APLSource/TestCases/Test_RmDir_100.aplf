@@ -10,7 +10,7 @@
      {}1 APLGit2.Init tempFolder
      res←APLGit2.Add tempFolder
      Assert 0≡res
-     res←APLGit2.Commit tempFolder
+     res←'Some message'APLGit2.Commit tempFolder
      Assert 0<≢res
      res←##.FilesAndDirs.RmDir tempFolder
      :If 'win'≡⎕C APLTreeUtils2.GetOperatingSystem''
