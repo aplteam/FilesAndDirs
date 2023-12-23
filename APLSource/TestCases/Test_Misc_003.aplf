@@ -16,5 +16,7 @@
  :EndIf
  →T.PassesIf≡/≢¨list list2
 
+ →T.PassesIf 0=##.FilesAndDirs.IsDir'/does/not/exist/for/sure'
+
  R←T._OK
 ⍝Done
