@@ -61,6 +61,7 @@ Of course this means that on Linux and Mac OS, `FilesAndDirs` cannot handle name
   GetTempPath
   GetTempSubDir
   IsDir
+  IsDirEmpty
   IsFile
   IsSymbolicLink
   ListDirs
