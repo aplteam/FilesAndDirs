@@ -1,1 +1,1 @@
-NPUT←{⍺←⊢ ⋄ ⍺ ##.NPUT ⍵}
+NPUT←{⍺←⊢ ⋄ 1:shy←⍺ ##.NPUT ⍵}

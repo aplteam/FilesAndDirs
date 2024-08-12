@@ -1,1 +1,1 @@
-RmDir←{⍺←⊢ ⋄ ⍺ ##.RmDir ⍵}
+RmDir←{⍺←⊢ ⋄ 1:shy←⍺ ##.RmDir ⍵}
