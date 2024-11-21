@@ -8,7 +8,7 @@
   io: 0,
   license: "MIT",
   lx: "",
-  maintainer: "",
+  maintainer: "kai@aplteam.com",
   minimumAplVersion: "18.0",
   ml: 1,
   name: "FilesAndDirs",
