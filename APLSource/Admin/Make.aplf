@@ -1,17 +1,23 @@
- Make flag;M;C;path;zipFilename;res;version;cfg;parms
-⍝ "Make" a new version of this project
+ Make flag;M;C;path;cfg;parms;zipFilename
+⍝ "Make" a new version of this project.
+⍝ The version number comes from the package config file.
  :If flag
-     {⍵: ⋄ ⎕←'Could not load MakeHelpers' ⋄ ∘∘∘}⎕SE.Tatin.LoadPackages'MakeHelpers'⎕SE
+     :If 0=⎕SE.⎕NC'MakeHelpers'
+         {}⎕SE.Tatin.LoadPackages'[tatin]MakeHelpers'⎕SE
+     :EndIf
      M←⎕SE.MakeHelpers
+     ⎕←'' ⋄ 0 0⍴⍞,0/⍞←'Pause sync services like Dropbox, Google Drive etc. in order to avoid FILE ACCESS errors. Press <enter> to continue '
      C←##.CiderConfig
      path←C.HOME,'/',C.CIDER.distributionFolder
-     cfg←⎕JSON⍠('Dialect' 'JSON5')⊢⊃⎕NGET C.HOME,'/apl-package.json'
-     version←M.CompileVersionNumberPattern cfg
+     :If ⎕NULL≡cfg←M.EditPackageConfigFile C.HOME
+         ⎕←'Cancelled by user' ⋄ →0
+     :EndIf
      M.RecreateFolder path
      {}⎕SE.Tatin.CreateAPIfromCFG ##.FilesAndDirs cfg
      parms←⎕SE.Tatin.CreateBuildParms C.HOME
+     parms.version←cfg.version
      parms.targetPath←path
-     parms.version←version
+     M.RecreateFolder path
      zipFilename←⎕SE.Tatin.BuildPackage parms
      ⎕←'*** New version build successfully:',M.CR,'   ',zipFilename
  :EndIf

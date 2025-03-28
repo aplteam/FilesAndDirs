@@ -19,5 +19,5 @@
   source: "APLSource/FilesAndDirs",
   tags: "files,directories,copy,move,read,write,get,put",
   userCommandScript: "",
-  version: "5.8.1+169",
+  version: "6.0.0+173",
 }
