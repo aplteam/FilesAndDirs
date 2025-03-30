@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Coverage</title>
+<meta charset="utf-8"/>
+<style>
+@media screen{
+    html {background-color: #FFFFF0;}
+body {
+    font-size: 16px;
+    font-family : Verdana, "Bitstream Vera Sans", "DejaVu Sans", Tahoma, Geneva, Arial, Sans-serif;
+    margin: 1em;
+}
+th, td {padding: 5px 10px;}
+th {text-align: left;}
+h1, h2, h3, h4, h5, h6 {color: #424242;}
+h1 {font-size: 22px;}
+h2 {font-size: 18px; margin-top: 2em; margin-bottom:0.3em;}
+tbody tr:nth-child(even) {background-color: #F0F0F0;}
+tbody tr:nth-child(odd) {background-color: #FAFAFA;}
+th {background-color: #E6E6E6;color: #424242;}
+table {border: silver 1px solid; font-size: 14px;font-family: APLFont, monospace;}
+code , code a {font-size: 14px; font-family: APLFont, monospace;}
+code.header {
+    font-size: 16px; 
+    font-family: APLFont, monospace; 
+    margin: 1.5em 0.5em 0 0.5em; 
+    padding:0;
+    display: block;
+}
+div.code-block {
+    border: 1px silver dashed;
+    background-color: #F2F2F2;
+    display: block;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    padding: 0.5em;
+}
+div.code-block.missing {
+    background-color: #fa605254;
+}
+div.code-block code {display: block; white-space: pre-wrap; margin:0; padding:0; word-wrap: break-word;}
+.emphasize { font-weight: 800;}
+ul li, ol li {margin: 0.7em 0.2em;}
+.float-right {float:right;}
+.no-underline {    text-decoration :none;}
+.top-links {font-size:20px; padding-left: 0.6em;}
+.align-right {text-align: right;}
+#footer hr {margin-top:1.5em;}
+#footer p {margin-top:5px; padding-top:0; font-size: 9px;}
+@font-face {
+        font-family: "APLFont";
+    src:
+        local("APL385 Unicode"),
+        url("https://misc.aplteam.com/apl385.ttf") format("truetype");
+}
+.info {border: 1px silver dashed; background-color: #F2F2F2;margin: 0.5em; padding: 0.5em;}
+}
+@media print{@page {size: portrait}
+@page {
+    margin: 1cm 1cm 1cm 1.75cm;
+    @bottom-right {
+        content: counter(page) " / " counter(pages);
+  }
+}
+body {
+    font: 12pt "Times New Roman", Times, serif;
+    line-height: 1.2;
+     /* CSS3 filter, at the moment Webkit only. Prefix it for future implementations */
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%); /* future-proof */
+}
+h1 {font-size: 18pt;}
+h2 {font-size: 16pt; margin-top: 10pt; margin-bottom: 3pt;}
+th, td {padding: 2pt 3pt;}
+th {text-align: left;background-color: #DBDBDB;}
+tbody tr:nth-child(odd) {background-color: #EDEDED;}
+table {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-size: 8pt;
+    font-family: APLFont, monospace;
+}
+div.keep-together {break-inside: avoid; break-before:auto;}
+table {border: silver 1pt solid;}
+code , code a {font-size: 8pt; font-family: APLFont, monospace;}
+code.header {
+    font-size: 8pt;
+    font-family: APLFont, monospace;
+    margin: 7pt 3pt 0 10pt;
+    padding:0;
+    display: block;
+}
+div.code-block {
+    border: 1pt silver dashed;
+    background-color: #F2F2F2;
+    display: block;
+    margin: 4pt 4pt 4pt 4pt;
+    padding: 4pt;
+}
+div.code-block code {display: block; white-space: pre-wrap; margin:0; padding:0; word-wrap: break-word;}
+.emphasize { font-weight: 800;}
+a {text-decoration: none;color: black;}
+ul li, ol li {margin: 8pt 3pt;}
+.no-print {display:none;}
+.align-right {text-align: right;}
+#footer hr {margin-top:1.5em;}
+#footer p {margin-top:5pt; padding-top:0; font-size: 6pt;}
+@font-face {
+        font-family: "APLFont";
+    src:
+        local("APL385 Unicode"),
+        url("https://misc.aplteam.com/apl385.ttf") format("truetype");
+}
+.info {border: 1px silver dashed; background-color: #F2F2F2;margin: 8px; padding: 8px;}
+}
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.2/b-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.6.0/dt-1.11.2/b-2.0.0/b-print-2.0.0/fh-3.1.9/r-2.2.9/datatables.min.js"></script>
+</head>
+<body>
+<h1 id="top">Coverage Report</h1>
+<p>Watched: 77 fns/opr within <code>#.FilesAndDirs.FilesAndDirs</code></p>
+<p>The test suite was executed once:</p>
+<table>
+<thead>
+<tr><th>Executed at</th><th>APLVersion</th><th>Memory (MB)</th></tr>
+</thead>
+<tbody>
+<tr><td>2025-03-30 10:49:50</td><td>Windows-64 ⋄ 19.0.50771.0 ⋄ W ⋄ Development ⋄ Unicode</td><td>113</td></tr>
+</tbody>
+</table>
+<p>Overall 86% of the testable code is covered.</p>
+<p>(Comment lines, empty lines, all <code>:End</code>* lines etc. are ignored)</p>
+<p>51 of the fns/opr are 100% covered.</p>
+<div id="partly-covered" class="keep-together">
+<table id="percent">
+<thead>
+<tr><th style="text-align:left;">Function/Operator</th><th style="text-align:left;">Lines not executed</th><th style="text-align:left;">Coverage</th><th style="text-align:right;">≢</th></tr>
+</thead>
+<tbody>
+<tr class="uncovered"><td><a href="#listing_1" title="Link to listing">#.FilesAndDirs.FilesAndDirs.PolishCurrentDir</a></td><td>5←≢4-8</td><td>0</td><td>5</td></tr>
+<tr class="uncovered"><td><a href="#listing_2" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.CurrentSep</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_3" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.GetTempPath</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_4" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.NNAMES</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_5" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.PWD</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_6" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.PolishCurrentDir</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr class="uncovered"><td><a href="#listing_7" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.Version</a></td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td><a href="#listing_8" title="Link to listing">#.FilesAndDirs.FilesAndDirs.GetTempPath</a></td><td>5←≢7,12-14,16</td><td>58</td><td>12</td></tr>
+<tr><td><a href="#listing_9" title="Link to listing">#.FilesAndDirs.FilesAndDirs.Version</a></td><td>4, 10</td><td>60</td><td>5</td></tr>
+<tr><td><a href="#listing_10" title="Link to listing">#.FilesAndDirs.FilesAndDirs.Cd</a></td><td>7←≢12,20,24-27,29</td><td>63</td><td>19</td></tr>
+<tr><td><a href="#listing_11" title="Link to listing">#.FilesAndDirs.FilesAndDirs.IsDir</a></td><td>5←≢18-19,21,27,32</td><td>67</td><td>15</td></tr>
+<tr><td><a href="#listing_12" title="Link to listing">#.FilesAndDirs.FilesAndDirs.IsDirEmpty</a></td><td>6, 7</td><td>67</td><td>6</td></tr>
+<tr><td><a href="#listing_13" title="Link to listing">#.FilesAndDirs.FilesAndDirs.GetLastError</a></td><td>6, 8</td><td>71</td><td>7</td></tr>
+<tr><td><a href="#listing_14" title="Link to listing">#.FilesAndDirs.FilesAndDirs.NGET</a></td><td>5←≢15,19-20,22-23</td><td>71</td><td>17</td></tr>
+<tr><td><a href="#listing_15" title="Link to listing">#.FilesAndDirs.FilesAndDirs.Exists</a></td><td>6</td><td>75</td><td>4</td></tr>
+<tr><td><a href="#listing_16" title="Link to listing">#.FilesAndDirs.FilesAndDirs.RmDirByForce</a></td><td>6←≢30,34-36,38,40</td><td>77</td><td>26</td></tr>
+<tr><td><a href="#listing_17" title="Link to listing">#.FilesAndDirs.FilesAndDirs.NPUT</a></td><td>4←≢26-27,29-30</td><td>80</td><td>20</td></tr>
+<tr><td><a href="#listing_18" title="Link to listing">#.FilesAndDirs.FilesAndDirs.GetTempFilename</a></td><td>19, 23, 32</td><td>85</td><td>20</td></tr>
+<tr><td><a href="#listing_19" title="Link to listing">#.FilesAndDirs.FilesAndDirs.NormalizePath</a></td><td>4←≢32-35</td><td>85</td><td>27</td></tr>
+<tr><td><a href="#listing_20" title="Link to listing">#.FilesAndDirs.FilesAndDirs.DeleteFile</a></td><td>28, 29, 31</td><td>86</td><td>21</td></tr>
+<tr><td><a href="#listing_21" title="Link to listing">#.FilesAndDirs.FilesAndDirs.HandlePath</a></td><td>5</td><td>86</td><td>7</td></tr>
+<tr><td><a href="#listing_22" title="Link to listing">#.FilesAndDirs.FilesAndDirs.Dir</a></td><td>9←≢65-66,68,104,110,128,138-140</td><td>90</td><td>86</td></tr>
+<tr><td><a href="#listing_23" title="Link to listing">#.FilesAndDirs.FilesAndDirs.CheckPath</a></td><td>10</td><td>91</td><td>11</td></tr>
+<tr><td><a href="#listing_24" title="Link to listing">#.FilesAndDirs.FilesAndDirs.IsFile</a></td><td>19</td><td>91</td><td>11</td></tr>
+<tr><td><a href="#listing_25" title="Link to listing">#.FilesAndDirs.FilesAndDirs.GetTempFilename2</a></td><td>21</td><td>94</td><td>16</td></tr>
+<tr><td><a href="#listing_26" title="Link to listing">#.FilesAndDirs.FilesAndDirs.GetTempSubDir</a></td><td>19</td><td>94</td><td>16</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_27" title="Link to listing">#.FilesAndDirs.FilesAndDirs.AddTrailingSep</a></td><td></td><td>100</td><td>3</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_28" title="Link to listing">#.FilesAndDirs.FilesAndDirs.CurrentSep</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_29" title="Link to listing">#.FilesAndDirs.FilesAndDirs.DateToReal</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_30" title="Link to listing">#.FilesAndDirs.FilesAndDirs.EncodeBlanks</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_31" title="Link to listing">#.FilesAndDirs.FilesAndDirs.EnforceBackslash</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_32" title="Link to listing">#.FilesAndDirs.FilesAndDirs.EnforceSlash</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_33" title="Link to listing">#.FilesAndDirs.FilesAndDirs.ExecNfunction</a></td><td></td><td>100</td><td>14</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_34" title="Link to listing">#.FilesAndDirs.FilesAndDirs.ExpandPath</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_35" title="Link to listing">#.FilesAndDirs.FilesAndDirs.GetModifiedDate</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_36" title="Link to listing">#.FilesAndDirs.FilesAndDirs.GetNewLineCharsFor</a></td><td></td><td>100</td><td>4</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_37" title="Link to listing">#.FilesAndDirs.FilesAndDirs.IsSymbolicLink</a></td><td></td><td>100</td><td>7</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_38" title="Link to listing">#.FilesAndDirs.FilesAndDirs.ListDirs</a></td><td></td><td>100</td><td>25</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_39" title="Link to listing">#.FilesAndDirs.FilesAndDirs.ListFiles</a></td><td></td><td>100</td><td>16</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_40" title="Link to listing">#.FilesAndDirs.FilesAndDirs.MkDir</a></td><td></td><td>100</td><td>15</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_41" title="Link to listing">#.FilesAndDirs.FilesAndDirs.NCREATE</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_42" title="Link to listing">#.FilesAndDirs.FilesAndDirs.NNAMES</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_43" title="Link to listing">#.FilesAndDirs.FilesAndDirs.PWD</a></td><td></td><td>100</td><td>3</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_44" title="Link to listing">#.FilesAndDirs.FilesAndDirs.ProduceRandomName</a></td><td></td><td>100</td><td>1</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_45" title="Link to listing">#.FilesAndDirs.FilesAndDirs.Public</a></td><td></td><td>100</td><td>37</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_46" title="Link to listing">#.FilesAndDirs.FilesAndDirs.RmDir</a></td><td></td><td>100</td><td>27</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_47" title="Link to listing">#.FilesAndDirs.FilesAndDirs.YoungerThan</a></td><td></td><td>100</td><td>3</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_48" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.AddTrailingSep</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_49" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.Cd</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_50" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.CheckPath</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_51" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.DateToReal</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_52" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.DeleteFile</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_53" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.Dir</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_54" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.EnforceBackslash</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_55" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.EnforceSlash</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_56" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.ExecNfunction</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_57" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.Exists</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_58" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.ExpandPath</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_59" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.GetModifiedDate</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_60" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.GetNewLineCharsFor</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_61" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.GetTempFilename</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_62" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.GetTempFilename2</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_63" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.GetTempSubDir</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_64" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.IsDir</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_65" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.IsDirEmpty</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_66" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.IsFile</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_67" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.IsSymbolicLink</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_68" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.ListDirs</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_69" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.ListFiles</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_70" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.MkDir</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_71" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.NCREATE</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_72" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.NGET</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_73" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.NPUT</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_74" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.NormalizePath</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_75" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.RmDir</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_76" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.RmDirByForce</a></td><td></td><td>100</td><td>0</td></tr>
+<tr class="fullyCovered"><td><a href="#listing_77" title="Link to listing">#.FilesAndDirs.FilesAndDirs.API.YoungerThan</a></td><td></td><td>100</td><td>0</td></tr>
+</tbody>
+</table>
+</div>
+<script>
+$(document).ready(function() {
+    var oTable;
+    oTable = $("#percent").DataTable( {
+        paging:   false,
+        ordering: true,
+        info:     true,
+        fixedHeader: true,
+        order: [2,"asc"],
+        dom: "Bft",
+        drawCallback: function( settings ) {
+             var api = this.api();
+             $('.header[id^="listing_"]').next().addBack().css("display","none");
+             api.rows( {page:"current"} ).data().each(function(data){
+              id = data[0];
+              id = id.match(/"(\#.*?)"/);
+              if (id){$(id[1]).next().addBack().css("display","block");}
+             })
+        },      
+        buttons: [
+        {
+            text: "Partly covered (19)",
+            titleAttr: "50%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "^(?!(0%|100%)).*";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "Uncovered (7)",
+            titleAttr: "0%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "^0%";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "Fully covered (51)",
+            titleAttr: "100%",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = "100%";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+        {
+            text: "All (77)",
+            titleAttr: "all",
+            className: "active",
+            action: function ( e, dt, node, config ) {
+                var text = this.text();
+                var search = ".";
+                oTable.column(2)
+                    .search(search,true,false,false)
+                    .draw();
+                $(".dt-buttons button").removeClass("active");
+                this.active( true );
+            }
+        },
+    ],
+ 
+        columnDefs: [
+            {className: "align-right", targets: [2,3]
+            },
+            {
+                render: function ( data, type, row, meta ) {
+                            return data+"%" ;        
+                        },
+                targets: 2
+            }
+        ]             
+    } );
+    oTable.button(0).trigger();
+
+} );    
+</script>
+<h2>Listings</h2>
+<code class="header" id="listing_1">#.FilesAndDirs.FilesAndDirs.PolishCurrentDir &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←PolishCurrentDir</code>
+<code> [1]  ⍝ If `⎕WSID` is relative this function does nothing.\\</code>
+<code> [2]  ⍝ Otherwise the current directory is changed so that it becomes the path part of `⎕WSID`.\\</code>
+<code> [3]  ⍝ Returns either `''` or the old directory in case of a change.</code>
+<code class="emphasize">→[4]   r←''</code>
+<code class="emphasize">→[5]   wsid←NormalizePath ⎕WSID</code>
+<code class="emphasize">→[6]   :If ('.',CurrentSep)≢2⍴⎕WSID,' '</code>
+<code class="emphasize">→[7]   :AndIf CurrentSep∊wsid</code>
+<code class="emphasize">→[8]       r←NormalizePath Cd 0⊃APLTreeUtils2.SplitPath wsid</code>
+<code> [9]   :EndIf</code>
+</div>
+<code class="header" id="listing_2">#.FilesAndDirs.FilesAndDirs.API.CurrentSep &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←CurrentSep</code>
+<code class="emphasize">→[1]  r←##.CurrentSep</code>
+</div>
+<code class="header" id="listing_3">#.FilesAndDirs.FilesAndDirs.API.GetTempPath &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> path←GetTempPath</code>
+<code class="emphasize">→[1]  path←##.GetTempPath</code>
+</div>
+<code class="header" id="listing_4">#.FilesAndDirs.FilesAndDirs.API.NNAMES &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←NNAMES</code>
+<code class="emphasize">→[1]  r←##.NNAMES</code>
+</div>
+<code class="header" id="listing_5">#.FilesAndDirs.FilesAndDirs.API.PWD &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←PWD</code>
+<code class="emphasize">→[1]  r←##.PWD</code>
+</div>
+<code class="header" id="listing_6">#.FilesAndDirs.FilesAndDirs.API.PolishCurrentDir &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> {r}←PolishCurrentDir</code>
+<code class="emphasize">→[1]  r←##.PolishCurrentDir</code>
+</div>
+<code class="header" id="listing_7">#.FilesAndDirs.FilesAndDirs.API.Version &mdash; 0%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←Version</code>
+<code class="emphasize">→[1]  r←##.Version</code>
+</div>
+<code class="header" id="listing_8">#.FilesAndDirs.FilesAndDirs.GetTempPath &mdash; 58%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  path←GetTempPath</code>
+<code> [1]  ⍝ Returns the path to the temp directory on the current system.</code>
+<code> [2]   :Select APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [3]   :Case 'Win'</code>
+<code> [4]       '∆GetTempPath'⎕NA'I4 KERNEL32.C32|GetTempPath* I4 &gt;T[]'</code>
+<code> [5]       path←⊃↑/∆GetTempPath 1024 1024</code>
+<code> [6]       :If 0=≢path</code>
+<code class="emphasize">→[7]           11 ⎕SIGNAL⍨'Problem getting Windows temp path!; rc=',⍕GetLastError</code>
+<code> [8]       :Else</code>
+<code> [9]           path←NormalizePath path</code>
+<code> [10]      :EndIf</code>
+<code> [11]  :Case 'Lin'</code>
+<code class="emphasize">→[12]      path←'/tmp/'</code>
+<code class="emphasize">→[13]  :Case 'Mac'</code>
+<code class="emphasize">→[14]      path←'/private/tmp/'</code>
+<code> [15]  :Else</code>
+<code class="emphasize">→[16]      .⍝ Huuh?!</code>
+<code> [17]  :EndSelect</code>
+</div>
+<code class="header" id="listing_9">#.FilesAndDirs.FilesAndDirs.Version &mdash; 60%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←Version</code>
+<code> [1]  ⍝ Returns the version number from `TatinVars` if possible.</code>
+<code> [2]  ⍝ See also `History`</code>
+<code> [3]   :If 0&lt;⎕NC'TatinVars.CONFIG'</code>
+<code class="emphasize">→[4]       r←(⎕JSON⍠('Dialect' 'JSON5')⊢TatinVars.CONFIG).version</code>
+<code> [5]   :ElseIf 0&lt;##.⎕NC'TatinVars.CONFIG'</code>
+<code> [6]       r←(⎕JSON⍠('Dialect' 'JSON5')⊢##.TatinVars.CONFIG).version</code>
+<code> [7]   :Else</code>
+<code> [8]  ⍝ When a script was not loaded with Tatin, there will be no namespace `TatinVars`.</code>
+<code> [9]  ⍝ In such cases we cannot provide a version number, so we return just ''.</code>
+<code class="emphasize">→[10]      r←''</code>
+<code> [11]  :EndIf</code>
+</div>
+<code class="header" id="listing_10">#.FilesAndDirs.FilesAndDirs.Cd &mdash; 63%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←Cd path</code>
+<code> [1]  ⍝ Reports and/or changes the current directory.</code>
+<code> [2]  ⍝ The method changes the current directory to what is passed as the right argument.\\</code>
+<code> [3]  ⍝ It returns the former current directory as a result.\\</code>
+<code> [4]  ⍝ Because an empty right argument has no effect, `Cd ''` effectively reports the</code>
+<code> [5]  ⍝ current directory. See also [`PWD`](#) (Print Work Directory).</code>
+<code> [6]   path←NormalizePath path</code>
+<code> [7]   :Select APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [8]   :Case 'Win'</code>
+<code> [9]       '∆GetCurrentDirectory'⎕NA'I4 KERNEL32.C32|GetCurrentDirectory* I4 &gt;T[]'</code>
+<code> [10]      '∆SetCurrentDirectory'⎕NA'I4 KERNEL32.C32|SetCurrentDirectory* &lt;0T'</code>
+<code> [11]      :If 0=⊃rc←∆GetCurrentDirectory 260 260</code>
+<code class="emphasize">→[12]          r←GetLastError'GetCurrentDirectory error' ''</code>
+<code> [13]      :Else</code>
+<code> [14]          r←NormalizePath⊃↑/rc</code>
+<code> [15]      :EndIf</code>
+<code> [16]      :If 0≠≢path←path~'"'</code>
+<code> [17]      :AndIf ' '=1↑0⍴path</code>
+<code> [18]          path,←(CurrentSep≠¯1↑path)/CurrentSep</code>
+<code> [19]          :If ~∆SetCurrentDirectory⊂path</code>
+<code class="emphasize">→[20]              11 ⎕SIGNAL⍨↑{⍵,'; rc=',⍕⍺}/GetLastError'SetCurrentDirectory error'</code>
+<code> [21]          :EndIf</code>
+<code> [22]      :EndIf</code>
+<code> [23]  :CaseList 'Lin' 'Mac'</code>
+<code class="emphasize">→[24]      path←NormalizePath path</code>
+<code class="emphasize">→[25]      r←⊃⎕SH'pwd'</code>
+<code class="emphasize">→[26]      '∆chdir'⎕NA'I ',OS.GetSharedLib,'| chdir &lt;0T1[]'</code>
+<code class="emphasize">→[27]      {}∆chdir⊂path</code>
+<code> [28]  :Else</code>
+<code class="emphasize">→[29]      .  ⍝ Huuh?!</code>
+<code> [30]  :EndSelect</code>
+</div>
+<code class="header" id="listing_11">#.FilesAndDirs.FilesAndDirs.IsDir &mdash; 67%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←IsDir path</code>
+<code> [1]  ⍝ Returns 1 if `path` is a directory and 0 otherwise, even if `path` does exist as a file.\\</code>
+<code> [2]  ⍝ Notes:</code>
+<code> [3]  ⍝ * If `path` is a directory the current user has no "read" access to then it returns 0!</code>
+<code> [4]  ⍝ * `C:\` is considered a directory, though strictly speaking it is not.</code>
+<code> [5]   :If 2=≡path</code>
+<code> [6]       r←IsDir¨path</code>
+<code> [7]   :Else</code>
+<code> [8]       path←NormalizePath path</code>
+<code> [9]       :Trap 11</code>
+<code> [10]          :If r←⎕NEXISTS path</code>
+<code> [11]              :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [12]              :OrIf ~{(':'=0⊃⍵)∧CurrentSep=1⊃⍵}¯2↑path</code>
+<code> [13]                  :Trap 22</code>
+<code> [14]                      :If 0 ⍝ &lt;1594</code>
+<code> [15]                       ⍝ Right now, without ('Wildcard' 1), it generates a FILENAME ERROR when the user has not read access</code>
+<code> [16]                       ⍝ See bug report &lt;01594&gt;</code>
+<code> [17]                       ⍝ The `⊃⊃` as well as the `(-'/\'∊⍨¯1↑path)↓` are only needed with ('Wildcard' 1)</code>
+<code class="emphasize">→[18]                          :If ('.',CurrentSep)≡2↑path</code>
+<code class="emphasize">→[19]                              r←{⊃⊃1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}'expand'NormalizePath path</code>
+<code> [20]                          :Else</code>
+<code class="emphasize">→[21]                              r←{⊃⊃1=1 ⎕NINFO⍠('Wildcard' 1)⊣(-'/\'∊⍨¯1↑⍵)↓⍵}path</code>
+<code> [22]                          :EndIf</code>
+<code> [23]                      :Else</code>
+<code> [24]                          r←1=1 ⎕NINFO path</code>
+<code> [25]                      :EndIf</code>
+<code> [26]                  :Else</code>
+<code class="emphasize">→[27]                      r←0</code>
+<code> [28]                  :EndTrap</code>
+<code> [29]              :EndIf</code>
+<code> [30]          :EndIf</code>
+<code> [31]      :Else</code>
+<code class="emphasize">→[32]          r←0</code>
+<code> [33]      :EndTrap</code>
+<code> [34]  :EndIf</code>
+</div>
+<code class="header" id="listing_12">#.FilesAndDirs.FilesAndDirs.IsDirEmpty &mdash; 67%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> bool←IsDirEmpty dir</code>
+<code> [1]  ('Right argument is not a directory')⎕SIGNAL 6/⍨~IsDir dir</code>
+<code> [2]  :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [3]      {}⎕NA'I2 Shlwapi.dll|PathIsDirectoryEmptyW &lt;0T'</code>
+<code> [4]      bool←PathIsDirectoryEmptyW⊂dir</code>
+<code> [5]  :Else</code>
+<code class="emphasize">→[6]      res←⎕SH'[ "$(ls -A ',dir,')" ] &amp;&amp; echo "Not Empty" || echo ""'</code>
+<code class="emphasize">→[7]      bool←'Not Empty'≢⊃res</code>
+<code> [8]  :EndIf</code>
+</div>
+<code class="header" id="listing_13">#.FilesAndDirs.FilesAndDirs.GetLastError &mdash; 71%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←GetLastError</code>
+<code> [1]   :Select APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [2]   :Case 'Win'</code>
+<code> [3]       '∆GetLastError'⎕NA'I4 kernel32.C32|GetLastError'</code>
+<code> [4]       r←∆GetLastError</code>
+<code> [5]   :CaseList 'Lin' 'Mac'</code>
+<code class="emphasize">→[6]       r←⊃⊃(//)⎕VFI⊃⎕SH'echo $?'</code>
+<code> [7]   :Else</code>
+<code class="emphasize">→[8]       'This operating system is not supported'⎕SIGNAL 11</code>
+<code> [9]   :EndSelect</code>
+</div>
+<code class="header" id="listing_14">#.FilesAndDirs.FilesAndDirs.NGET &mdash; 71%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←{encoding}NGET x</code>
+<code> [1]  ⍝ The purpose of this function is to cover `⎕NGET` and make sure that the filename is normalized.</code>
+<code> [2]   :If 326=⎕DR x</code>
+<code> [3]       (filename flag)←x</code>
+<code> [4]       filename←NormalizePath filename</code>
+<code> [5]   :Else</code>
+<code> [6]       filename←NormalizePath x</code>
+<code> [7]       flag←0</code>
+<code> [8]   :EndIf</code>
+<code> [9]   success←counter←0</code>
+<code> [10]  :Repeat</code>
+<code> [11]      :Trap 19</code>
+<code> [12]          :If 0=⎕NC'encoding'</code>
+<code> [13]              r←⎕NGET filename flag</code>
+<code> [14]          :Else</code>
+<code class="emphasize">→[15]              r←encoding ⎕NGET filename flag</code>
+<code> [16]          :EndIf</code>
+<code> [17]          success←1</code>
+<code> [18]      :Else</code>
+<code class="emphasize">→[19]          :If 4&gt;counter←counter+1</code>
+<code class="emphasize">→[20]              ⎕DL 0.1×counter</code>
+<code> [21]          :Else</code>
+<code class="emphasize">→[22]              qdmx←⎕DMX</code>
+<code class="emphasize">→[23]              (1↓⊃,/(⎕UCS 13),¨qdmx.DM)⎕SIGNAL qdmx.EN</code>
+<code> [24]          :EndIf</code>
+<code> [25]      :EndTrap</code>
+<code> [26]  :Until success</code>
+<code> [27] ⍝Done</code>
+</div>
+<code class="header" id="listing_15">#.FilesAndDirs.FilesAndDirs.Exists &mdash; 75%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  bool←Exists y</code>
+<code> [1]  ⍝ Same as `⎕NEXISTS` but `y` is normalized.\\</code>
+<code> [2]  ⍝ Note that if `y` is a symbolic link that exists then a 1 will be returned, no matter</code>
+<code> [3]  ⍝ whether the target the link is pointing to actually does exist or not.</code>
+<code> [4]   y←NormalizePath y</code>
+<code> [5]   :If 1&lt;|≡y</code>
+<code class="emphasize">→[6]       bool←⎕NEXISTS¨y</code>
+<code> [7]   :Else</code>
+<code> [8]       bool←⎕NEXISTS y</code>
+<code> [9]   :EndIf</code>
+</div>
+<code class="header" id="listing_16">#.FilesAndDirs.FilesAndDirs.RmDirByForce &mdash; 77%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  (rc msg)←RmDirByForce path</code>
+<code> [1]  ⍝ Removes files and directories by force no matter what, including files that have the read-only flag set.\\</code>
+<code> [2]  ⍝ Notes:</code>
+<code> [3]  ⍝ * If `path` does not exist `(0 'Directory does not exist')` is returned</code>
+<code> [4]  ⍝ * If `path` exists but is not a directory `(1 'Not a directory')` is returned</code>
+<code> [5]  ⍝ * In case of success `(0 '')` is returned</code>
+<code> [6]  ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`</code>
+<code> [7]  ⍝   If such characters are specified anyway then an error is signalled.\\</code>
+<code> [8]  ⍝   This is true even on Linux and Mac OS despite the fact that these characters are legal in</code>
+<code> [9]  ⍝   the names of any files and directories.</code>
+<code> [10] ⍝ * The function checks whether `path` was successfully removed indeed.</code>
+<code> [11]  '"path" must not be /..'⎕SIGNAL 11/⍨(⊂path)∊'\..' '/..'</code>
+<code> [12]  path←'expand'NormalizePath path</code>
+<code> [13]  'Wildcard characters are not allowed'⎕SIGNAL 11/⍨∨/'*?'∊path</code>
+<code> [14]  rc←0 ⋄ msg←''</code>
+<code> [15]  :If ~⎕NEXISTS path</code>
+<code> [16]      msg←'Directory does not exist'</code>
+<code> [17]  :ElseIf ~IsDir path</code>
+<code> [18]      rc←1</code>
+<code> [19]      msg←'Not a directory'</code>
+<code> [20]  :Else</code>
+<code> [21]      os←⎕C APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [22]      max←5+3×os≢'win'</code>
+<code> [23]      flag←i←0</code>
+<code> [24]      :Repeat</code>
+<code> [25]          :Trap 11</code>
+<code> [26]              :Select os</code>
+<code> [27]              :Case 'win'</code>
+<code> [28]                  buff←∊⎕SH'rmdir /s /q "',(path~'"'),'"'</code>
+<code> [29]              :Else</code>
+<code class="emphasize">→[30]                  buff←∊⎕SH'rm -f -r "',(path~'"'),'"'</code>
+<code> [31]              :EndSelect</code>
+<code> [32]          :EndTrap</code>
+<code> [33]          :If 0≠rc←⎕NEXISTS path</code>
+<code class="emphasize">→[34]              :If max=i←i+1</code>
+<code class="emphasize">→[35]                  :If 0=≢msg←buff</code>
+<code class="emphasize">→[36]                      msg←'Removing directory failed'</code>
+<code> [37]                  :EndIf</code>
+<code class="emphasize">→[38]                  flag←1</code>
+<code> [39]              :Else</code>
+<code class="emphasize">→[40]                  ⎕DL 0.2×i</code>
+<code> [41]              :EndIf</code>
+<code> [42]          :Else</code>
+<code> [43]              flag←1</code>
+<code> [44]          :EndIf</code>
+<code> [45]      :Until flag</code>
+<code> [46]  :EndIf</code>
+</div>
+<code class="header" id="listing_17">#.FilesAndDirs.FilesAndDirs.NPUT &mdash; 80%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←data NPUT y</code>
+<code> [1]  ⍝ The purpose of this function is to cover `⎕NPUT` and make sure that the filename is normalized.\\</code>
+<code> [2]  ⍝ In addition the function tries to overcome FILE ACCESS ERRROs twice. They are pretty common these days with</code>
+<code> [3]  ⍝ tools like DropBox etc.\\</code>
+<code> [4]  ⍝ The left as well as the right argument must be the same as for a call to the native `⎕NPUT`.</code>
+<code> [5]   :If (≡y)∊0 1</code>
+<code> [6]       filename←NormalizePath y</code>
+<code> [7]       flags←¯1</code>
+<code> [8]   :Else</code>
+<code> [9]       (filename flags)←y</code>
+<code> [10]      filename←NormalizePath filename</code>
+<code> [11]  :EndIf</code>
+<code> [12]  success←counter←0</code>
+<code> [13]  :Repeat</code>
+<code> [14]      :If flags≡¯1</code>
+<code> [15]      :AndIf ⎕NEXISTS filename</code>
+<code> [16]          ⎕DL 0.1  ⍝ Yes, makes no sense, but we've seen this working fine in reality due to the delay!</code>
+<code> [17]      :EndIf</code>
+<code> [18]      :Trap 19</code>
+<code> [19]          :If flags≡¯1</code>
+<code> [20]              r←data ⎕NPUT filename</code>
+<code> [21]          :Else</code>
+<code> [22]              r←data ⎕NPUT filename flags</code>
+<code> [23]          :EndIf</code>
+<code> [24]          success←1</code>
+<code> [25]      :Else</code>
+<code class="emphasize">→[26]          :If 4&gt;counter←counter+1</code>
+<code class="emphasize">→[27]              ⎕DL 0.1×counter</code>
+<code> [28]          :Else</code>
+<code class="emphasize">→[29]              qdmx←⎕DMX</code>
+<code class="emphasize">→[30]              (1↓⊃,/(⎕UCS 13),¨qdmx.DM)⎕SIGNAL qdmx.EN</code>
+<code> [31]          :EndIf</code>
+<code> [32]      :EndTrap</code>
+<code> [33]  :Until success</code>
+<code> [34] ⍝Done</code>
+</div>
+<code class="header" id="listing_18">#.FilesAndDirs.FilesAndDirs.GetTempFilename &mdash; 85%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  filename←{prefixString}GetTempFilename path</code>
+<code> [1]  ⍝ Returns the name of an unused temporary filename. If `path` is empty the default temp</code>
+<code> [2]  ⍝ path is taken; that's what `GetTempPath` would return. This means you can overwrite</code>
+<code> [3]  ⍝ this by specifying a path.\\</code>
+<code> [4]  ⍝ `prefixString`, if defined, is a leading string of the filename</code>
+<code> [5]  ⍝ going to be generated. This is **not** the same as\\</code>
+<code> [6]  ⍝ `'pref',GetTempFileName ''`\\</code>
+<code> [7]  ⍝ because specified as left argument it is taken into account</code>
+<code> [8]  ⍝ when the uniqueness of the created filename is tested.\\</code>
+<code> [9]  ⍝ See also `GetTempFilename2` which is recommended.\\</code>
+<code> [10] ⍝ This function does **not** use the Windows built-in function since</code>
+<code> [11] ⍝ it has proven to be unreliable under W7 (at least).</code>
+<code> [12]  prefixString←{0&lt;⎕NC ⍵:⍎⍵ ⋄ ''}'prefixString'</code>
+<code> [13]  path←NormalizePath path</code>
+<code> [14]  path,←((0≠≢path)∧CurrentSep≠¯1↑path)/CurrentSep</code>
+<code> [15]  :If 0=≢path</code>
+<code> [16]      :Trap 0</code>
+<code> [17]          path←GetTempPath</code>
+<code> [18]      :Else</code>
+<code class="emphasize">→[19]          11 ⎕SIGNAL⍨'Cannot get a temp path; rc=',⍕⎕EN</code>
+<code> [20]      :EndTrap</code>
+<code> [21]  :EndIf</code>
+<code> [22]  :If 0=rc←'Create!'CheckPath path</code>
+<code class="emphasize">→[23]      11 ⎕SIGNAL⍨'Error during "Create &lt;',path,'&gt;"; rc=',⍕GetLastError</code>
+<code> [24]  :Else</code>
+<code> [25]      start←no←⍎ProduceRandomName</code>
+<code> [26]      :Repeat</code>
+<code> [27]          filename←path,prefixString,(⎕AN,'_',⍕no),'.tmp'</code>
+<code> [28]          :Trap 22</code>
+<code> [29]              fno←filename ⎕NCREATE 0</code>
+<code> [30]              ⎕NUNTIE fno</code>
+<code> [31]          :Else</code>
+<code class="emphasize">→[32]              fno←0</code>
+<code> [33]          :EndTrap</code>
+<code> [34]          no+←10</code>
+<code> [35]      :Until (fno≠0)∨no&gt;start+30×10  ⍝ max 30 tries</code>
+<code> [36]      'Unable to create temporay file'⎕SIGNAL 11/⍨fno=0</code>
+<code> [37]  :EndIf</code>
+<code> [38]  filename←NormalizePath filename</code>
+<code> [39] ⍝Done</code>
+</div>
+<code class="header" id="listing_19">#.FilesAndDirs.FilesAndDirs.NormalizePath &mdash; 85%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  path←{expandFlag}NormalizePath path</code>
+<code> [1]  ⍝ `path` might be either a simple text vector or scalar representing a single filename or a</code>
+<code> [2]  ⍝ vector of text vectors with each item representing a single filename.</code>
+<code> [3]  ⍝ Enforces either `\` or `/` as separator in `path` depending on the current operating system.\\</code>
+<code> [4]  ⍝ If you need a particular separator no matter what the current OS is then use either</code>
+<code> [5]  ⍝ `EnforceBackslash` or `EnforceSlash`.\\</code>
+<code> [6]  ⍝ Note that by default a relative path remains relative and any `../` (or `..\`) is not touched.</code>
+<code> [7]  ⍝ You can change this by specifying `'expand'` as the (optional) left argument; then `path` is</code>
+<code> [8]  ⍝ expanded to an absolute path. As a side effect any `../` is transformed appropriately as well.\\</code>
+<code> [9]  ⍝ On Mac and Linux however only trailing `/..` are transformed.</code>
+<code> [10] ⍝ Notes:</code>
+<code> [11] ⍝ * The left argument is not case sensitive.</code>
+<code> [12] ⍝ * Any pair of `//` or `\\` is reduced to a single one except the first two.</code>
+<code> [13] ⍝ * Environment variables are expanded.</code>
+<code> [14]  isScalar←⍬≡⍴path</code>
+<code> [15]  :If 0≠≢path←,path</code>
+<code> [16]      :If '%'∊path</code>
+<code> [17]      :AndIf 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [18]          'ExpandEnvironmentStrings'⎕NA'I4 KERNEL32.C32|ExpandEnvironmentStrings* &lt;0T &gt;0T I4'</code>
+<code> [19]          path←1⊃ExpandEnvironmentStrings path 2048 2048</code>
+<code> [20]      :EndIf</code>
+<code> [21]      expandFlag←{0&lt;⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡⎕C ⍵}w←⍎⍵ ⋄ 0}'expandFlag'</code>
+<code> [22]      isWin←'Win'≡APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [23]      sep←isWin⌽'\/'</code>
+<code> [24]      hasTrailingSep←(¯1↑path)∊sep</code>
+<code> [25]      :If 1&lt;≡path</code>
+<code> [26]          path←expandFlag NormalizePath¨path</code>
+<code> [27]      :Else</code>
+<code> [28]          UNCflag←(⊂2⍴path)∊'\\' '//'</code>
+<code> [29]          :If expandFlag</code>
+<code> [30]              path←⊃,/1 ⎕NPARTS path</code>
+<code> [31]              :If ~isWin</code>
+<code class="emphasize">→[32]                  path_←(~path∊sep)⊆path</code>
+<code class="emphasize">→[33]                  path←(0⊃sep),(⊃,/((-2×+/∧\(⌽path_)≡¨⊂'..')↓path_),¨0⊃sep)</code>
+<code class="emphasize">→[34]                  :If ~hasTrailingSep</code>
+<code class="emphasize">→[35]                      path←¯1↓path</code>
+<code> [36]                  :EndIf</code>
+<code> [37]              :EndIf</code>
+<code> [38]          :EndIf</code>
+<code> [39]          ((path=0⊃sep)/path)←1⊃sep</code>
+<code> [40]          path←(~(2⍴1⊃sep)⍷path)/path</code>
+<code> [41]          :If UNCflag</code>
+<code> [42]              path←'\\',1↓path</code>
+<code> [43]          :EndIf</code>
+<code> [44]          :If isScalar</code>
+<code> [45]          :AndIf 1=≢path</code>
+<code> [46]              path←⊃path</code>
+<code> [47]          :EndIf</code>
+<code> [48]      :EndIf</code>
+<code> [49]  :EndIf</code>
+</div>
+<code class="header" id="listing_20">#.FilesAndDirs.FilesAndDirs.DeleteFile &mdash; 86%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {success}←DeleteFile filenames</code>
+<code> [1]  ⍝ Attempts to delete one or more files. Returns 1 in case of success and 0 otherwise</code>
+<code> [2]  ⍝ for each file in `filenames`.\\</code>
+<code> [3]  ⍝ Retries up to three times for every single files in case of any error 19 or 22.\\</code>
+<code> [4]  ⍝ This function does not care whether the file exists or not, although naturally</code>
+<code> [5]  ⍝ `success` will be 0 for any non-existing file.\\</code>
+<code> [6]  ⍝ `filenames` can be one of:</code>
+<code> [7]  ⍝ * Text vector representing a single filename.</code>
+<code> [8]  ⍝ * Vector of text vectors each representing a single file.\\</code>
+<code> [9]  ⍝ In case `filenames` is empty a 0 is returned.\\</code>
+<code> [10] ⍝ Do not uses this function for removing directories: use `RmDir` instead.</code>
+<code> [11]  :If 0=≢filenames</code>
+<code> [12]      success←0</code>
+<code> [13]  :Else</code>
+<code> [14]      depth←≡filenames</code>
+<code> [15]      filenames←,⊆filenames</code>
+<code> [16]      filenames←NormalizePath filenames</code>
+<code> [17]      success←(≢filenames)⍴0</code>
+<code> [18]      :For i :In ⍳≢filenames</code>
+<code> [19]          thisFile←i⊃filenames</code>
+<code> [20]          :If ⎕NEXISTS thisFile</code>
+<code> [21]              flag←counter←0</code>
+<code> [22]              :Repeat</code>
+<code> [23]                  :Trap 19 22</code>
+<code> [24]                      1 ⎕NDELETE thisFile</code>
+<code> [25]                      success[i]←flag←1</code>
+<code> [26]                      flag←1</code>
+<code> [27]                  :Else</code>
+<code class="emphasize">→[28]                      :If 4&gt;counter←counter+1</code>
+<code class="emphasize">→[29]                          ⎕DL 0.1×counter</code>
+<code> [30]                      :Else</code>
+<code class="emphasize">→[31]                          flag←1</code>
+<code> [32]                      :EndIf</code>
+<code> [33]                  :EndTrap</code>
+<code> [34]              :Until flag</code>
+<code> [35]          :EndIf</code>
+<code> [36]      :EndFor</code>
+<code> [37]      :If 1≡depth</code>
+<code> [38]          success←⊃success</code>
+<code> [39]      :EndIf</code>
+<code> [40]  :EndIf</code>
+</div>
+<code class="header" id="listing_21">#.FilesAndDirs.FilesAndDirs.HandlePath &mdash; 86%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  (drive path)←HandlePath path</code>
+<code> [1]   path←NormalizePath⊃,/1 ⎕NPARTS path</code>
+<code> [2]   drive←''</code>
+<code> [3]   :If '\\'≢2↑path</code>
+<code> [4]       :If ~':'∊path</code>
+<code class="emphasize">→[5]           path←PWD,path</code>
+<code> [6]       :EndIf</code>
+<code> [7]       :If ':'∊path</code>
+<code> [8]           drive←1↑path</code>
+<code> [9]       :EndIf</code>
+<code> [10]  :EndIf</code>
+</div>
+<code class="header" id="listing_22">#.FilesAndDirs.FilesAndDirs.Dir &mdash; 90%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>   r←{parms_}Dir path</code>
+<code> [1]   ⍝ By default this function returns names. You may request further information by specifying `type`.\\</code>
+<code> [2]   ⍝ Without a trailing slash and any wildcards `path` is expected to be either a filename or the</code>
+<code> [3]   ⍝ name of a directory. `Dir` returns the requested information for just that file or directory.</code>
+<code> [4]   ⍝ `path` might be empty; in this case it defaults to the current directory.\\</code>
+<code> [5]   ⍝ `*` and `?` are treated as wildcard characters. That means that `FilesAndDirs` cannot deal with files</code>
+<code> [6]   ⍝ that contain a `*` or a `?` as part of any name, be it directory or filename; under Linux and Mac OS</code>
+<code> [7]   ⍝ these are legal characters for filenames and directory names.\\</code>
+<code> [8]   ⍝ Only the very last partition of `path` is allowed to carry wildcard characters.\\</code>
+<code> [9]   ⍝ If the last partition of `path` contains wildcards then `Dir` uses them to filter filenames but not</code>
+<code> [10]  ⍝ directories.\\</code>
+<code> [11]  ⍝ The result is a vector of the same length as `type`. `type` defaults to 0 which stands for filenames</code>
+<code> [12]  ⍝ and directory names.\\</code>
+<code> [13]  ⍝ You may specify parameters either as key/value pairs or via a namespace populated with variables.</code>
+<code> [14]  ⍝ Examples:</code>
+<code> [15]  ⍝ ~~~</code>
+<code> [16]  ⍝ ('recursive' 2) FilesAndDirs.Dir ''      ⍝ returns list with directories &amp; files in the current dir.</code>
+<code> [17]  ⍝ ('recursive' 2) FilesAndDirs.Dir '*.md'  ⍝ returns list with files with extension "md".</code>
+<code> [18]  ⍝ ~~~</code>
+<code> [19]  ⍝</code>
+<code> [20]  ⍝ ~~~</code>
+<code> [21]  ⍝ parms←⎕ns''</code>
+<code> [22]  ⍝ parms.recursive←2</code>
+<code> [23]  ⍝ parms.type←3 4 5 1 0</code>
+<code> [24]  ⍝ parms FilesAndDirs.Dir ''</code>
+<code> [25]  ⍝ ~~~</code>
+<code> [26]  ⍝ Note that the names of parameters are case sensitive.\\</code>
+<code> [27]  ⍝ |Parameter  |Default|Meaning|</code>
+<code> [28]  ⍝ |-----------|-------|-------|</code>
+<code> [29]  ⍝ | depth     | ⍬     | Ignored when `recursive` is 0.&lt;&lt;br&gt;&gt;Use this to restrict the number of times `Dir` goes down the directory tree.&lt;&lt;br&gt;&gt;For example, set this to 2 if you are interested just in the given directory and its sub-directories.|</code>
+<code> [30]  ⍝ | follow    | 0     | 1=follow symbolic links, meaning that the properties shown are those of the file the link points to rather than the link. |</code>
+<code> [31]  ⍝ | recursive | 0     | 1=scan `path` recursively; may crash with "ACCESS DENIED"; 2=like 1 but ignores directories that cause "ACCESS DENIED"|</code>
+<code> [32]  ⍝ | type      | 0     | Use this to select the information to be returned by `Dir`.&lt;&lt;br&gt;&gt;0 means names. For more information see help on `⎕NINFO`. |</code>
+<code> [33]  ⍝ Note that `recursiveCall` is used internally in order to detect whether `Dir` has called itself recursively.</code>
+<code> [34]   r←⍬</code>
+<code> [35]   path←NormalizePath path</code>
+<code> [36]   parms←⎕NS''</code>
+<code> [37]   parms.follow←1</code>
+<code> [38]   parms.recursive←0</code>
+<code> [39]   parms.depth←⍬</code>
+<code> [40]   parms.type←0</code>
+<code> [41]   parms.recursiveCall←0</code>
+<code> [42]   :If 0&lt;⎕NC'parms_'</code>
+<code> [43]       :If {2::0 ⋄ 1⊣⍵.⎕NL 2}parms_</code>
+<code> [44]           {}parms.{{⍎⍺,'←⍵'}/⍵}¨parms_.({⍵(⍎⍵)}¨↓⎕NL 2)</code>
+<code> [45]           'Invalid parameter'⎕SIGNAL 11/⍨∨/~(' '~¨⍨↓parms.⎕NL 2)∊'follow' 'recursive' 'type' 'recursiveCall' 'depth'</code>
+<code> [46]       :Else</code>
+<code> [47]           parms_←,⊂∘,⍣(2=|≡parms_)⊣parms_</code>
+<code> [48]           'Invalid parameter'⎕SIGNAL 11/⍨0∊(⊃¨parms_)∊(' '~¨⍨↓parms.⎕NL 2),⊂'recursiveCall'</code>
+<code> [49]           parms.{{⍎⍺,'←⍵'}/⍵}¨parms_</code>
+<code> [50]       :EndIf</code>
+<code> [51]   :EndIf</code>
+<code> [52]   isrecursiveCall←parms.recursiveCall</code>
+<code> [53]   :If 0=≢path</code>
+<code> [54]   :OrIf (,'.')≡,path</code>
+<code> [55]       path←PWD,CurrentSep</code>
+<code> [56]   :EndIf</code>
+<code> [57]   path↓⍨←-(CurrentSep,'*')≡¯2↑path</code>
+<code> [58]   :If CurrentSep=¯1↑{⍵↓⍨-'*'=¯1↑⍵}path</code>
+<code> [59]       'Directory does not exist'⎕SIGNAL 6/⍨0=⎕NEXISTS path</code>
+<code> [60]       :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [61]       :OrIf ~{(':'=0⊃⍵)∧CurrentSep=1⊃⍵}¯2↑path</code>
+<code> [62]           :Trap 19 22</code>
+<code> [63]               'Not a directory'⎕SIGNAL 11/⍨1≠1 ⎕NINFO⊣path</code>
+<code> [64]           :Else</code>
+<code class="emphasize">→[65]               :If 1 5 'Access is denied.'≢⎕DMX.OSError</code>
+<code class="emphasize">→[66]                   ({1↓⊃,/(⎕UCS 13),¨⍵}⎕DMX.DM)⎕SIGNAL ⎕EN</code>
+<code> [67]               :Else</code>
+<code class="emphasize">→[68]                   :Return</code>
+<code> [69]               :EndIf</code>
+<code> [70]           :EndTrap</code>
+<code> [71]       :EndIf</code>
+<code> [72]       :Trap 10 19 22</code>
+<code> [73]           r←(0 1,parms.type~0 1)⎕NINFO⍠('Follow'parms.follow)('Wildcard' 1)⊣path,'*'</code>
+<code> [74]       :Else</code>
+<code> [75]           r←⍬  ⍝ Apparently we do not have the rights to read the directory, therefore we ignore it</code>
+<code> [76]           :Return</code>
+<code> [77]       :EndTrap</code>
+<code> [78]       :If 0≠≢0⊃r</code>
+<code> [79]           (0⊃r)←NormalizePath 0⊃r</code>
+<code> [80]       :EndIf</code>
+<code> [81]       :If 0&lt;parms.recursive</code>
+<code> [82]           parms.depth-←1</code>
+<code> [83]       :AndIf 0≠≢r</code>
+<code> [84]       :AndIf 1∊1⊃r</code>
+<code> [85]       :AndIf (0=≢parms.depth)∨1↑0&lt;parms.depth</code>
+<code> [86]           parms.recursiveCall←1</code>
+<code> [87]           buff←parms∘Dir¨((1=1⊃r)/0⊃r),¨CurrentSep</code>
+<code> [88]           :If 0≠≢buff←(0&lt;≢¨buff)/buff</code>
+<code> [89]               r←r,¨⊃,¨/buff</code>
+<code> [90]           :EndIf</code>
+<code> [91]           :If 0=isrecursiveCall</code>
+<code> [92]               r←(⊂⍋↑0⊃r)∘⌷¨r</code>
+<code> [93]           :EndIf</code>
+<code> [94]       :EndIf</code>
+<code> [95]       :If 0=isrecursiveCall</code>
+<code> [96]           r←r[,(0 1,parms.type~0 1)⍳parms.type]</code>
+<code> [97]       :EndIf</code>
+<code> [98]   :Else</code>
+<code> [99]       :If ∨/'*?'∊path</code>
+<code> [100]          (folder filename extension)←⎕NPARTS path</code>
+<code> [101]          ('Wildcard characters are allowed only after the last "',CurrentSep,'"')⎕SIGNAL 11/⍨∨/'*?'∊folder</code>
+<code> [102]          :If 0≠≢buff←⊃⎕NPARTS ¯1↓⊃⎕NPARTS folder</code>
+<code> [103]          :AndIf 0=⎕NEXISTS buff</code>
+<code class="emphasize">→[104]              'path does not exist'⎕SIGNAL 6</code>
+<code> [105]          :EndIf</code>
+<code> [106]          pattern←(folder,((~(¯1↑folder)∊'/\')∧0≠≢folder)/'/'),(filename{0=≢⍺,⍵:'' ⋄ ⍺,⍵}extension)</code>
+<code> [107]          :Trap (0&lt;parms.recursive)/19 22</code>
+<code> [108]              buff←(0 1,parms.type~0 1)⎕NINFO⍠('Follow'parms.follow)('Wildcard' 1)⊣pattern</code>
+<code> [109]          :Else</code>
+<code class="emphasize">→[110]              buff←⍬ ⍬</code>
+<code> [111]          :EndTrap</code>
+<code> [112]          :If 0&lt;parms.recursive</code>
+<code> [113]              buff←((1⊃buff)∊2 4)∘/¨buff   ⍝ Just ordinary files and links</code>
+<code> [114]          :EndIf</code>
+<code> [115]          (0⊃buff)←NormalizePath 0⊃buff</code>
+<code> [116]          r←buff[,(0 1,parms.type~0 1)⍳parms.type]</code>
+<code> [117]          isrecursiveCall←parms.recursiveCall</code>
+<code> [118]          parms.recursiveCall←1</code>
+<code> [119]          :If 0&lt;parms.recursive</code>
+<code> [120]              parms.depth-←1</code>
+<code> [121]          :EndIf</code>
+<code> [122]          :If 0&lt;parms.recursive</code>
+<code> [123]          :AndIf IsDir folder</code>
+<code> [124]          :AndIf (0=≢parms.depth)∨1↑0&lt;parms.depth</code>
+<code> [125]          :AndIf 0≠≢subFolders←ListDirs folder</code>
+<code> [126]              buff←parms Dir¨subFolders,¨⊂'/',filename,extension</code>
+<code> [127]              :If 0=+/'*?'∊path</code>
+<code class="emphasize">→[128]                  buff←(⊂∘⊂¨subFolders),¨¨buff</code>
+<code> [129]              :EndIf</code>
+<code> [130]              buff←(0&lt;≢¨buff)/buff</code>
+<code> [131]              :If 0≠≢buff←⊃{⍺,¨⍵}/buff</code>
+<code> [132]              :AndIf 0≠≢buff←(0&lt;≢¨buff)/buff</code>
+<code> [133]                  r←r,¨buff</code>
+<code> [134]              :EndIf</code>
+<code> [135]          :EndIf</code>
+<code> [136]          :If 0=isrecursiveCall</code>
+<code> [137]          :AndIf 0=≢(filename,extension)~'*'</code>
+<code class="emphasize">→[138]              buff←(0 1,parms.type~0 1)⎕NINFO⍠('Follow'parms.follow)⊣folder</code>
+<code class="emphasize">→[139]              (0⊃buff)←NormalizePath 0⊃buff</code>
+<code class="emphasize">→[140]              r←(⊂¨buff),¨r</code>
+<code> [141]          :EndIf</code>
+<code> [142]      :Else</code>
+<code> [143]          'path does not exist'⎕SIGNAL 6/⍨0=⎕NEXISTS path</code>
+<code> [144]          r←(0 1,parms.type~0 1)⎕NINFO⍠('Follow'parms.follow)⊣path</code>
+<code> [145]          (0⊃r)←NormalizePath 0⊃r</code>
+<code> [146]          r←,⊂r[,(0 1,parms.type~0 1)⍳parms.type]</code>
+<code> [147]      :EndIf</code>
+<code> [148]  :EndIf</code>
+</div>
+<code class="header" id="listing_23">#.FilesAndDirs.FilesAndDirs.CheckPath &mdash; 91%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {success}←{new}CheckPath path</code>
+<code> [1]  ⍝ Returns a 1 if the `path` to be checked is fine, otherwise 0.\\</code>
+<code> [2]  ⍝ If `path` is nested it will return a vector of the same length as `path`</code>
+<code> [3]  ⍝ * If `path` exists but is not a directory a 0 is returned.\\</code>
+<code> [4]  ⍝ * If `path` does not exist a 0 is returned.\\</code>
+<code> [5]  ⍝ * If `path` does not exist but the left argument is "CREATE!" it will be created,</code>
+<code> [6]  ⍝ including any sub directories.\\</code>
+<code> [7]  ⍝ The left argument is case insensitive.</code>
+<code> [8]   :If 2=|≡path</code>
+<code> [9]       :If 0=⎕NC'new'</code>
+<code class="emphasize">→[10]          success←CheckPath¨path</code>
+<code> [11]      :Else</code>
+<code> [12]          success←new∘CheckPath¨path</code>
+<code> [13]      :EndIf</code>
+<code> [14]  :Else</code>
+<code> [15]      path←NormalizePath path</code>
+<code> [16]      :If 1=⎕NEXISTS path</code>
+<code> [17]          success←IsDir path</code>
+<code> [18]      :Else</code>
+<code> [19]          success←0</code>
+<code> [20]          newFlag←'CREATE!' 1∊⍨⊂{6::0 ⋄ {(0=1↑0⍴⍵):⍵ ⋄ 1 ⎕C ⍵}⍎⍵}'new'</code>
+<code> [21]          :If newFlag</code>
+<code> [22]              success←MkDir path</code>
+<code> [23]          :EndIf</code>
+<code> [24]      :EndIf</code>
+<code> [25]  :EndIf</code>
+</div>
+<code class="header" id="listing_24">#.FilesAndDirs.FilesAndDirs.IsFile &mdash; 91%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←IsFile y</code>
+<code> [1]  ⍝ Returns 1 if `filename` is a regular file and a 0 otherwise, even if `y` does exist as a directory.\\</code>
+<code> [2]  ⍝ `y` must be either a text vector or a (negative!) tie number of a native file.</code>
+<code> [3]  ⍝ If it is a number but not a tie number then an error is signalled.</code>
+<code> [4]   :If 2=≡y</code>
+<code> [5]       r←IsFile¨y</code>
+<code> [6]   :Else</code>
+<code> [7]       :If 0=1↑0⍴y</code>
+<code> [8]           'Not tied'⎕SIGNAL 18/⍨~y∊⎕NNUMS</code>
+<code> [9]           r←2=1 ⎕NINFO y</code>
+<code> [10]      :Else</code>
+<code> [11]          y←NormalizePath y</code>
+<code> [12]          :Trap 11</code>
+<code> [13]              :If r←⎕NEXISTS y</code>
+<code> [14]                  r←2=1 ⎕NINFO y</code>
+<code> [15]              :Else</code>
+<code> [16]                  r←0</code>
+<code> [17]              :EndIf</code>
+<code> [18]          :Else</code>
+<code class="emphasize">→[19]              r←0</code>
+<code> [20]          :EndTrap</code>
+<code> [21]      :EndIf</code>
+<code> [22]  :EndIf</code>
+</div>
+<code class="header" id="listing_25">#.FilesAndDirs.FilesAndDirs.GetTempFilename2 &mdash; 94%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  filename←{extension}GetTempFilename2 prefixString</code>
+<code> [1]  ⍝ Returns the name of a previously unused temporary filename. The file will be created.\\</code>
+<code> [2]  ⍝ `prefixString`, when empty, defaults to `⎕AN`. The name of</code>
+<code> [3]  ⍝ the file will match `prefixString` followed by an `_` and a randomly generated number.\\</code>
+<code> [4]  ⍝ `extension`, if defined, defines the extension of the temp file without the dot.</code>
+<code> [5]  ⍝ This defaults to `tmp`.\\</code>
+<code> [6]  ⍝ This function does **not** use the Windows built-in function since</code>
+<code> [7]  ⍝ it has proven to be unreliable under W7 (at least).</code>
+<code> [8]   extension←{0&lt;⎕NC ⍵:⍎⍵ ⋄ 'tmp'}'extension'</code>
+<code> [9]   extension←('.'=1⍴extension)↓extension</code>
+<code> [10]  :If 0=≢prefixString</code>
+<code> [11]      prefixString←⎕AN</code>
+<code> [12]  :EndIf</code>
+<code> [13]  path←GetTempPath</code>
+<code> [14]  start←no←⍎ProduceRandomName</code>
+<code> [15]  :Repeat</code>
+<code> [16]      filename←path,(prefixString,'_',⍕no),{0=≢⍵:⍵ ⋄ '.',⍵}extension</code>
+<code> [17]      :Trap 22</code>
+<code> [18]          fno←filename ⎕NCREATE 0</code>
+<code> [19]          ⎕NUNTIE fno</code>
+<code> [20]      :Else</code>
+<code class="emphasize">→[21]          fno←0</code>
+<code> [22]      :EndTrap</code>
+<code> [23]      no+←10</code>
+<code> [24]  :Until (fno≠0)∨no&gt;start+30×10  ⍝ max 30 tries</code>
+<code> [25]  'Unable to create temporay file'⎕SIGNAL 11/⍨fno=0</code>
+<code> [26]  filename←NormalizePath filename</code>
+<code> [27] ⍝Done</code>
+</div>
+<code class="header" id="listing_26">#.FilesAndDirs.FilesAndDirs.GetTempSubDir &mdash; 94%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  dirname←GetTempSubDir prefixString</code>
+<code> [1]  ⍝ Returns name of previously unused sub directory in the `TEMP` directory with a random name.\\</code>
+<code> [2]  ⍝ The directory will be created.</code>
+<code> [3]  ⍝ `prefixString`, when empty, defaults to `⎕AN`. The name of the directory will</code>
+<code> [4]  ⍝ match `prefixString` followed by an `_` and a randomly generated number.\\</code>
+<code> [5]   'The right argument must not carry a * or a \'⎕SIGNAL 11/⍨∨/prefixString∊'\*'</code>
+<code> [6]   :If 0=≢prefixString</code>
+<code> [7]       prefixString←⎕AN</code>
+<code> [8]   :EndIf</code>
+<code> [9]   path←GetTempPath</code>
+<code> [10]  no←⍎ProduceRandomName</code>
+<code> [11]  i←0</code>
+<code> [12]  success←flag←0</code>
+<code> [13]  :Repeat</code>
+<code> [14]      dirname←path,(({⍵↓⍨-(¯1↑⍵)∊'/\'}prefixString),'_',(⍕no),'_',(⍕i))</code>
+<code> [15]      :Trap 22</code>
+<code> [16]          2 ⎕MKDIR dirname~'"'</code>
+<code> [17]          flag←success←1</code>
+<code> [18]      :Else</code>
+<code class="emphasize">→[19]          ⎕DL 0.01+0.01×0=5|5</code>
+<code> [20]      :EndTrap</code>
+<code> [21]  :Until flag∨30&lt;i←i+1</code>
+<code> [22]  dirname←NormalizePath dirname</code>
+<code> [23]  ('Unable to create "',dirname,'"')⎕SIGNAL 22/⍨~success</code>
+<code> [24] ⍝Done</code>
+</div>
+<code class="header" id="listing_27">#.FilesAndDirs.FilesAndDirs.AddTrailingSep &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> path←{sep}AddTrailingSep path</code>
+<code> [1] ⍝ Add a trailing separator to `path` in case it does not already have one</code>
+<code> [2]  sep←{0&lt;⎕NC ⍵:⍎⍵ ⋄ CurrentSep}'sep'</code>
+<code> [3]  :If 0&lt;≢path</code>
+<code> [4]      path,←(~(¯1↑path)∊'/\')/sep</code>
+<code> [5]  :EndIf</code>
+</div>
+<code class="header" id="listing_28">#.FilesAndDirs.FilesAndDirs.CurrentSep &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←CurrentSep</code>
+<code> [1] ⍝ Returns what is the "correct" filename separator under the current OS.</code>
+<code> [2]  r←('Win'≡APLTreeUtils2.GetOperatingSystem ⍬)⊃'/\'</code>
+</div>
+<code class="header" id="listing_29">#.FilesAndDirs.FilesAndDirs.DateToReal &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> real←DateToReal timestamp</code>
+<code> [1] ⍝ Converts a timestamp (`6↑⎕TS`) into a real (YYYYMMDD.hhmmss)</code>
+<code> [2]  real←60 ⎕DT⊂6↑timestamp</code>
+</div>
+<code class="header" id="listing_30">#.FilesAndDirs.FilesAndDirs.EncodeBlanks &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> EncodeBlanks←{0=+/b←' '=w←⍵:w ⋄ (b/w)←⊂'\ ' ⋄ ⊃,/w}</code>
+</div>
+<code class="header" id="listing_31">#.FilesAndDirs.FilesAndDirs.EnforceBackslash &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> path←EnforceBackslash path</code>
+<code> [1] ⍝ Use this if you must make sure that `path` contains `\` rather than `/`.\\</code>
+<code> [2]  ((path='/')/path)←'\'</code>
+</div>
+<code class="header" id="listing_32">#.FilesAndDirs.FilesAndDirs.EnforceSlash &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> path←EnforceSlash path</code>
+<code> [1] ⍝ Use this if you must make sure that `path` contains `/` rather than `\`.\\</code>
+<code> [2] ⍝ Preserves the first two characters if they are `\\`.</code>
+<code> [3]  ((path='\')/path)←'/'</code>
+</div>
+<code class="header" id="listing_33">#.FilesAndDirs.FilesAndDirs.ExecNfunction &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {r}←x(f ExecNfunction)y</code>
+<code> [1]  ⍝ Use this to call `⎕NMOVE` or `⎕NCOPY` because it will try more than once before eventually giving up.\\</code>
+<code> [2]  ⍝ Is an operator in order to allow constructs like this:\\</code>
+<code> [3]  ⍝ ```</code>
+<code> [4]  ⍝ targetPath (⎕NMOVE⍠('IfExists' 'Skip')FilesAndDirs.ExecNFunction) sourcePath</code>
+<code> [5]  ⍝ ```</code>
+<code> [6]  ⍝ Helpful in case a file is in use temporarily by, say, DropBox.</code>
+<code> [7]   path←{∨/'?*'∊⍵:⊃⎕NPARTS ⍵ ⋄ ⍵}y</code>
+<code> [8]   ('Not found: ',path)⎕SIGNAL(~⎕NEXISTS path)/6 ⍝ The last part carries "?*", so we have to ignore it</code>
+<code> [9]   counter←flag←success←0</code>
+<code> [10]  max←10</code>
+<code> [11]  :Repeat</code>
+<code> [12]      :Trap 19 22</code>
+<code> [13]          r←x f y</code>
+<code> [14]          success←flag←1</code>
+<code> [15]      :Else</code>
+<code> [16]          counter+←1</code>
+<code> [17]          flag←max&lt;counter</code>
+<code> [18]          ⎕DL 0.01×counter</code>
+<code> [19]      :EndTrap</code>
+<code> [20]  :Until flag</code>
+<code> [21]  :If ~success</code>
+<code> [22]      ⎕EM ⎕SIGNAL ⎕EN</code>
+<code> [23]  :EndIf</code>
+<code> [24] ⍝Done</code>
+</div>
+<code class="header" id="listing_34">#.FilesAndDirs.FilesAndDirs.ExpandPath &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←ExpandPath path</code>
+<code> [1] ⍝ Shortcut for  `'expand' NormalizePath` - see there.</code>
+<code> [2]  r←1 NormalizePath path</code>
+</div>
+<code class="header" id="listing_35">#.FilesAndDirs.FilesAndDirs.GetModifiedDate &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←GetModifiedDate filename</code>
+<code> [1] ⍝ Returns the "Modified" date of `filename` as a timestmap</code>
+<code> [2]  r←⊃3 ⎕NINFO filename</code>
+</div>
+<code class="header" id="listing_36">#.FilesAndDirs.FilesAndDirs.GetNewLineCharsFor &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> newline←GetNewLineCharsFor os</code>
+<code> [1] ⍝ Returns the proper `newline` character(s) for `os` or, if `os` is empty, for the current OS.</code>
+<code> [2]  :If 0=≢os</code>
+<code> [3]      os←APLTreeUtils2.GetOperatingSystem ⍬</code>
+<code> [4]  :EndIf</code>
+<code> [5]  '⍵ is not a supported Operating System'⎕SIGNAL 11/⍨~(⊂os)∊'Win' 'Lin' 'Mac'</code>
+<code> [6]  newline←('Win' 'Lin' 'Mac'⍳⊂os)⊃(⎕UCS 13 10)(⎕UCS 10)(⎕UCS 10)</code>
+<code> [7] ⍝Done</code>
+</div>
+<code class="header" id="listing_37">#.FilesAndDirs.FilesAndDirs.IsSymbolicLink &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←IsSymbolicLink y</code>
+<code> [1]  ⍝ Returns a 1 if `y` is a symbolic link and a 0 otherwise, even if `y` does exist as a file or directory.\\</code>
+<code> [2]  ⍝ `y` must be a text vector.</code>
+<code> [3]   :If 2=≡y</code>
+<code> [4]       r←IsSymbolicLink¨y</code>
+<code> [5]   :Else</code>
+<code> [6]       'Invalid right argument'⎕SIGNAL 11/⍨' '≠1↑0⍴y</code>
+<code> [7]       y←NormalizePath y</code>
+<code> [8]       :Trap 19 22</code>
+<code> [9]           r←4=1 ⎕NINFO⍠('Follow' 0)⊣y</code>
+<code> [10]      :Else</code>
+<code> [11]          r←0</code>
+<code> [12]      :EndTrap</code>
+<code> [13]  :EndIf</code>
+</div>
+<code class="header" id="listing_38">#.FilesAndDirs.FilesAndDirs.ListDirs &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←{x}ListDirs path</code>
+<code> [1]  ⍝ Lists all directories (but nothing else) in `path`.\\</code>
+<code> [2]  ⍝ `path` must of course be a directory.\\</code>
+<code> [3]  ⍝ Specify the string `recursive` (not case sensitive) as left argument to make the</code>
+<code> [4]  ⍝ function work recursively.\\</code>
+<code> [5]  ⍝ In addition to `recursive` you may also specify an integer defining the depth. For example,</code>
+<code> [6]  ⍝ if you are interested just in the given directories and its sub-directory set this to 2.\\</code>
+<code> [7]  ⍝ `*` and `?` are treated as wildcard characters. That means that `FilesAndDirs` cannot deal with files</code>
+<code> [8]  ⍝ that contain a `*` or a `?` as part of any name, be it directory or filename; under Linux and Mac OS</code>
+<code> [9]  ⍝ these are legal characters for filenames and directory names.\\</code>
+<code> [10] ⍝ Returns a vector of text vectors in case anything was found and `''` otherwise.</code>
+<code> [11]  x←{0&lt;⎕NC ⍵:⍎⍵ ⋄ ''⍬}'x'</code>
+<code> [12]  x←⊂∘,⍣((⊃' '=1↑0⍴↑x)∧1=≡x)⊣x</code>
+<code> [13]  (recursive depth)←2↑x,(≢x)↓0 ⍬</code>
+<code> [14]  depth-←1</code>
+<code> [15]  path←NormalizePath,path</code>
+<code> [16]  (part1 part2)←APLTreeUtils2.SplitPath path</code>
+<code> [17]  'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1</code>
+<code> [18]  path↓⍨←-CurrentSep=¯1↑path</code>
+<code> [19]  recursiveFlag←{0=⎕NC ⍵:0 ⋄ w←⍎⍵ ⋄ 0=1↑0⍴w:w ⋄ 'recursive'≡⎕C w}'recursive'</code>
+<code> [20]  :If recursiveFlag</code>
+<code> [21]  :AndIf ∨/'*?'∊path</code>
+<code> [22]      '"path" must not carry wildcard chars in case "Recursive" is specified'⎕SIGNAL 11</code>
+<code> [23]  :EndIf</code>
+<code> [24]  path,←(~∨/'?*'∊path)/CurrentSep</code>
+<code> [25]  'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir{~∨/'*?'∊⍵:⍵ ⋄ 0⊃⎕NPARTS ⍵}path</code>
+<code> [26]  :Trap 10 19 22</code>
+<code> [27]      buff←(0 1)⎕NINFO⍠('Wildcard' 1)⊣path,'*'</code>
+<code> [28]  :Else</code>
+<code> [29]      r←''  ⍝ Apparently we do not have the rights to read the directory, therefore we ignore it</code>
+<code> [30]      :Return</code>
+<code> [31]  :EndTrap</code>
+<code> [32]  r←(1=1⊃buff)/0⊃buff</code>
+<code> [33]  :If 0≠≢r←NormalizePath r</code>
+<code> [34]  :AndIf 1=recursiveFlag</code>
+<code> [35]  :AndIf 0=+/'*?'∊path</code>
+<code> [36]  :AndIf (0=≢depth)∨1↑0&lt;depth</code>
+<code> [37]  :AndIf 0≠≢buff←⊃,/(⊂recursiveFlag depth)ListDirs¨r,¨'/'</code>
+<code> [38]      r,←buff</code>
+<code> [39]  :EndIf</code>
+</div>
+<code class="header" id="listing_39">#.FilesAndDirs.FilesAndDirs.ListFiles &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←{x}ListFiles path</code>
+<code> [1]  ⍝ Lists all files (but nothing else) in `path`.\\</code>
+<code> [2]  ⍝ `path` must of course be a directory.</code>
+<code> [3]  ⍝ Pass "recursive" (not case sensitive) as ⍺ to make the function work recursively.\\</code>
+<code> [4]  ⍝ In addition to "recursive" you may also specify an integer defining the depth. For</code>
+<code> [5]  ⍝ example, if you are interested just in the content of the given directory and its sub-directories</code>
+<code> [6]  ⍝ (but not any sub-sub directories!) then set this to 2.\\</code>
+<code> [7]  ⍝ `*` and `?` are treated as wildcard characters. That means that `FilesAndDirs` cannot deal with files</code>
+<code> [8]  ⍝ that contain a `*` or a `?` as part of any name, be it directory or filename; under Linux and Mac OS</code>
+<code> [9]  ⍝ these are legal characters for filenames and directory names.\\</code>
+<code> [10] ⍝ Returns a vector of text vectors in case anything was found and `''` otherwise.</code>
+<code> [11]  x←{0&lt;⎕NC ⍵:⍎⍵ ⋄ ''⍬}'x'</code>
+<code> [12]  x←⊂∘,⍣((⊃' '=1↑0⍴↑x)∧1=≡x)⊣x</code>
+<code> [13]  (recursive depth)←2↑x,(≢x)↓0 ⍬</code>
+<code> [14]  :If ∧/~'?*'∊1⊃⎕NPARTS path</code>
+<code> [15]      path←AddTrailingSep path</code>
+<code> [16]  :EndIf</code>
+<code> [17]  path←NormalizePath path</code>
+<code> [18]  (part1 part2)←APLTreeUtils2.SplitPath path</code>
+<code> [19]  'Wildcard characters are allowed only in the last part of a path'⎕SIGNAL 11/⍨∨/'?*'∊part1</code>
+<code> [20]  'Right argument is not a directory'⎕SIGNAL 11/⍨0=IsDir part1</code>
+<code> [21]  path↓⍨←-CurrentSep=¯1↑path</code>
+<code> [22]  recursiveFlag←'recursive'≡⎕C{0&lt;⎕NC ⍵:⍎⍵ ⋄ ''}'recursive'</code>
+<code> [23]  path,←(~∨/'?*'∊path)/CurrentSep</code>
+<code> [24]  :If 0=≢buff←('recursive'recursiveFlag)('type'(0 1))('depth'depth)Dir path</code>
+<code> [25]      r←''</code>
+<code> [26]  :Else</code>
+<code> [27]      r←(2=1⊃buff)/0⊃buff</code>
+<code> [28]      r←NormalizePath r</code>
+<code> [29]  :EndIf</code>
+</div>
+<code class="header" id="listing_40">#.FilesAndDirs.FilesAndDirs.MkDir &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {success}←MkDir path</code>
+<code> [1]  ⍝ Make directory. If the directory already exists no action is taken and a 1 returned.\\</code>
+<code> [2]  ⍝ Any part of `path` which does not already exist will be created along the way.\\</code>
+<code> [3]  ⍝ In comparison with `⎕MKDIR` there are some differences:</code>
+<code> [4]  ⍝ * This method normalizes `path`.</code>
+<code> [5]  ⍝ * Errors 19 &amp; 22 are trapped. The function tries again 9 more times at most.</code>
+<code> [6]  ⍝ * The function overcomes a strange problem: on some systems `⎕MKDIR` refuses to create</code>
+<code> [7]  ⍝   the directory repeatedly unless the code is traced.\\</code>
+<code> [8]  ⍝ In any other respect `MkDir` acts like `3 ⎕MKDIR`.\\</code>
+<code> [9]  ⍝ `success` is 1 in case the directory was created successfully or already existed, otherwise 0.</code>
+<code> [10] ⍝ If `path` is nested then `success` will have the same length as `path`.</code>
+<code> [11]  :If 2=|≡path</code>
+<code> [12]      success←MkDir¨path</code>
+<code> [13]  :Else</code>
+<code> [14]      path←NormalizePath path</code>
+<code> [15]      success←0</code>
+<code> [16]      :If IsDir path</code>
+<code> [17]          success←1</code>
+<code> [18]      :Else</code>
+<code> [19]          :Trap 19 22</code>
+<code> [20]              counter←flag←0</code>
+<code> [21]                   ⍝ This loop tries to overcome the problem that on some machines ⎕MKDIR does not work</code>
+<code> [22]                   ⍝ as expected. This cannot (!) be solved by a simple delay.</code>
+<code> [23]                   ⍝ However, tracing as well as the loop do work.</code>
+<code> [24]              :Repeat</code>
+<code> [25]                  :Trap 19 22</code>
+<code> [26]                      success←3 ⎕MKDIR path</code>
+<code> [27]                  :Else</code>
+<code> [28]                      :Leave ⍝ Something went wrong, indicated by `success ←→ 0`</code>
+<code> [29]                  :EndTrap</code>
+<code> [30]                  flag←⎕NEXISTS path</code>
+<code> [31]                  ⎕DL(~flag)×0.05×counter+1</code>
+<code> [32]              :Until flag∨10&lt;counter←counter+1</code>
+<code> [33]          :EndTrap</code>
+<code> [34]      :EndIf</code>
+<code> [35]  :EndIf</code>
+</div>
+<code class="header" id="listing_41">#.FilesAndDirs.FilesAndDirs.NCREATE &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←filename NCREATE tieNo</code>
+<code> [1] ⍝ Same as `⎕NCREATE` but normalizes `filename`.</code>
+<code> [2]  r←(NormalizePath filename)⎕NCREATE tieNo</code>
+</div>
+<code class="header" id="listing_42">#.FilesAndDirs.FilesAndDirs.NNAMES &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←NNAMES</code>
+<code> [1] ⍝ Same as `⎕NNAMES` but...</code>
+<code> [2] ⍝ * returns a vector rather than a matrix.</code>
+<code> [3] ⍝ * normalizes all filenames</code>
+<code> [4]  r←NormalizePath{⍵↓⍨-+/∧\' '=⌽⍵}¨↓⎕NNAMES</code>
+</div>
+<code class="header" id="listing_43">#.FilesAndDirs.FilesAndDirs.PWD &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←PWD</code>
+<code> [1] ⍝ Print Work Directory; same as `Cd''`.</code>
+<code> [2]  r←⊃1 ⎕NPARTS''</code>
+<code> [3]  r↓⍨←-(¯1↑r)∊'/\'</code>
+<code> [4]  r←NormalizePath r</code>
+</div>
+<code class="header" id="listing_44">#.FilesAndDirs.FilesAndDirs.ProduceRandomName &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> r←ProduceRandomName</code>
+<code> [1] ⍝ Expensive but successful very soon</code>
+<code> [2]  r←{(,'ZI2,ZI2,ZI2'⎕FMT 3↑⍵),⍕3↓⍵}3↓⎕TS  ⍝ Expensive but successful very soon</code>
+</div>
+<code class="header" id="listing_45">#.FilesAndDirs.FilesAndDirs.Public &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  r←Public</code>
+<code> [1]   r←''</code>
+<code> [2]   r,←⊂'AddTrailingSep'</code>
+<code> [3]   r,←⊂'Cd'</code>
+<code> [4]   r,←⊂'CheckPath'</code>
+<code> [5]   r,←⊂'CurrentSep'</code>
+<code> [6]   r,←⊂'DateToReal'</code>
+<code> [7]   r,←⊂'DeleteFile'</code>
+<code> [8]   r,←⊂'Dir'</code>
+<code> [9]   r,←⊂'EnforceBackslash'</code>
+<code> [10]  r,←⊂'EnforceSlash'</code>
+<code> [11]  r,←⊂'ExecNfunction'</code>
+<code> [12]  r,←⊂'Exists'</code>
+<code> [13]  r,←⊂'ExpandPath'</code>
+<code> [14]  r,←⊂'GetModifiedDate'</code>
+<code> [15]  r,←⊂'GetNewLineCharsFor'</code>
+<code> [16]  r,←⊂'GetTempFilename'</code>
+<code> [17]  r,←⊂'GetTempFilename2'</code>
+<code> [18]  r,←⊂'GetTempPath'</code>
+<code> [19]  r,←⊂'GetTempSubDir'</code>
+<code> [20]  r,←⊂'IsDir'</code>
+<code> [21]  r,←⊂'IsDirEmpty'</code>
+<code> [22]  r,←⊂'IsFile'</code>
+<code> [23]  r,←⊂'IsSymbolicLink'</code>
+<code> [24]  r,←⊂'ListDirs'</code>
+<code> [25]  r,←⊂'ListFiles'</code>
+<code> [26]  r,←⊂'MkDir'</code>
+<code> [27]  r,←⊂'NCREATE'</code>
+<code> [28]  r,←⊂'NGET'</code>
+<code> [29]  r,←⊂'NNAMES'</code>
+<code> [30]  r,←⊂'NPUT'</code>
+<code> [31]  r,←⊂'NormalizePath'</code>
+<code> [32]  r,←⊂'PWD'</code>
+<code> [33]  r,←⊂'PolishCurrentDir'</code>
+<code> [34]  r,←⊂'RmDir'</code>
+<code> [35]  r,←⊂'RmDirByForce'</code>
+<code> [36]  r,←⊂'Version'</code>
+<code> [37]  r,←⊂'YoungerThan'</code>
+</div>
+<code class="header" id="listing_46">#.FilesAndDirs.FilesAndDirs.RmDir &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code>  {(rc en more)}←{mustBeEmpty}RmDir path</code>
+<code> [1]  ⍝ Tries to remove `path`.\\</code>
+<code> [2]  ⍝ The method attempts to remove `path` and, by default, **all its contents**.\\</code>
+<code> [3]  ⍝ If for some reason you want to make sure that `path` is only removed when empty you can</code>
+<code> [4]  ⍝ specify a 1 as left argument. In that case the method will not do anything if the directory</code>
+<code> [5]  ⍝ `path` is not empty.\\</code>
+<code> [6]  ⍝ However, the method may still be partly successful because it might have deleted files</code>
+<code> [7]  ⍝ in `path` before it actually fails to remove the directory `path` itself.\\</code>
+<code> [8]  ⍝ The result is a three-element vector:</code>
+<code> [9]  ⍝ 1. `rc`: return code with 0 for "okay" (=deleted) and 1 otherwise.</code>
+<code> [10] ⍝ 1. `en`: event number (`⎕EN`) in case of an error.</code>
+<code> [11] ⍝ 1. `more`: empty text vector in case `rc` is 0 and possible additional information otherwise.\\</code>
+<code> [12] ⍝ Notes:</code>
+<code> [13] ⍝ * If `path` does not exist `(0 0 'Directory does not exist')` is returned</code>
+<code> [14] ⍝ * If `path` exists but is not a directory `(1 6 'Not a directory')` is returned</code>
+<code> [15] ⍝ * Wildcard characters (`*` and `?`) are not allowed as part of `path`</code>
+<code> [16] ⍝   If such characters are specified anyway then an error is signalled.\\</code>
+<code> [17] ⍝   This is true even under Linux and Mac OS despite the fact that these characters are legal in</code>
+<code> [18] ⍝   the names of any files and directories.</code>
+<code> [19] ⍝ * If `path` is a nested vector `RmDir` calls itself recurively. The length of `rc` and `en` and `more`</code>
+<code> [20] ⍝   match `≢path` in this case.</code>
+<code> [21] ⍝ * The underlying system function ⎕NDELETE cannot delete read-only files. That means that you cannot</code>
+<code> [22] ⍝   delete a directory that contains a folder .git, for exmaple. See `RmDirByForce` as an alternative</code>
+<code> [23]  mustBeEmpty←{0&lt;⎕NC ⍵:⍎⍵ ⋄ 0}'mustBeEmpty'</code>
+<code> [24]  'Invalid left argument.'⎕SIGNAL 11/⍨~(⊂mustBeEmpty)∊0 1</code>
+<code> [25]  rc←0 ⋄ en←0 ⋄ more←''</code>
+<code> [26]  'Wildcard characters are not allowed'⎕SIGNAL 11/⍨∨/'*?'∊path</code>
+<code> [27]  :If 2=|≡path</code>
+<code> [28]      (rc en more)←↓⍉↑mustBeEmpty RmDir¨,path</code>
+<code> [29]  :Else</code>
+<code> [30]      '"path" must not be /..'⎕SIGNAL 11/⍨(⊂path)∊'\..' '/..'</code>
+<code> [31]      path←'expand'NormalizePath path</code>
+<code> [32]      :If ⎕NEXISTS path</code>
+<code> [33]          :If IsDir path</code>
+<code> [34]              flags←1+2×~mustBeEmpty</code>
+<code> [35]              counter←flag←0</code>
+<code> [36]              :Repeat</code>
+<code> [37]                  :Trap 19 22</code>
+<code> [38]                      flags ⎕NDELETE path</code>
+<code> [39]                      flag←1</code>
+<code> [40]                  :Else</code>
+<code> [41]                      :If 4&gt;counter←counter+1</code>
+<code> [42]                          ⎕DL 0.1×counter</code>
+<code> [43]                      :Else</code>
+<code> [44]                          qdmx←⎕DMX</code>
+<code> [45]                          en←qdmx.EN</code>
+<code> [46]                          more←qdmx.EM</code>
+<code> [47]                          flag←rc←1</code>
+<code> [48]                      :EndIf</code>
+<code> [49]                  :EndTrap</code>
+<code> [50]              :Until flag</code>
+<code> [51]          :Else</code>
+<code> [52]              more←'Not a directory'</code>
+<code> [53]              rc←1</code>
+<code> [54]              en←6</code>
+<code> [55]          :EndIf</code>
+<code> [56]      :Else</code>
+<code> [57]          more←'Directory does not exist'</code>
+<code> [58]      :EndIf</code>
+<code> [59]  :EndIf</code>
+</div>
+<code class="header" id="listing_47">#.FilesAndDirs.FilesAndDirs.YoungerThan &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> bool←file1 YoungerThan file2</code>
+<code> [1] ⍝ Returns a Boolean with 1 in case `file1` is "younger" than `file2`</code>
+<code> [2]  real1←DateToReal GetModifiedDate file1</code>
+<code> [3]  real2←DateToReal GetModifiedDate file2</code>
+<code> [4]  bool←real1&gt;real2</code>
+</div>
+<code class="header" id="listing_48">#.FilesAndDirs.FilesAndDirs.API.AddTrailingSep &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> AddTrailingSep←{⍺←⊢ ⋄ ⍺ ##.AddTrailingSep ⍵}</code>
+</div>
+<code class="header" id="listing_49">#.FilesAndDirs.FilesAndDirs.API.Cd &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> Cd←{##.Cd ⍵}</code>
+</div>
+<code class="header" id="listing_50">#.FilesAndDirs.FilesAndDirs.API.CheckPath &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> CheckPath←{⍺←⊢ ⋄ 1:shy←⍺ ##.CheckPath ⍵}</code>
+</div>
+<code class="header" id="listing_51">#.FilesAndDirs.FilesAndDirs.API.DateToReal &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> DateToReal←{##.DateToReal ⍵}</code>
+</div>
+<code class="header" id="listing_52">#.FilesAndDirs.FilesAndDirs.API.DeleteFile &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> DeleteFile←{##.DeleteFile ⍵}</code>
+</div>
+<code class="header" id="listing_53">#.FilesAndDirs.FilesAndDirs.API.Dir &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> Dir←{⍺←⊢ ⋄ ⍺ ##.Dir ⍵}</code>
+</div>
+<code class="header" id="listing_54">#.FilesAndDirs.FilesAndDirs.API.EnforceBackslash &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> EnforceBackslash←{##.EnforceBackslash ⍵}</code>
+</div>
+<code class="header" id="listing_55">#.FilesAndDirs.FilesAndDirs.API.EnforceSlash &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> EnforceSlash←{##.EnforceSlash ⍵}</code>
+</div>
+<code class="header" id="listing_56">#.FilesAndDirs.FilesAndDirs.API.ExecNfunction &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> ExecNfunction←{⍺←⊢ ⋄ 1:shy←⍺(⍺⍺ ##.ExecNfunction)⍵}</code>
+</div>
+<code class="header" id="listing_57">#.FilesAndDirs.FilesAndDirs.API.Exists &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> Exists←{##.Exists ⍵}</code>
+</div>
+<code class="header" id="listing_58">#.FilesAndDirs.FilesAndDirs.API.ExpandPath &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> ExpandPath←{##.ExpandPath ⍵}</code>
+</div>
+<code class="header" id="listing_59">#.FilesAndDirs.FilesAndDirs.API.GetModifiedDate &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> GetModifiedDate←{##.GetModifiedDate ⍵}</code>
+</div>
+<code class="header" id="listing_60">#.FilesAndDirs.FilesAndDirs.API.GetNewLineCharsFor &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> GetNewLineCharsFor←{##.GetNewLineCharsFor ⍵}</code>
+</div>
+<code class="header" id="listing_61">#.FilesAndDirs.FilesAndDirs.API.GetTempFilename &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> GetTempFilename←{⍺←⊢ ⋄ ⍺ ##.GetTempFilename ⍵}</code>
+</div>
+<code class="header" id="listing_62">#.FilesAndDirs.FilesAndDirs.API.GetTempFilename2 &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> GetTempFilename2←{⍺←⊢ ⋄ ⍺ ##.GetTempFilename2 ⍵}</code>
+</div>
+<code class="header" id="listing_63">#.FilesAndDirs.FilesAndDirs.API.GetTempSubDir &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> GetTempSubDir←{##.GetTempSubDir ⍵}</code>
+</div>
+<code class="header" id="listing_64">#.FilesAndDirs.FilesAndDirs.API.IsDir &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> IsDir←{##.IsDir ⍵}</code>
+</div>
+<code class="header" id="listing_65">#.FilesAndDirs.FilesAndDirs.API.IsDirEmpty &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> IsDirEmpty←{##.IsDirEmpty ⍵}</code>
+</div>
+<code class="header" id="listing_66">#.FilesAndDirs.FilesAndDirs.API.IsFile &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> IsFile←{##.IsFile ⍵}</code>
+</div>
+<code class="header" id="listing_67">#.FilesAndDirs.FilesAndDirs.API.IsSymbolicLink &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> IsSymbolicLink←{##.IsSymbolicLink ⍵}</code>
+</div>
+<code class="header" id="listing_68">#.FilesAndDirs.FilesAndDirs.API.ListDirs &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> ListDirs←{⍺←⊢ ⋄ ⍺ ##.ListDirs ⍵}</code>
+</div>
+<code class="header" id="listing_69">#.FilesAndDirs.FilesAndDirs.API.ListFiles &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> ListFiles←{⍺←⊢ ⋄ ⍺ ##.ListFiles ⍵}</code>
+</div>
+<code class="header" id="listing_70">#.FilesAndDirs.FilesAndDirs.API.MkDir &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> MkDir←{##.MkDir ⍵}</code>
+</div>
+<code class="header" id="listing_71">#.FilesAndDirs.FilesAndDirs.API.NCREATE &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> NCREATE←{⍺←⊢ ⋄ ⍺ ##.NCREATE ⍵}</code>
+</div>
+<code class="header" id="listing_72">#.FilesAndDirs.FilesAndDirs.API.NGET &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> NGET←{⍺←⊢ ⋄ ⍺ ##.NGET ⍵}</code>
+</div>
+<code class="header" id="listing_73">#.FilesAndDirs.FilesAndDirs.API.NPUT &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> NPUT←{⍺←⊢ ⋄ 1:shy←⍺ ##.NPUT ⍵}</code>
+</div>
+<code class="header" id="listing_74">#.FilesAndDirs.FilesAndDirs.API.NormalizePath &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> NormalizePath←{⍺←⊢ ⋄ ⍺ ##.NormalizePath ⍵}</code>
+</div>
+<code class="header" id="listing_75">#.FilesAndDirs.FilesAndDirs.API.RmDir &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> RmDir←{⍺←⊢ ⋄ 1:shy←⍺ ##.RmDir ⍵}</code>
+</div>
+<code class="header" id="listing_76">#.FilesAndDirs.FilesAndDirs.API.RmDirByForce &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> RmDirByForce←{##.RmDirByForce ⍵}</code>
+</div>
+<code class="header" id="listing_77">#.FilesAndDirs.FilesAndDirs.API.YoungerThan &mdash; 100%<a class="float-right no-print no-underline top-links" href="#top" title="Go to the top of the document">&#8607;</a><a  class="float-right no-print no-underline top-links" href="#partly-covered" title="Go to the beginning of 'Partly-covered'">↑</a></code>
+<div class="code-block"><code> YoungerThan←{⍺←⊢ ⋄ ⍺ ##.YoungerThan ⍵}</code>
+</div>
+<div id="footer">
+<hr>
+<p>Created by "CodeCoverage" version 0.10.7+52 from 2024-06-05</p>
+</div>
+
+</body>
+</html>

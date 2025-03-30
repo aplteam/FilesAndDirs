@@ -1,5 +1,5 @@
  R←Test_Misc_070(stopFlag batchFlag);qdmx;tempDir;⎕TRAP
-⍝ Exercise ⍸sDirEmpty`
+⍝ Exercise `IsDirEmpty`
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

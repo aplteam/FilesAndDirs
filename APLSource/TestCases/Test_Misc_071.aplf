@@ -1,0 +1,11 @@
+ R←Test_Misc_071(stopFlag batchFlag);⎕TRAP;res;path
+⍝ Exercise `HandlePath`
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ res←##.FilesAndDirs.HandlePath'C:\path\2/dir'
+ →T.PassesIf(,'C')'C:\path\2\dir'≡res
+
+ res←##.FilesAndDirs.HandlePath path←'\\server\path\2\dir'
+ →T.PassesIf''path≡res
+⍝Done

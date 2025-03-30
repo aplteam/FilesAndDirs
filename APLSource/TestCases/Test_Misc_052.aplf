@@ -1,13 +1,12 @@
- R←Test_Misc_052(stopFlag batchFlag);⎕TRAP;res
+ R←Test_Misc_052(stopFlag batchFlag);⎕TRAP;version
 ⍝ Exercise the Version function
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
- res←##.FilesAndDirs.Version
- →T.PassesIf 3=≢res
- →T.PassesIf∨/'FilesAndDirs'⍷1⊃res
- →T.PassesIf 2='.'+.=2⊃res
- →T.PassesIf∧/⎕D∊⍨(3⊃res)~'-'
+ version←##.FilesAndDirs.Version
+ →T.PassesIf 1=≡version
+ →T.PassesIf ' '=1↑0⍴version
+ →T.PassesIf∧/⎕D∊⍨{⍵↑⍨¯1+⍵⍳'-'}version~'.+'
 
  R←T._OK
 ⍝Done

@@ -1,4 +1,6 @@
 (
+ '* 6.0.1 ⋄ 2025-03-30'
+ '  * The package required a dependency OS from a server https://localhost:444 rather than the Tatin registry'
  '* 6.0.0 ⋄ 2025-03-28'
  '  * Syntax change: `Version` returns now a simple string with the version number from the package config file.'
  '  * Packages updated.'
