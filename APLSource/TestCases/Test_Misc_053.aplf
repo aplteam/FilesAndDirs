@@ -1,5 +1,5 @@
  R←Test_Misc_053(stopFlag batchFlag);⎕TRAP;res
-⍝ Exercise the Version function
+⍝ Exercise the CurrentSep function
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 

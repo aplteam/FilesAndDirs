@@ -1,0 +1,10 @@
+ R←Test_Dir2_018(stopFlag batchFlag);⎕TRAP;list
+⍝ Test the `Dir2` method on a complex wildcard expression that matches NO file
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←('recurse' 1)('type'(5 2 1 0))##.FilesAndDirs.Dir2'Tests\Test Dir\???o?'
+ →T.PassesIf 4=≢list
+ →T.PassesIf 0 0 0 0≡≢¨list
+
+ R←T._OK

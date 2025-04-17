@@ -1,0 +1,9 @@
+ R←Test_Dir2_033(stopFlag batchFlag);⎕TRAP;list
+⍝ Test the `Dir2` method with wildcards matching files
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←1⊃##.FilesAndDirs.Dir2 ∆Home,'/Second/Sub_a/*_?????'
+ →T.PassesIf 2=≢list
+
+ R←T._OK

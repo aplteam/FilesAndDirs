@@ -1,0 +1,9 @@
+ R←Test_Dir2_005(stopFlag batchFlag);⎕TRAP;list
+⍝ Test the `Dir2` method recursively with follow←0.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←1⊃('recurse' 1)('follow' 0)##.FilesAndDirs.Dir2 ∆Home,'/'
+ →T.PassesIf 23=≢list
+
+ R←T._OK

@@ -1,0 +1,9 @@
+ R←Test_Misc_072(stopFlag batchFlag);⎕TRAP;list;bool
+⍝ Exercise `Public`
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←##.FilesAndDirs.Public
+ bool←3 4∊⍨⊃∘##.FilesAndDirs.API.⎕NC¨list
+ →T.PassesIf ∧/bool
+⍝Done

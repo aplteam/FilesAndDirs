@@ -4,6 +4,6 @@
  R←T._Failed
 
  list←1⊃('recursive' 1)('follow' 0)##.FilesAndDirs.Dir ∆Home,'/'
- →T.PassesIf 20=≢list
+ →T.PassesIf 23=≢list
 
  R←T._OK

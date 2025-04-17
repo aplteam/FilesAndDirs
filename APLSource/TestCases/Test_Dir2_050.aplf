@@ -1,0 +1,19 @@
+ R←Test_Dir2_050(stopFlag batchFlag);⎕TRAP;path;qdmx
+⍝ Test the `Dir2` method recursively on a tree that contains at least one folder with right limitations
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬
+     R←T._WindowsOnly
+ :Else
+     path←(WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\*'
+     :Trap 19
+         {}('recurse' 1)##.FilesAndDirs.Dir2 path
+         →T.FailsIf 1
+     :Else
+         qdmx←⎕DMX
+         →T.PassesIf∨/'Unable to scan directory'⍷qdmx.EM
+     :EndTrap
+
+     R←T._OK
+ :EndIf

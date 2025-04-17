@@ -1,5 +1,5 @@
- R←Test_Dir_036(stopFlag batchFlag);⎕TRAP;path;list;list2
-⍝ Test the `Dir` method recursively on a tree that contains at least one folder with right limitations
+ R←Test_Dir2_036(stopFlag batchFlag);⎕TRAP;path;list;list2
+⍝ Test the `Dir2` method recursively on a tree that contains at least one folder with right limitations
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -7,11 +7,11 @@
      R←T._WindowsOnly
  :Else
      path←(WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\*'
-     list←⊃('recursive' 1)##.FilesAndDirs.Dir path
+     list←⊃('recurse' 2)##.FilesAndDirs.Dir2 path
      list←⎕C list
      list←list[⍋list]
 
-     list2←↑(0)⎕NINFO⍠('Recurse' 2)('Wildcard' 1)⊣path
+     list2←⊃(0)⎕NINFO⍠('Recurse' 2)('Wildcard' 1)⊣path
      list2←##.FilesAndDirs.NormalizePath list2
      list2←⎕C list2
      list2←list2[⍋list2]

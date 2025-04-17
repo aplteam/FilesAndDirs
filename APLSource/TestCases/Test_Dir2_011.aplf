@@ -1,13 +1,13 @@
- R←Test_Dir_011(stopFlag batchFlag);⎕TRAP;list;parms;buff
-⍝ Test the `Dir` method with plenty of attributes in standard sequence and follow←0.
+ R←Test_Dir2_011(stopFlag batchFlag);⎕TRAP;list;parms;buff
+⍝ Test the `Dir2` method with plenty of attributes in standard sequence and follow←0.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  parms←⎕NS''
  parms.type←¯1+⍳8
- parms.recursive←1
+ parms.recurse←1
  parms.follow←0
- list←parms ##.FilesAndDirs.Dir ∆Home,'/'
+ list←parms ##.FilesAndDirs.Dir2 ∆Home,'/'
  buff←⍉↑list
 
  →T.PassesIf 23=≢buff

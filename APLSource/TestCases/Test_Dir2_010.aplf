@@ -1,12 +1,12 @@
- R←Test_Dir_010(stopFlag batchFlag);⎕TRAP;list;parms;buff
-⍝ Test the `Dir` method with plenty of attributes in a non-standard sequence and follow←1.
+ R←Test_Dir2_010(stopFlag batchFlag);⎕TRAP;list;parms;buff
+⍝ Test the `Dir2` method with plenty of attributes in a non-standard sequence and follow←1.
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
  parms←⎕NS''
  parms.type←3 4 5 1 0 2 6 7 8
- parms.recursive←1
- list←parms ##.FilesAndDirs.Dir ∆Home,'/'
+ parms.recurse←1
+ list←parms ##.FilesAndDirs.Dir2 ∆Home,'/'
  buff←⍉↑list
 
  →T.PassesIf 23=≢buff
@@ -17,7 +17,7 @@
  :CaseList 'Lin' 'Mac'
      →T.PassesIf∧/{⊃⊃⎕VFI ⍵}¨buff[;2]
  :Else
-     .                                        ⍝ Huuh?!
+     .                                        ⍝ Huuh>!
  :EndSelect
  →T.PassesIf(,⊂,' ')≡∪1↑¨0⍴¨buff[;3]          ⍝ 6 is owner's name
  →T.PassesIf∧/buff[;4]∊¯1+⍳8                  ⍝ 2 is type: integer between 0 and 7 inclusive
