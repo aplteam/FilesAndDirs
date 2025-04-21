@@ -21,6 +21,8 @@
      →T.PassesIf appdata≡##.FilesAndDirs.NormalizePath'%appdata%'                         ⍝ Env Vars are expanded since 1.5
      →T.PassesIf'C:\APLTeam2\abc'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/123\..'
      →T.PassesIf'C:\APLTeam2\abc\'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/123\..\'
+     →T.PassesIf'C:\APLTeam2\abc\1' 'C:\APLTeam2\abc\2'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/1' 'C:\APLTeam2/abc/2'
+     →T.PassesIf∧/{'C:\'∘≡¨3↑¨⍵}'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/1' '%APPDATA%'
 
      ⍝ There is no need for the ¨ ↓ here but it should work anyway, and there was once a bug!
      →T.PassesIf(3⍴⊂buff)≡'expand'∘##.FilesAndDirs.NormalizePath¨3⍴{'..\',⍵}¨¯1↑'\'APLTreeUtils2.Split buff←##.FilesAndDirs.PWD
@@ -37,6 +39,7 @@
      →T.PassesIf'\\APLTeam2/abc/123'≡##.FilesAndDirs.NormalizePath'//APLTeam2\abc\123'    ⍝ Not a UNC path but treated as such - what else would it be?!
      →T.PassesIf'/APLTeam2/abc'≡'expand'##.FilesAndDirs.NormalizePath'/APLTeam2/abc/123/..'
      →T.PassesIf'/APLTeam2/abc/'≡'expand'##.FilesAndDirs.NormalizePath'/APLTeam2/abc/123/../'
+    →T.PassesIf'/Applications/Dyalog'{('/APLTeam2/abc/1'≡1⊃⍵)(⍺≡(≢⍺)↑2⊃⍵)}'expand'##.FilesAndDirs.NormalizePath'/APLTeam2\abc/1' '$DYALOG'
  :EndIf
 
  R←T._OK
