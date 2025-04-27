@@ -5,4 +5,4 @@ aplteam-CodeCoverage-0.10.7
 aplteam-FilesAndDirs-6.1.0
 aplteam-WinSys-6.0.0
 aplteam-OS-4.0.0
-aplteam-APLGit2-0.23.0
+aplteam-APLGit2-0.24.1
