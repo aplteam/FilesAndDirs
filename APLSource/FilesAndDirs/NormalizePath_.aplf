@@ -9,9 +9,9 @@
      :Else
          :If isWin
          :AndIf '%'=1↑path
-             path←1⊃ExpandEnvironmentStrings path 2048 2048
+             path←(2 ⎕NQ #'GetEnvironment'(1↓{⍵/⍨2>+\⍵='%'}path)),{⍵↓⍨1++/1=+\⍵='%'}path
          :ElseIf '$'=1↑path
-             path←⊃⎕SH'echo ',path
+             path←(⊃⎕SH'echo ',{⍵↑⍨⍵⍳'/'}path),{⍵↓⍨⍵⍳'/'}path
          :EndIf
          UNCflag←(⊂2⍴path)∊'\\' '//'
          :If expandFlag

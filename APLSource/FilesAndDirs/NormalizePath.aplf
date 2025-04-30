@@ -1,4 +1,4 @@
- path←{expandFlag}NormalizePath path;isScalar;isWin;ExpandEnvironmentStrings
+ path←{expandFlag}NormalizePath path;isScalar;isWin
 ⍝ `path` might be either a simple text vector or scalar representing a single filename or a
 ⍝ vector of text vectors with each item representing a single filename.
 ⍝ Enforces either `\` or `/` as separator in `path` depending on the current operating system.\\
@@ -16,9 +16,6 @@
  :If 0≠≢path←,path
      expandFlag←{0<⎕NC ⍵:{0=1↑0⍴⍵:⍵ ⋄ 'expand'≡⎕C ⍵}w←⍎⍵ ⋄ 0}'expandFlag'
      isWin←'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
-     :If isWin
-         'ExpandEnvironmentStrings'⎕NA'I4 KERNEL32.C32|ExpandEnvironmentStrings* <0T >0T I4'
-     :EndIf
      path←(expandFlag isWin)NormalizePath_ path
      :If isScalar
      :AndIf 1=≢path

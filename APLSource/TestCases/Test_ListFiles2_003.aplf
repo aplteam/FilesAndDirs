@@ -1,0 +1,18 @@
+ R←Test_ListFiles2_003(stopFlag batchFlag);⎕TRAP;list;list2;parms
+⍝ Test the `ListFiles2` method with depth←1
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ parms←⎕NS''
+ parms.recurse←2
+ list←parms ##.FilesAndDirs.ListFiles2 ∆Home
+ →T.PassesIf 0<≢list
+
+ parms.depth←1
+ list2←parms ##.FilesAndDirs.ListFiles2 ∆Home
+ →T.PassesIf 0<≢list2
+ →T.PassesIf</≢¨list2 list
+ (list list2)←(1+≢∆Home)↓¨¨list list2
+ →T.PassesIf list2 APLTreeUtils2.LazyMatch(1={+/⍵∊'/\'}¨list)/list
+
+ R←T._OK

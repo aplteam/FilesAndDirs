@@ -1,0 +1,14 @@
+ R←Test_ListFiles2_002(stopFlag batchFlag);⎕TRAP;list;path
+⍝ Test the `ListFiles2` method on a directory we have no read access to
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬
+     R←T._WindowsOnly
+ :Else
+     path←(WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\'
+     list←##.FilesAndDirs.ListFiles2 path
+     →T.PassesIf 0=+/∨/¨'/Configuration$'∘⍷list  ⍝ Because we have no access right to this folder, therefore we cannot see any of its content
+
+     R←T._OK
+ :EndIf

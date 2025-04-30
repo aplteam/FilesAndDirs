@@ -1,0 +1,16 @@
+ R←Test_ListDirs2_003(stopFlag batchFlag);⎕TRAP;list;list2;parms
+⍝ Test the `ListDirs2` method on a folder with "depth" specified but passed left argument as key-values pairs.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ parms←⎕NS''
+ parms.recurse←2
+ list←parms ##.FilesAndDirs.ListDirs2 ∆Home,'/'                         ⍝ All sub-levels
+
+ parms.depth←1
+ list2←parms ##.FilesAndDirs.ListDirs2 ∆Home,'/'                        ⍝ Only one sub-level
+
+ →T.PassesIf>/≢¨list list2                                              ⍝ list2 must be smaller than list
+ →T.PassesIf 1 0 APLTreeUtils2.LazyMatch∪{+/⍵∊'/\'}¨(1+≢∆Home)↓¨list2   ⍝ Either 0 or 1 seperators after removing path
+
+ R←T._OK

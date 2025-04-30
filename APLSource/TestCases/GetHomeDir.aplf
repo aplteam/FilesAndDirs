@@ -1,4 +1,4 @@
- r←∆Home
+ r←GetHomeDir
  r←'FilesAndDirs_Tests'
  :If 'Win'≡APLTreeUtils2.GetOperatingSystem ⍬
      r←##.FilesAndDirs.GetTempPath,r

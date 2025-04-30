@@ -1,0 +1,14 @@
+ R←Test_ListFiles2_011(stopFlag batchFlag);⎕TRAP;list
+⍝ Test the `ListFiles2` method; the left argument is passed as key-value pairs.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←##.FilesAndDirs.ListFiles2 ∆Home
+ →T.PassesIf 0=≢list
+
+ list←'recurse' 2 ##.FilesAndDirs.ListFiles2 ∆Home
+ →T.PassesIf 2<≢list
+ →T.PassesIf∧/##.FilesAndDirs.IsFile¨list
+
+
+ R←T._OK

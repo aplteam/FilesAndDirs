@@ -1,0 +1,34 @@
+ R←Test_ListDirs2_001(stopFlag batchFlag);⎕TRAP;list;qdmx;parms
+⍝ Test the `ListDirs2` method
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←##.FilesAndDirs.ListDirs2 ∆Home
+ →T.PassesIf 2=≢list
+ →T.PassesIf∧/##.FilesAndDirs.IsDir¨list
+
+ parms←⎕NS''
+ parms.recurse←1
+ list←parms ##.FilesAndDirs.ListDirs2 ∆Home
+ →T.PassesIf 2<≢list
+ →T.PassesIf∧/##.FilesAndDirs.IsDir¨list
+
+ →T.PassesIf 2=≢##.FilesAndDirs.ListDirs2 ∆Home,'/Second/Sub*'
+
+ :Trap 11
+     {}##.FilesAndDirs.ListDirs2 ∆Home,'/does-nox-exist/Sub*'
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Right argument is not a directory'≡qdmx.EM
+ :EndTrap
+
+ :Trap 11
+     {}##.FilesAndDirs.ListDirs2 ∆Home,'/Sec*/Sub'
+     →T.FailsIf 1
+ :Else
+     qdmx←⎕DMX
+     →T.PassesIf'Wildcard characters are allowed only in the last part of a path'≡qdmx.EM
+ :EndTrap
+
+ R←T._OK

@@ -1,0 +1,11 @@
+ r←∆CreateSortFolder add
+ r←##.FilesAndDirs.GetTempSubDir add
+ ##.FilesAndDirs.MkDir r,'/aaa'
+ ##.FilesAndDirs.MkDir r,'/bbb'
+ ##.FilesAndDirs.MkDir r,'/BBB'
+ ##.FilesAndDirs.MkDir r,'/AAA'
+
+ (⊂'BBB.txt')⎕NPUT r,'/AAA.txt'
+ (⊂'BBB.txt')⎕NPUT r,'/BBB.txt'
+ (⊂'bbb.txt')⎕NPUT r,'/aaa.txt'
+ (⊂'bbb.txt')⎕NPUT r,'/bbb.txt'

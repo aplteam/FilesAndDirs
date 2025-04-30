@@ -1,0 +1,14 @@
+ R←Test_ListDirs2_014(stopFlag batchFlag);⎕TRAP;list;noOf;list2
+⍝ Test the `ListDirs2` method with a wildcard search pattern depth←1; passes left argument as key-values pair.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←('recurse' 2)('depth' ¯1)##.FilesAndDirs.ListDirs2'./Tests/Test Dir/o*'
+
+ noOf←+/##.FilesAndDirs.IsDir list
+ →T.PassesIf 4=noOf
+ list2←⊃('recurse' 2)('depth' ¯1)##.FilesAndDirs.Dir2'./Tests/Test Dir/'
+ list2←('o'={⊃⊃,/1↓⎕NPARTS ⍵}¨list2)/list2
+ →T.PassesIf noOf=+/##.FilesAndDirs.IsDir list2
+
+ R←T._OK

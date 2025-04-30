@@ -33,6 +33,7 @@
 ⍝ | recursive | 0     | 1=scan `path` recursively; may crash with "ACCESS DENIED"; 2=like 1 but ignores directories that cause "ACCESS DENIED"|
 ⍝ | type      | 0     | Use this to select the information to be returned by `Dir`.<<br>>0 means names. For more information see help on `⎕NINFO`. |
 ⍝ Note that `recursiveCall` is used internally in order to detect whether `Dir` has called itself recursively.\\
+⍝ ATTENTION:
 ⍝ This functon is now depricated, use `Dir2` instead, but beware of the differences!
  r←⍬
  path←NormalizePath path
@@ -92,7 +93,7 @@
              r←r,¨⊃,¨/buff
          :EndIf
          :If 0=isrecursiveCall
-             r←(⊂⍋↑0⊃r)∘⌷¨r
+             r←(⊂SORT_ALPH⍋↑0⊃r)∘⌷¨r
          :EndIf
      :EndIf
      :If 0=isrecursiveCall

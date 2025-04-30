@@ -1,4 +1,12 @@
 (
+ '* 7.0.0 ⋄ 2025-05-01                                                     '
+ '  * Potentially BREAKING CHANGE: the settings and interpretation of the `depth` parameter in `Dir2` has changed (but NOT in `Dir`!).'
+ '  * Potentially BREAKING CHANGE: `Dir` and `Dir2` now return the data sorted according to ASCII:\\ '
+ '    `A` before `a`, but `a` before `B` and `b`.  '
+ '  * For a drastic performance improvement in cases of recursive calls, the functions `ListFiles2` and `ListDirs2` were introduced.'
+ '    Note that syntax and results are slightly different from the (now deprecated) functions `ListDirs` and `ListFiles` in the same '
+ '    way `Dir2` differs from `Dir`.  '
+ '  * SORT_ALPH'
  '* 6.1.0 ⋄ 2025-04-21'
  '  * New function `Dir2` introduced which is way faster than `Dir` when recursive calls are required'
  '    `Dir` is now deprecated. However, note that both the syntax and the result are slightly different'

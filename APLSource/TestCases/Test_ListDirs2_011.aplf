@@ -1,0 +1,14 @@
+ R←Test_ListDirs2_011(stopFlag batchFlag);⎕TRAP;list;qdmx
+⍝ Test the `ListDirs2` method; passes left argument as key-values pair.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ list←##.FilesAndDirs.ListDirs2 ∆Home
+ →T.PassesIf 2=≢list
+ →T.PassesIf∧/##.FilesAndDirs.IsDir¨list
+
+ list←('recurse' 1)##.FilesAndDirs.ListDirs2 ∆Home
+ →T.PassesIf 2<≢list
+ →T.PassesIf∧/##.FilesAndDirs.IsDir¨list
+
+ R←T._OK

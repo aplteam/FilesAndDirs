@@ -1,0 +1,28 @@
+ R←Test_ListDirs2_002(stopFlag batchFlag);⎕TRAP;list;path;list2;parms
+⍝ Test the `ListDirs2` method on a folder that has read restrictions somewhere down the line.
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ :If 'Win'≢APLTreeUtils2.GetOperatingSystem ⍬
+     R←T._WindowsOnly
+ :Else
+     path←(WinSys.ExpandEnv'%SYSTEMROOT%'),'\system32\'
+     parms←⎕NS''
+     parms.recurse←2
+     list←parms ##.FilesAndDirs.ListDirs2 path
+
+    ⍝ First big step: it must not crash!
+    ⍝ We should verify the result as well.
+     list←APLTreeUtils2.Lowercase list
+     list←list[⍋list]
+
+     list2←(0 1)⎕NINFO⍠('Recurse' 2)('Wildcard' 1)⊣path,'*'
+     list2←(1=2⊃list2)/1⊃list2
+     list2←⎕C list2
+     list2←##.FilesAndDirs.NormalizePath list2
+     list2←list2[⍋list2]
+
+     →T.PassesIf list≡list2
+
+     R←T._OK
+ :EndIf

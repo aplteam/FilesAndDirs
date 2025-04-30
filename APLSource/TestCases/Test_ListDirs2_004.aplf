@@ -1,0 +1,17 @@
+ R←Test_ListDirs2_004(stopFlag batchFlag);⎕TRAP;list;parms;noOf;list2
+⍝ Test the `ListDirs2` method with a wilcard search pattern
+ ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
+ R←T._Failed
+
+ parms←⎕NS''
+ parms.recurse←2
+ parms.depth←¯1
+ list←parms ##.FilesAndDirs.ListDirs2'./Tests/Test Dir/o*'
+
+ noOf←+/##.FilesAndDirs.IsDir list
+ →T.PassesIf 4=noOf
+ list2←⊃parms ##.FilesAndDirs.Dir2'./Tests/Test Dir/'
+ list2←('o'={⊃⊃,/1↓⎕NPARTS ⍵}¨list2)/list2
+ →T.PassesIf noOf=+/##.FilesAndDirs.IsDir list2
+
+ R←T._OK
