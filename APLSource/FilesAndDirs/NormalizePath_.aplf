@@ -1,4 +1,4 @@
- path←flags NormalizePath_ path;UNCflag;sep;isScalar;path_;hasTrailingSep;isWin;expandFlag
+  path←flags NormalizePath_ path;UNCflag;sep;isScalar;path_;hasTrailingSep;isWin;expandFlag
  isScalar←⍬≡⍴path
  :If 0≠≢path←,path
      (expandFlag isWin)←flags
@@ -8,10 +8,10 @@
          path←(⊂expandFlag isWin)NormalizePath_¨path
      :Else
          :If isWin
-         :AndIf '%'=1↑path
-             path←(2 ⎕NQ #'GetEnvironment'(1↓{⍵/⍨2>+\⍵='%'}path)),{⍵↓⍨1++/1=+\⍵='%'}path
-         :ElseIf '$'=1↑path
-             path←(⊃⎕SH'echo ',{⍵↑⍨⍵⍳'/'}path),{⍵↓⍨⍵⍳'/'}path
+         :AndIf '%'∊path
+             path←'%[_a-zA-Z][_0-9a-zA-Z]*%'⎕R{2 ⎕NQ #'GetEnvironment'(⍵.Match~'%')}⊢path
+         :ElseIf '$'∊path
+             path←'\$[_a-zA-Z][_0-9a-zA-Z]*'⎕R{2 ⎕NQ #'GetEnvironment'(⍵.Match~'$')}⊢path
          :EndIf
          UNCflag←(⊂2⍴path)∊'\\' '//'
          :If expandFlag

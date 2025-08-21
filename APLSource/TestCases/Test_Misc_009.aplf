@@ -1,4 +1,4 @@
- R←Test_Misc_009(stopFlag batchFlag);⎕TRAP;appdata;buff
+ R←Test_Misc_009(stopFlag batchFlag);⎕TRAP;appdata;buff;expected
 ⍝ Test the `NormalizePath` method
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
@@ -19,6 +19,8 @@
      →T.PassesIf'\\APLTeam2\abc\123'≡##.FilesAndDirs.NormalizePath'//APLTeam2/abc\123'    ⍝ Not a UNC path but treated as such - what else would it be?!
      appdata←⊃⎕CMD'echo %appdata%'
      →T.PassesIf appdata≡##.FilesAndDirs.NormalizePath'%appdata%'                         ⍝ Env Vars are expanded since 1.5
+     expected←'\path2\2\',(2 ⎕NQ #'GetEnvironment' 'USERNAME'),'\foo'
+     →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'/path2/2/%USERNAME%/foo'          ⍝ Env Vars are expanded ANYWHERE since 7.1.0
      →T.PassesIf'C:\APLTeam2\abc'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/123\..'
      →T.PassesIf'C:\APLTeam2\abc\'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/123\..\'
      →T.PassesIf'C:\APLTeam2\abc\1' 'C:\APLTeam2\abc\2'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/1' 'C:\APLTeam2/abc/2'
@@ -40,10 +42,19 @@
      →T.PassesIf'/APLTeam2/abc'≡'expand'##.FilesAndDirs.NormalizePath'/APLTeam2/abc/123/..'
      →T.PassesIf'/APLTeam2/abc/'≡'expand'##.FilesAndDirs.NormalizePath'/APLTeam2/abc/123/../'
      :If 'Lin'≡APLTreeUtils2.GetOperatingSystem ⍬
-        →T.PassesIf∧/'/opt/mdyalog/'{('/APLTeam2/abc/1'≡1⊃⍵)(⍺≡(≢⍺)↑2⊃⍵)}'expand'##.FilesAndDirs.NormalizePath'/APLTeam2\abc/1' '$DYALOG'
+         →T.PassesIf∧/'/opt/mdyalog/'{('/APLTeam2/abc/1'≡1⊃⍵)(⍺≡(≢⍺)↑2⊃⍵)}'expand'##.FilesAndDirs.NormalizePath'/APLTeam2\abc/1' '$DYALOG'
+         expected←'/home/',2 ⎕NQ #'GetEnvironment' 'USER'
+         →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'$HOME'                       ⍝ Env Vars are expanded ANYWHERE since 7.1.0
+         expected←'/path/2/',(2 ⎕NQ #'GetEnvironment' 'USER'),'/foo'
+         →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'/path/2/$USER/foo'           ⍝ Env Vars are expanded ANYWHERE since 7.1.0
      :Else
          →T.PassesIf∧/'/Applications/Dyalog'{('/APLTeam2/abc/1'≡1⊃⍵)(⍺≡(≢⍺)↑2⊃⍵)}'expand'##.FilesAndDirs.NormalizePath'/APLTeam2\abc/1' '$DYALOG'
+         expected←'/Users/',2 ⎕NQ #'GetEnvironment' 'USER'
+         →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'$HOME'                       ⍝ Env Vars are expanded ANYWHERE since 7.1.0
+         expected←'/path/2/',(2 ⎕NQ #'GetEnvironment' 'USER'),'/foo'
+         →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'/path/2/$USER/foo'           ⍝ Env Vars are expanded ANYWHERE since 7.1.0
      :EndIf
+
  :EndIf
 
  R←T._OK

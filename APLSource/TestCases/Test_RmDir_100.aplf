@@ -1,6 +1,5 @@
  R←Test_RmDir_100(stopFlag batchFlag);⎕TRAP;tempFolder;res
 ⍝ Test the `RmDirByForce` method on a folder that carries read-only file
-⍝ This test requires APLGit2 in ⎕SE
  ⎕TRAP←(999 'C' '. ⍝ Deliberate error')(0 'N')
  R←T._Failed
 
@@ -14,7 +13,7 @@
      Assert 0<≢res
      res←##.FilesAndDirs.RmDir tempFolder
      :If 'win'≡⎕C APLTreeUtils2.GetOperatingSystem''
-         Assert 1 19≡2↑res  ⍝ Because now .git/ carries files with the read-only flag set (Windows-only)
+         Assert 1 19≡2↑res ⍝ Because now .git/ carries files with the read-only flag set (Windows-only)
      :Else
          Assert 0 0≡2↑res
      :EndIf
@@ -26,4 +25,8 @@
      R←T._OK
  :Else
      R←T._NotApplicable
+     →0
  :EndIf
+
+∆TidyUp:
+ {}##.FilesAndDirs.RmDirByForce tempFolder
