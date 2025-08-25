@@ -25,6 +25,7 @@
      →T.PassesIf'C:\APLTeam2\abc\'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/123\..\'
      →T.PassesIf'C:\APLTeam2\abc\1' 'C:\APLTeam2\abc\2'≡'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/1' 'C:\APLTeam2/abc/2'
      →T.PassesIf∧/{'C:\'∘≡¨3↑¨⍵}'expand'##.FilesAndDirs.NormalizePath'C:\APLTeam2/abc/1' '%APPDATA%'
+     →T.PassesIf('C:\Path\2\',⊃,/{2 ⎕NQ #'GetEnvironment'⍵}¨'USERNAME' 'OS')≡(##.FilesAndDirs.NormalizePath'C:\Path/2/%USERNAME%%OS%')
 
      ⍝ There is no need for the ¨ ↓ here but it should work anyway, and there was once a bug!
      →T.PassesIf(3⍴⊂buff)≡'expand'∘##.FilesAndDirs.NormalizePath¨3⍴{'..\',⍵}¨¯1↑'\'APLTreeUtils2.Split buff←##.FilesAndDirs.PWD
@@ -46,7 +47,7 @@
          expected←'/home/',2 ⎕NQ #'GetEnvironment' 'USER'
          →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'$HOME'                       ⍝ Env Vars are expanded ANYWHERE since 7.1.0
          expected←'/path/2/',(2 ⎕NQ #'GetEnvironment' 'USER'),'/foo'
-         →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'/path/2/$USER/foo'           ⍝ Env Vars are expanded ANYWHERE since 7.1.0
+         →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'/path/2/$USER/foo'           ⍝ Env Vars are expanded ANYWHERE since 7.1.0/
      :Else
          →T.PassesIf∧/'/Applications/Dyalog'{('/APLTeam2/abc/1'≡1⊃⍵)(⍺≡(≢⍺)↑2⊃⍵)}'expand'##.FilesAndDirs.NormalizePath'/APLTeam2\abc/1' '$DYALOG'
          expected←'/Users/',2 ⎕NQ #'GetEnvironment' 'USER'
@@ -54,7 +55,8 @@
          expected←'/path/2/',(2 ⎕NQ #'GetEnvironment' 'USER'),'/foo'
          →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'/path/2/$USER/foo'           ⍝ Env Vars are expanded ANYWHERE since 7.1.0
      :EndIf
-
+     expected←'/path/2/',(⊃⎕SH'echo $USER'),'/',(⊃⎕SH'echo $LOGNAME'),'/$DOES_NOT_EXIST'
+     →T.PassesIf expected≡##.FilesAndDirs.NormalizePath'/path/2/$USER/$LOGNAME/$DOES_NOT_EXIST'
  :EndIf
 
  R←T._OK

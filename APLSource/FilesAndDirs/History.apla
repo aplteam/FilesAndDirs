@@ -1,4 +1,6 @@
 (
+ '* 7.1.1 ⋄ 2025-08-25'
+ '  * The new feature introduced with version 7.1.0 was buggy, and this version fixes it.'
  '* 7.1.0 ⋄ 2025-08-21'
  '  * `NormalizePath` now processes environment variables anywhere in the path, not only at the start. Because it''s used by other'
  '    functions this affects `IsFile`, `IsDir`, `Dir[2]`, `ListFiles[2]` and ListDirs[2]` as well.'
